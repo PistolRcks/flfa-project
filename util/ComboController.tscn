@@ -8,4 +8,8 @@ script = ExtResource( 1 )
 [node name="InputHolder" type="Timer" parent="."]
 one_shot = true
 
+[node name="NeutralWaitTimer" type="Timer" parent="."]
+one_shot = true
+
 [connection signal="timeout" from="InputHolder" to="." method="_on_InputHolder_timeout"]
+[connection signal="timeout" from="NeutralWaitTimer" to="." method="_on_NeutralWaitTimer_timeout"]

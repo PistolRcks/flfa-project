@@ -1,5 +1,7 @@
 extends Node
 
+signal combo_performed(combo, player)
+
 # TODO: Make neutral inputs less likely to happen accidentally
 # FIXME: Fix accidental reinputting of direction input (line 56)
 
@@ -21,7 +23,10 @@ var combo_performed = ""
 
 onready var input_holder = $InputHolder
 var input_being_held = false
-var INPUT_HOLD_TIME = 0.5	# The amount of time to pause after making a combo (currently only for testing purposes)
+const INPUT_HOLD_TIME = 0.5	# The amount of time to pause after making a combo (currently only for testing purposes)
+
+onready var neutral_wait_timer = $NeutralWaitTimer
+const NEUTRAL_WAIT_TIME = 0.15 # The amount of time to wait after inputting to register a neutral
 
 func _process(delta):
 	# Read inputs, convert into numpad notation (maybe this should be done player-side? will fix later)
@@ -43,6 +48,7 @@ func _process(delta):
 	elif left: numpad = 4
 	elif right: numpad = 6
 	elif down: numpad = 2
+	else: neutral_wait_timer.start(NEUTRAL_WAIT_TIME)
 	
 	input_to_process += str(numpad) if numpad else ""
 	
@@ -65,12 +71,12 @@ func _process(delta):
 			regex.compile(combo[0])
 			var result = regex.search(recent_inputs)
 			if result:
-				print(combo[1] + " performed!")
 				combo_performed = combo[1]
 				input_holder.start(INPUT_HOLD_TIME)
 				# Make text green where the combo landed
 				recent_inputs = recent_inputs.left(result.get_start()) + "[color=#00FF00]" + \
 					recent_inputs.substr(result.get_start(), combo[0].length()) + "[/color]"
+				emit_signal("combo_performed", combo[1], 1)
 				input_being_held = true
 				break
 	
@@ -83,3 +89,6 @@ func _on_InputHolder_timeout():
 	input_being_held = false
 	recent_inputs = " "
 	combo_performed = ""
+
+func _on_NeutralWaitTimer_timeout():
+	recent_inputs += "5"
