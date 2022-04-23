@@ -4,3 +4,8 @@
 
 [node name="ComboController" type="Node"]
 script = ExtResource( 1 )
+
+[node name="InputHolder" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="InputHolder" to="." method="_on_InputHolder_timeout"]

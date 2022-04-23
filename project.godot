@@ -42,11 +42,11 @@ ui_focus_next={
 "deadzone": 0.5,
 "events": [  ]
 }
-ui_left={
+ui_focus_prev={
 "deadzone": 0.5,
 "events": [  ]
 }
-ui_focus_prev={
+ui_left={
 "deadzone": 0.5,
 "events": [  ]
 }

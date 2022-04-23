@@ -20,10 +20,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="RichTextLabel" type="RichTextLabel" parent="MarginContainer"]
+[node name="VSplitContainer" type="VBoxContainer" parent="MarginContainer"]
 margin_left = 8.0
 margin_top = 8.0
 margin_right = 1016.0
 margin_bottom = 592.0
+
+[node name="Inputs" type="RichTextLabel" parent="MarginContainer/VSplitContainer"]
+margin_right = 1008.0
+margin_bottom = 290.0
+size_flags_vertical = 3
+bbcode_enabled = true
+
+[node name="Combos" type="RichTextLabel" parent="MarginContainer/VSplitContainer"]
+margin_top = 294.0
+margin_right = 1008.0
+margin_bottom = 584.0
+size_flags_vertical = 3
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ComboController" parent="." instance=ExtResource( 1 )]
