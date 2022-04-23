@@ -90,7 +90,7 @@ func _process(delta):
 	# Only update when we need to
 	if inputs_updated:
 		get_node("../MarginContainer/VSplitContainer/Inputs").bbcode_text = input_text_to_images(recent_inputs)
-		print("updating")
+
 		inputs_updated = false
 	
 	get_node("../MarginContainer/VSplitContainer/Combos").bbcode_text = combo_performed
