@@ -11,14 +11,19 @@ signal combo_performed(combo, player)
 # 1 2 3 DL D DR
 
 # Attacks are A and B (G stands for both A and B). Notation is numpad notation
+# Input combos higher to have more priority
 var combo_list = [
 	["236.?A$", "Fireball"],		# Quartercircle Forward + A (additional char for ease of input)
 	["65?23.?A$", "Dragon Punch"],	# Z motion forward (optional neutral) + A (additional char for ease of input)
+	["G$", "Forward Grab"],
 	["5A$", "Punch"],				# Just A (technically neutral A)
-	["6A$", "lmao 6P reference"]	# Forward + A
+	["6A$", "lmao 6P reference"],	# Forward + A
+	["2A$", "Dickpunch (yes that's really what it's called in Tekken)"],	# Down + A (yes that is actually what it is called)
+	["5656$", "Forward Dash"],		# Doubletap Forward
 ]
 
 var recent_inputs = " "
+var inputs_updated = false
 var combo_performed = ""
 
 onready var input_holder = $InputHolder
@@ -63,6 +68,7 @@ func _process(delta):
 	if input_to_process != recent_inputs.right(recent_inputs.length()-input_to_process.length()) \
 			and not input_being_held:
 		recent_inputs += input_to_process
+		inputs_updated = true
 	
 	# Check if we finished a combo
 	if not input_being_held:
@@ -74,16 +80,32 @@ func _process(delta):
 				combo_performed = combo[1]
 				input_holder.start(INPUT_HOLD_TIME)
 				# Make text green where the combo landed
-				recent_inputs = recent_inputs.left(result.get_start()) + "[color=#00FF00]" + \
-					recent_inputs.substr(result.get_start(), combo[0].length()) + "[/color]"
+				recent_inputs = recent_inputs.left(result.get_start()) + ">" + \
+					recent_inputs.substr(result.get_start(), combo[0].length()) + "<"
 				emit_signal("combo_performed", combo[1], 1)
 				input_being_held = true
 				break
 	
 	# Send data to richtextlabels (temp)
-	get_node("../MarginContainer/VSplitContainer/Inputs").bbcode_text = recent_inputs
+	# Only update when we need to
+	if inputs_updated:
+		get_node("../MarginContainer/VSplitContainer/Inputs").bbcode_text = input_text_to_images(recent_inputs)
+		print("updating")
+		inputs_updated = false
+	
 	get_node("../MarginContainer/VSplitContainer/Combos").bbcode_text = combo_performed
 	pass
+
+# Convert input text to input images
+func input_text_to_images(text : String) -> String:
+	var new_string = ""
+	for c in text:
+		# Only acceptable inputs (probably really shitty speed)
+		if c in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "G"]:
+			new_string += "[img]res://res/inputs/input_" + c + ".png[/img]"
+		else:
+			new_string += c
+	return new_string
 
 func _on_InputHolder_timeout():
 	input_being_held = false
