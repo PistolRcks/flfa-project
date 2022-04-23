@@ -69,7 +69,8 @@ func _process(delta):
 				combo_performed = combo[1]
 				input_holder.start(INPUT_HOLD_TIME)
 				# Make text green where the combo landed
-				recent_inputs = recent_inputs.left(result.get_start()) + "[color=#00FF00]" + recent_inputs.substr(result.get_start(), combo[0].length()) + "[/color]"
+				recent_inputs = recent_inputs.left(result.get_start()) + "[color=#00FF00]" + \
+					recent_inputs.substr(result.get_start(), combo[0].length()) + "[/color]"
 				input_being_held = true
 				break
 	
@@ -77,7 +78,6 @@ func _process(delta):
 	get_node("../MarginContainer/VSplitContainer/Inputs").bbcode_text = recent_inputs
 	get_node("../MarginContainer/VSplitContainer/Combos").bbcode_text = combo_performed
 	pass
-
 
 func _on_InputHolder_timeout():
 	input_being_held = false
