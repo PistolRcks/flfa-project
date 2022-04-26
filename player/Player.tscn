@@ -1,10 +1,28 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://util/hitbox/Hitbox.tscn" type="PackedScene" id=1]
+[ext_resource path="res://util/ComboController.tscn" type="PackedScene" id=2]
+[ext_resource path="res://player/Player.gd" type="Script" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 20 )
 
 [node name="Player" type="KinematicBody2D"]
+script = ExtResource( 3 )
 
 [node name="Collider" type="CollisionShape2D" parent="."]
 position = Vector2( 0, -20 )
 shape = SubResource( 1 )
+
+[node name="Hurtboxes" type="Node2D" parent="."]
+
+[node name="Hurtbox1" parent="Hurtboxes" instance=ExtResource( 1 )]
+position = Vector2( 0, -20 )
+scale = Vector2( 1, 2 )
+type = "HURT"
+team = "0"
+debugColor = Color( 0, 0, 1, 1 )
+
+[node name="ComboController" parent="." instance=ExtResource( 2 )]
+
+[connection signal="combo_performed" from="ComboController" to="." method="_on_ComboController_combo_performed"]

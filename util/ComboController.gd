@@ -4,22 +4,7 @@ signal combo_performed(combo, player)
 
 # FIXME: Fix accidental reinputting of direction input (line 56)
 
-# Numpad notation:
-# 7 8 9 UL U UR
-# 4 5 6 L  N R
-# 1 2 3 DL D DR
-
-# Attacks are A and B (G stands for both A and B). Notation is numpad notation
-# Input combos higher to have more priority
-var combo_list = [
-	["236.?A$", "Fireball"],		# Quartercircle Forward + A (additional char for ease of input)
-	["65?23.?A$", "Dragon Punch"],	# Z motion forward (optional neutral) + A (additional char for ease of input)
-	["G$", "Forward Grab"],
-	["5A$", "Punch"],				# Just A (technically neutral A)
-	["6A$", "lmao 6P reference"],	# Forward + A
-	["2A$", "Dickpunch (yes that's really what it's called in Tekken)"],	# Down + A (yes that is actually what it is called)
-	["5656$", "Forward Dash"],		# Doubletap Forward
-]
+var combo_list = []
 
 var recent_inputs = " "
 var inputs_updated = false
@@ -115,6 +100,10 @@ func input_text_to_images(text : String) -> String:
 		else:
 			new_string += c
 	return new_string
+
+# Adds combos to the combo list
+func register_combo(combo : Array):
+	combo_list.append(combo)
 
 func _on_InputHolder_timeout():
 	input_being_held = false
