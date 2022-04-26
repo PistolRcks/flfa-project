@@ -23,6 +23,8 @@ type = "HURT"
 team = "0"
 debugColor = Color( 0, 0, 1, 1 )
 
+[node name="Hitboxes" type="Node2D" parent="."]
+
 [node name="ComboController" parent="." instance=ExtResource( 2 )]
 
 [connection signal="combo_performed" from="ComboController" to="." method="_on_ComboController_combo_performed"]

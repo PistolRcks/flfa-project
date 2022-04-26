@@ -82,13 +82,13 @@ func _process(delta):
 	
 	# Send data to richtextlabels (temp)
 	# Only update when we need to
-	if inputs_updated:
-		get_node("../MarginContainer/VSplitContainer/Inputs").bbcode_text = input_text_to_images(recent_inputs)
+	if get_node_or_null("../MarginContainer/VSplitContainer"):
+		if inputs_updated:
+			get_node("../MarginContainer/VSplitContainer/Inputs").bbcode_text = input_text_to_images(recent_inputs)
 
-		inputs_updated = false
-	
-	get_node("../MarginContainer/VSplitContainer/Combos").bbcode_text = combo_performed
-	pass
+			inputs_updated = false
+		
+		get_node("../MarginContainer/VSplitContainer/Combos").bbcode_text = combo_performed
 
 # Convert input text to input images
 func input_text_to_images(text : String) -> String:

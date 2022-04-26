@@ -27,8 +27,12 @@ _global_script_class_icons={
 [application]
 
 config/name="FLFA Project"
-run/main_scene="res://debug/ComboTester.tscn"
+run/main_scene="res://player/Player.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Globals="*res://globals.gd"
 
 [input]
 
