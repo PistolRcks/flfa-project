@@ -2,7 +2,6 @@ extends Node
 
 signal combo_performed(combo, player)
 
-# TODO: Make neutral inputs less likely to happen accidentally
 # FIXME: Fix accidental reinputting of direction input (line 56)
 
 # Numpad notation:
