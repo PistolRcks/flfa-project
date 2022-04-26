@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Combo",
 "language": "GDScript",
 "path": "res://Combo.gd"
+}, {
+"base": "Area2D",
+"class": "Hitbox",
+"language": "GDScript",
+"path": "res://util/hitbox/Hitbox.gd"
 } ]
 _global_script_class_icons={
-"Combo": ""
+"Combo": "",
+"Hitbox": ""
 }
 
 [application]
