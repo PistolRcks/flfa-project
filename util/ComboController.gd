@@ -30,8 +30,8 @@ onready var input_holder = $InputHolder
 var input_being_held = false
 const INPUT_HOLD_TIME = 0.5	# The amount of time to pause after making a combo (currently only for testing purposes)
 
-onready var neutral_wait_timer = $NeutralWaitTimer
-const NEUTRAL_WAIT_TIME = 0.15 # The amount of time to wait after inputting to register a neutral
+var neutral_wait_timer = 0
+const NEUTRAL_WAIT_TIME = 0.016 # The amount of time to wait after inputting to register a neutral
 
 func _process(delta):
 	# Read inputs, convert into numpad notation (maybe this should be done player-side? will fix later)
@@ -39,8 +39,12 @@ func _process(delta):
 	var down = Input.is_action_pressed("down")
 	var left = Input.is_action_pressed("left")
 	var right = Input.is_action_pressed("right")
-	var numpad = 5 # assume input is neutral
+	var numpad # assume input is neutral
 	var input_to_process = ""
+	
+	# Update neutral wait timer (Timer node doesn't update in a fine enough manner)
+	if neutral_wait_timer >= 0:
+		neutral_wait_timer -= delta
 	
 	# Turn inputs into numpad notation (really awful form, don't care)
 	# check for more complex inputs before less complex inputs so we don't need to make things 
@@ -53,7 +57,13 @@ func _process(delta):
 	elif left: numpad = 4
 	elif right: numpad = 6
 	elif down: numpad = 2
-	else: neutral_wait_timer.start(NEUTRAL_WAIT_TIME)
+	
+	# keep the neutral wait timer at max if we haven't pressed a key
+	if left or right or up or down:
+		neutral_wait_timer = NEUTRAL_WAIT_TIME
+	# otherwise input a neutral if the timer is at zero
+	elif neutral_wait_timer <= 0:
+		numpad = 5
 	
 	input_to_process += str(numpad) if numpad else ""
 	
@@ -111,6 +121,3 @@ func _on_InputHolder_timeout():
 	input_being_held = false
 	recent_inputs = " "
 	combo_performed = ""
-
-func _on_NeutralWaitTimer_timeout():
-	recent_inputs += "5"
