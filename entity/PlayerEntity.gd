@@ -1,5 +1,8 @@
+# Like an Entity, but handles basic player input
 extends Entity
 class_name PlayerEntity
+
+export var jump_strength = 1600			# The initial velocity of the jump 
 
 func _physics_process(delta):
 	# Process movement

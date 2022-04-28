@@ -1,11 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://entity/Entity.gd" type="Script" id=1]
 [ext_resource path="res://util/hitbox/Hitbox.tscn" type="PackedScene" id=2]
 [ext_resource path="res://util/ComboController.tscn" type="PackedScene" id=3]
+[ext_resource path="res://entity/anim/basic_statemachine.tres" type="AnimationNodeStateMachine" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 20 )
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=3]
 
 [node name="Entity" type="KinematicBody2D"]
 script = ExtResource( 1 )
@@ -28,5 +31,15 @@ debugColor = Color( 0, 0, 1, 1 )
 [node name="Hitboxes" type="Node2D" parent="."]
 
 [node name="ComboController" parent="." instance=ExtResource( 3 )]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = ExtResource( 4 )
+anim_player = NodePath("../AnimationPlayer")
+parameters/playback = SubResource( 3 )
+parameters/air/Transition/current = 0
+parameters/crouch/Transition/current = 0
+parameters/stand/Transition/current = 0
 
 [connection signal="combo_performed" from="ComboController" to="." method="_on_ComboController_combo_performed"]

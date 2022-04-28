@@ -1,3 +1,5 @@
+# Takes damage, deals damage, is affected by gravity. Basis for player characters (PlayerEntity).
+# See PlayerEntity for more info on player characters. 
 extends KinematicBody2D
 class_name Entity
 
@@ -19,7 +21,6 @@ var combo_being_performed = false		# If a combo is currently being performed
 export var max_health = 100				# The maximum health of the character
 var current_health
 export var move_speed = 100				# The speed of movement (in pixels/sec)
-export var jump_strength = 1600			# The initial velocity of the jump 
 var velocity = Vector2(0,0)
 
 func _ready():
@@ -95,3 +96,4 @@ func create_hitbox_with_nodepath(area_nodepath : String, team : int, metadata : 
 
 func _on_ComboController_combo_performed(combo, player):
 	print("Performed combo " + combo)
+	
