@@ -1,27 +1,13 @@
 extends KinematicBody2D
+class_name Entity
 
 ## Combos ##
-# Numpad notation:
-# 7 8 9 UL U UR
-# 4 5 6 L  N R
-# 1 2 3 DL D DR
-
-# Attacks are A and B (G stands for both A and B). Notation is numpad notation
-# Input combos higher to have more priority
-var combo_list = [
-	["236.?A$", "Fireball"],		# Quartercircle Forward + A (additional char for ease of input)
-	["65?23.?A$", "Dragon Punch"],	# Z motion forward (optional neutral) + A (additional char for ease of input)
-	["G$", "Forward Grab"],
-	["5A$", "Punch"],				# Just A (technically neutral A)
-	["6A$", "lmao 6P reference"],	# Forward + A
-	["2A$", "Dickpunch (yes that's really what it's called in Tekken)"],	# Down + A (yes that is actually what it is called)
-	["5656$", "Forward Dash"],		# Doubletap Forward
-]
+var combo_list = []
 onready var combo_controller = $ComboController
 
 const GRAVITY = 200		# Speed of gravity (in pixels/sec); always at max
 
-## Hitboxes ##a
+## Hitboxes ##
 onready var hitbox_scene = load("res://util/hitbox/Hitbox.tscn")
 var hitboxes = []
 
@@ -38,31 +24,9 @@ var velocity = Vector2(0,0)
 
 func _ready():
 	current_health = max_health + 0		# Duplicate but not
-	for combo in combo_list:
-		combo_controller.register_combo(combo)
 
 func _physics_process(delta):
-	# Process movement
-	var momentum = Vector2(0,0)
-	var left = Input.is_action_pressed("left")
-	var right = Input.is_action_pressed("right")
-	
-	# X movement
-	if left and right:
-		velocity.x = 0
-	elif left and velocity.x > -move_speed:
-		momentum -= Vector2(move_speed, 0)
-	elif right and velocity.x < move_speed:
-		momentum += Vector2(move_speed, 0)
-	
-	# Jump
-	if is_on_floor() and Input.is_action_pressed("up"):
-		momentum += Vector2(0, -jump_strength)
-	
-	# Stop when we're not inputting
-	if not (left or right):
-		velocity.x = 0
-	
+	var momentum = Vector2()
 	# Apply gravity while not on floor (and we're not moving faster than gravity)
 	if not is_on_floor() and velocity.y < GRAVITY:
 		momentum += Vector2(0, GRAVITY)
@@ -70,6 +34,12 @@ func _physics_process(delta):
 	velocity += momentum
 	# Apply momentum
 	move_and_slide(velocity, Vector2(0, -1))
+
+""" Registers all combos from `combo_list` into the ComboController.
+"""
+func register_combos():
+	for combo in combo_list:
+		combo_controller.register_combo(combo)
 
 """ Creates a new Hitbox.
 
@@ -124,5 +94,4 @@ func create_hitbox_with_nodepath(area_nodepath : String, team : int, metadata : 
 	create_hitbox(area.global_position, area.scale, team, metadata)
 
 func _on_ComboController_combo_performed(combo, player):
-	# Perform animation here...
-	pass
+	print("Performed combo " + combo)

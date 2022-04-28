@@ -9,13 +9,25 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody2D",
+"class": "Entity",
+"language": "GDScript",
+"path": "res://entity/Entity.gd"
+}, {
 "base": "Area2D",
 "class": "Hitbox",
 "language": "GDScript",
 "path": "res://util/hitbox/Hitbox.gd"
+}, {
+"base": "Entity",
+"class": "PlayerEntity",
+"language": "GDScript",
+"path": "res://entity/PlayerEntity.gd"
 } ]
 _global_script_class_icons={
-"Hitbox": ""
+"Entity": "",
+"Hitbox": "",
+"PlayerEntity": ""
 }
 
 [application]
