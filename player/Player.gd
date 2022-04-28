@@ -52,7 +52,7 @@ func _physics_process(delta):
 		momentum += Vector2(move_speed * delta, 0)
 	
 	# Apply momentum
-	print(move_and_collide(momentum))
+	move_and_collide(momentum)
 
 """ Creates a new Hitbox.
 
