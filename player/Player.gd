@@ -38,7 +38,7 @@ func _ready():
 	for combo in combo_list:
 		combo_controller.register_combo(combo)
 
-func _process(delta):
+func _physics_process(delta):
 	# Process movement
 	var momentum = Vector2(0,0)
 	var left = Input.is_action_pressed("left")
@@ -47,12 +47,12 @@ func _process(delta):
 	if left and right:
 		pass
 	elif left:
-		momentum -= Vector2(move_speed, 0)
+		momentum -= Vector2(move_speed * delta, 0)
 	elif right:
-		momentum += Vector2(move_speed, 0)
+		momentum += Vector2(move_speed * delta, 0)
 	
 	# Apply momentum
-	move_and_slide(momentum)
+	print(move_and_collide(momentum))
 
 """ Creates a new Hitbox.
 

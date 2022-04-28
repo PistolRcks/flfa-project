@@ -9,25 +9,19 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Node",
-"class": "Combo",
-"language": "GDScript",
-"path": "res://Combo.gd"
-}, {
 "base": "Area2D",
 "class": "Hitbox",
 "language": "GDScript",
 "path": "res://util/hitbox/Hitbox.gd"
 } ]
 _global_script_class_icons={
-"Combo": "",
 "Hitbox": ""
 }
 
 [application]
 
 config/name="FLFA Project"
-run/main_scene="res://player/Player.tscn"
+run/main_scene="res://level/basic_arena/TestingArena.tscn"
 config/icon="res://icon.png"
 
 [autoload]

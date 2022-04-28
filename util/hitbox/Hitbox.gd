@@ -67,7 +67,7 @@ func setRadius(r : float):
 # Wrapper function to fire the area entered to give hitbox stats
 func _on_Hitbox_area_entered(area):
 	# If it's actually a hitbox, it'll have a type
-	if area.type != null:
+	if area.has_meta("type"):
 		var hb = area as Hitbox
 		emit_signal("hitbox_entered", area, hb.type, hb.team, hb.metadata)
 
