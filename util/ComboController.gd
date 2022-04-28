@@ -4,7 +4,7 @@ signal combo_performed(combo, player)
 
 # FIXME: Fix accidental reinputting of direction input (line 56)
 
-var combo_list = []
+var combo_list = [] 
 
 var recent_inputs = " "
 var inputs_updated = false
@@ -16,6 +16,20 @@ const INPUT_HOLD_TIME = 0.5	# The amount of time to pause after making a combo (
 
 var neutral_wait_timer = 0
 const NEUTRAL_WAIT_TIME = 0.016 # The amount of time to wait after inputting to register a neutral
+
+func _ready():
+	# For testing purposes, put in some sample combos;
+	# otherwise, combo_list should be filled by a player's combos
+	if get_tree().get_current_scene().get_name() == "ComboTester":
+		combo_list = [
+			["236.?A$", "Fireball"],		# Quartercircle Forward + A (additional char for ease of input)
+			["65?23.?A$", "Dragon Punch"],	# Z motion forward (optional neutral) + A (additional char for ease of input)
+			["G$", "Forward Grab"],
+			["5A$", "Punch"],				# Just A (technically neutral A)
+			["6A$", "lmao 6P reference"],	# Forward + A
+			["2A$", "Dickpunch (yes that's really what it's called in Tekken)"],	# Down + A (yes that is actually what it is called)
+			["5656$", "Forward Dash"],		# Doubletap Forward
+		]
 
 func _process(delta):
 	# Read inputs, convert into numpad notation (maybe this should be done player-side? will fix later)
