@@ -21,7 +21,7 @@ onready var combo_controller = $ComboController
 
 const GRAVITY = 200		# Speed of gravity (in pixels/sec); always at max
 
-## Hitboxes ##
+## Hitboxes ##a
 onready var hitbox_scene = load("res://util/hitbox/Hitbox.tscn")
 var hitboxes = []
 
@@ -33,6 +33,8 @@ var combo_being_performed = false		# If a combo is currently being performed
 export var max_health = 100				# The maximum health of the character
 var current_health
 export var move_speed = 100				# The speed of movement (in pixels/sec)
+export var jump_strength = 1600			# The initial velocity of the jump 
+var velocity = Vector2(0,0)
 
 func _ready():
 	current_health = max_health + 0		# Duplicate but not
@@ -45,19 +47,29 @@ func _physics_process(delta):
 	var left = Input.is_action_pressed("left")
 	var right = Input.is_action_pressed("right")
 	
+	# X movement
 	if left and right:
-		pass
-	elif left:
+		velocity.x = 0
+	elif left and velocity.x > -move_speed:
 		momentum -= Vector2(move_speed, 0)
-	elif right:
+	elif right and velocity.x < move_speed:
 		momentum += Vector2(move_speed, 0)
 	
-	# Apply gravity while not on floor
-	if not is_on_floor():
+	# Jump
+	if is_on_floor() and Input.is_action_pressed("up"):
+		momentum += Vector2(0, -jump_strength)
+	
+	# Stop when we're not inputting
+	if not (left or right):
+		velocity.x = 0
+	
+	# Apply gravity while not on floor (and we're not moving faster than gravity)
+	if not is_on_floor() and velocity.y < GRAVITY:
 		momentum += Vector2(0, GRAVITY)
 	
+	velocity += momentum
 	# Apply momentum
-	move_and_slide(momentum)
+	move_and_slide(velocity, Vector2(0, -1))
 
 """ Creates a new Hitbox.
 
