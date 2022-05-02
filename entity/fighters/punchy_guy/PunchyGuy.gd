@@ -13,7 +13,7 @@ func _ready():
 		["236.?A$", "Fireball"],		# Quartercircle Forward + A (additional char for ease of input)
 		["65?23.?A$", "Dragon Punch"],	# Z motion forward (optional neutral) + A (additional char for ease of input)
 		["G$", "Forward Grab"],
-		["5A$", "Punch"],				# Just A (technically neutral A)
+		["5A$", "Jab"],					# Just A (technically neutral A)
 		["6A$", "lmao 6P reference"],	# Forward + A
 		["2A$", "Dickpunch (yes that's really what it's called in Tekken)"],	# Down + A (yes that is actually what it is called)
 		["5656$", "Forward Dash"],		# Doubletap Forward

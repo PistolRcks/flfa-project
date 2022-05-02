@@ -17,10 +17,15 @@ const INPUT_HOLD_TIME = 0.5	# The amount of time to pause after making a combo (
 var neutral_wait_timer = 0
 const NEUTRAL_WAIT_TIME = 0.016 # The amount of time to wait after inputting to register a neutral
 
+var _testing = false
+
 func _ready():
+	# Set this if we're in the ComboTester
+	_testing = (get_tree().get_current_scene().get_name() == "ComboTester")
+	
 	# For testing purposes, put in some sample combos;
 	# otherwise, combo_list should be filled by a player's combos
-	if get_tree().get_current_scene().get_name() == "ComboTester":
+	if _testing:
 		combo_list = [
 			["236.?A$", "Fireball"],		# Quartercircle Forward + A (additional char for ease of input)
 			["65?23.?A$", "Dragon Punch"],	# Z motion forward (optional neutral) + A (additional char for ease of input)
@@ -91,7 +96,10 @@ func _process(delta):
 				recent_inputs = recent_inputs.left(result.get_start()) + ">" + \
 					recent_inputs.substr(result.get_start(), combo[0].length()) + "<"
 				emit_signal("combo_performed", combo[1], 1)
-				input_being_held = true
+				
+				# Only hold input if we're testing
+				if _testing:
+					input_being_held = true
 				break
 	
 	# Send data to richtextlabels (temp)

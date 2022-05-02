@@ -1,4 +1,4 @@
-[gd_resource type="AnimationNodeStateMachine" load_steps=23 format=2]
+[gd_resource type="AnimationNodeStateMachine" load_steps=26 format=2]
 
 [sub_resource type="AnimationNodeTransition" id=21]
 
@@ -20,13 +20,31 @@ node_connections = [ "output", 0, "Transition" ]
 
 [sub_resource type="AnimationNodeBlendTree" id=4]
 
+[sub_resource type="AnimationNodeAnimation" id=24]
+animation = "neutral"
+
+[sub_resource type="AnimationNodeAnimation" id=25]
+animation = "jab"
+
+[sub_resource type="AnimationNodeOneShot" id=26]
+
 [sub_resource type="AnimationNodeTransition" id=23]
+input_count = 1
+input_0/name = "Jab"
+input_0/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=5]
-graph_offset = Vector2( -427, 20 )
+graph_offset = Vector2( -631, 34.5 )
+nodes/Animation/node = SubResource( 25 )
+nodes/Animation/position = Vector2( -280, 180 )
+"nodes/Animation 2/node" = SubResource( 24 )
+"nodes/Animation 2/position" = Vector2( -100, 40 )
+nodes/OneShot/node = SubResource( 26 )
+nodes/OneShot/position = Vector2( 120, 100 )
 nodes/Transition/node = SubResource( 23 )
-nodes/Transition/position = Vector2( 120, 140 )
-node_connections = [ "output", 0, "Transition" ]
+nodes/Transition/position = Vector2( -80, 160 )
+nodes/output/position = Vector2( 340, 140 )
+node_connections = [ "output", 0, "OneShot", "Transition", 0, "Animation", "OneShot", 0, "Animation 2", "OneShot", 1, "Transition" ]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=6]
 
@@ -68,4 +86,5 @@ states/hitstun/position = Vector2( 464, 171 )
 states/stand/node = SubResource( 5 )
 states/stand/position = Vector2( 668, 171 )
 transitions = [ "stand", "air", SubResource( 6 ), "air", "stand", SubResource( 7 ), "air", "hitstun", SubResource( 8 ), "stand", "blockstun", SubResource( 9 ), "crouch", "blockstun", SubResource( 10 ), "blockstun", "stand", SubResource( 11 ), "blockstun", "crouch", SubResource( 12 ), "stand", "crouch", SubResource( 13 ), "crouch", "stand", SubResource( 14 ), "stand", "hitstun", SubResource( 15 ), "crouch", "hitstun", SubResource( 16 ), "hitstun", "air", SubResource( 17 ), "hitstun", "stand", SubResource( 18 ), "hitstun", "crouch", SubResource( 19 ) ]
-graph_offset = Vector2( -1, 12 )
+start_node = "stand"
+graph_offset = Vector2( 10, 37 )

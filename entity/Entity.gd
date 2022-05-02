@@ -14,8 +14,11 @@ onready var hitbox_scene = load("res://util/hitbox/Hitbox.tscn")
 var hitboxes = []
 
 ## Character States ##
-var facing_right = true					# Direction we're facing (normally right)
-var combo_being_performed = false		# If a combo is currently being performed
+var facing_right = true						# Direction we're facing (normally right)
+export var combo_being_performed = false	# If a combo is currently being performed
+
+## Animation ##
+onready var animation_tree = $AnimationTree
 
 ## Character Stats ##
 export var max_health = 100				# The maximum health of the character
@@ -73,27 +76,43 @@ func create_hitbox(global_coord : Vector2, size : Vector2, team : int,
 	new_instance.metadata = metadata.duplicate() # Fuckin GDScript with by-reference assignment (duplicate performs by-value assignment)
 	new_instance.metadata["source"] = get_path()	# Automatically set source
 	
-	# Not going to use Hitbox::setSize since scaling makes the positioning much
-	# nicer. Size is divided by 20 due to the extents of the Hitbox's underlying
-	# CollisionShape being 10x10 (multiplied by 2, since extents are kinda like
-	# radius)
-	new_instance.scale = size/20
+	new_instance.scale = size
 	new_instance.global_position = global_coord
 
 """ Creates a hitbox with a specific `Area2D`'s global position and size.
 	
 	Parameters:
-		`String` area_nodepath - The GLOBAL NodePath to the Area2D to copy from,
-			OR the NodePath relative to the Weapon.
+		`NodePath` area_nodepath - The nodepath to an Area2D.
 			(Can't use actual NodePath because it's local to the Player when I
 			call it from the animation)
 		`int` team - The team the Hitbox is on.
 		`Dictionary` metadata - The metadata of the Hitbox.
 """
-func create_hitbox_with_nodepath(area_nodepath : String, team : int, metadata : Dictionary):
+func create_hitbox_with_nodepath(area_nodepath : NodePath, team : int, metadata : Dictionary):
 	var area = get_node(area_nodepath)
 	create_hitbox(area.global_position, area.scale, team, metadata)
 
-func _on_ComboController_combo_performed(combo, player):
-	print("Performed combo " + combo)
+""" Removes all hitboxes produced by this entity.
+"""
+func remove_all_hitboxes():
+	for hitbox in hitboxes:
+		if hitbox: # Make sure the hitbox hasn't been cleared already
+			hitbox.queue_free()
 	
+	# Empty the array
+	hitboxes.clear()
+
+# Perform animations if combos are performed
+func _on_ComboController_combo_performed(combo, player):
+	# Only perform combos if one isn't already being performed
+	if not combo_being_performed:
+		# Get current state
+		var state = animation_tree["parameters/playback"].get_current_node()	
+		
+		# Combo name should be the same name as the animation to be played (or
+		# rather the state of the Transition node to be switched to)
+		animation_tree["parameters/" + state + "/Transition/current"] = combo
+		
+		# Fire the animation
+		animation_tree["parameters/" + state + "/OneShot/active"] = true
+		combo_being_performed = true
