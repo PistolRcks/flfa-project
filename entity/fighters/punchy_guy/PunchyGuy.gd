@@ -24,3 +24,9 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+
+# Return to neutral when an animation is finished (technically this should be attached to Entity but whatever)
+func _on_AnimationPlayer_animation_finished(anim_name):
+	if anim_name != "neutral":
+		print("RETURN TO NEUTRAL")
+		return_to_neutral()

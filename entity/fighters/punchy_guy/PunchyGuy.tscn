@@ -9,6 +9,7 @@
 [ext_resource path="res://entity/fighters/punchy_guy/res/jab_r.png" type="Texture" id=7]
 [ext_resource path="res://entity/fighters/punchy_guy/res/jab_s.png" type="Texture" id=8]
 [ext_resource path="res://entity/fighters/punchy_guy/anim/jab.tres" type="Animation" id=9]
+[ext_resource path="res://entity/fighters/punchy_guy/anim/neutral.tres" type="Animation" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 20 )
@@ -42,6 +43,8 @@ tracks/1/keys = {
 "values": [ Vector2( 1, 0.32 ) ]
 }
 
+[sub_resource type="AnimationNodeStateMachinePlayback" id=22]
+
 [sub_resource type="SpriteFrames" id=23]
 animations = [ {
 "frames": [ ExtResource( 6 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ) ],
@@ -49,25 +52,6 @@ animations = [ {
 "name": "default",
 "speed": 5.0
 } ]
-
-[sub_resource type="Animation" id=24]
-resource_name = "neutral"
-length = 0.1
-loop = true
-tracks/0/type = "value"
-tracks/0/path = NodePath("AnimatedSprite:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 1,
-"values": [ SubResource( 23 ) ]
-}
-
-[sub_resource type="AnimationNodeStateMachinePlayback" id=22]
 
 [node name="PunchyGuy" type="KinematicBody2D"]
 script = ExtResource( 1 )
@@ -99,7 +83,7 @@ shape = SubResource( 25 )
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 26 )
 anims/jab = ExtResource( 9 )
-anims/neutral = SubResource( 24 )
+anims/neutral = ExtResource( 10 )
 
 [node name="AnimationTree" type="AnimationTree" parent="."]
 tree_root = ExtResource( 4 )
@@ -115,6 +99,6 @@ parameters/stand/Transition/current = 0
 position = Vector2( 0, -25 )
 scale = Vector2( 0.193479, 0.193479 )
 frames = SubResource( 23 )
-frame = 3
 
 [connection signal="combo_performed" from="ComboController" to="." method="_on_ComboController_combo_performed"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

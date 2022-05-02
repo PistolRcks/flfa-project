@@ -92,8 +92,7 @@ func create_hitbox_with_nodepath(area_nodepath : NodePath, team : int, metadata 
 	var area = get_node(area_nodepath)
 	create_hitbox(area.global_position, area.scale, team, metadata)
 
-""" Removes all hitboxes produced by this entity.
-"""
+""" Removes all hitboxes produced by this entity. """
 func remove_all_hitboxes():
 	for hitbox in hitboxes:
 		if hitbox: # Make sure the hitbox hasn't been cleared already
@@ -101,6 +100,13 @@ func remove_all_hitboxes():
 	
 	# Empty the array
 	hitboxes.clear()
+
+""" Returns the animation state to neutral, i.e. stop the OneShot
+	(used only so we can call this from an animation) 
+"""
+func return_to_neutral():
+	var state = animation_tree["parameters/playback"].get_current_node()	
+	animation_tree["parameters/" + state + "/OneShot/active"] = false
 
 # Perform animations if combos are performed
 func _on_ComboController_combo_performed(combo, player):

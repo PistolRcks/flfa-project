@@ -34,16 +34,16 @@ input_0/name = "Jab"
 input_0/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=5]
-graph_offset = Vector2( -631, 34.5 )
+graph_offset = Vector2( -509.98, -20.9045 )
 nodes/Animation/node = SubResource( 25 )
-nodes/Animation/position = Vector2( -280, 180 )
+nodes/Animation/position = Vector2( -160, 180 )
 "nodes/Animation 2/node" = SubResource( 24 )
-"nodes/Animation 2/position" = Vector2( -100, 40 )
+"nodes/Animation 2/position" = Vector2( -160, 40 )
 nodes/OneShot/node = SubResource( 26 )
-nodes/OneShot/position = Vector2( 120, 100 )
+nodes/OneShot/position = Vector2( 180, 80 )
 nodes/Transition/node = SubResource( 23 )
-nodes/Transition/position = Vector2( -80, 160 )
-nodes/output/position = Vector2( 340, 140 )
+nodes/Transition/position = Vector2( 20, 140 )
+nodes/output/position = Vector2( 380, 140 )
 node_connections = [ "output", 0, "OneShot", "Transition", 0, "Animation", "OneShot", 0, "Animation 2", "OneShot", 1, "Transition" ]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=6]
