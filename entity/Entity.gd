@@ -21,7 +21,7 @@ export var combo_being_performed = false	# If a combo is currently being perform
 onready var animation_tree = $AnimationTree
 
 ## Character Stats ##
-var player_number = 1					# Which number the player is (1 or 2)
+export var player_number = 1			# Which number the player is (1 or 2)
 export var full_name = "Fighter"		# The full name of the character (as displayed in the UI)
 export var max_health = 100				# The maximum health of the character
 var current_health
@@ -84,6 +84,8 @@ func create_hitbox(global_coord : Vector2, size : Vector2, team : int,
 	
 	new_instance.scale = size
 	new_instance.global_position = global_coord
+	
+	print("Produced hitbox with metadata {meta}".format({"meta": new_instance.metadata}))
 
 """ Creates a hitbox with a specific `Area2D`'s global position and size.
 	

@@ -86,6 +86,7 @@ func _process(delta):
 	# Check if we finished a combo
 	if not input_being_held:
 		for combo in combo_list:
+			# Check if the current combo we're looking at is what we performed
 			var result = combo.regex.search(recent_inputs)
 			if result:
 				combo_performed = combo.name

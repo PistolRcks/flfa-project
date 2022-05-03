@@ -38,9 +38,8 @@ tracks/2/keys = {
 "times": PoolRealArray( 0.1, 0.233333 ),
 "transitions": PoolRealArray( 1, 1 ),
 "values": [ {
-"args": [ NodePath("Hitboxes/Helper"), 0, {
-} ],
-"method": "create_hitbox_with_nodepath"
+"args": [ NodePath("Hitboxes/Helper"), 3, 0 ],
+"method": "create_hitbox_via_combo"
 }, {
 "args": [  ],
 "method": "remove_all_hitboxes"

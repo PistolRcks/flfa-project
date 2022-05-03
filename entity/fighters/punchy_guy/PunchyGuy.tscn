@@ -70,7 +70,7 @@ collision_layer = 2
 collision_mask = 2
 type = "HURT"
 team = "0"
-debugColor = Color( 0, 0, 1, 1 )
+debugColor = Color( 0, 0, 1, 0.498039 )
 
 [node name="Hitboxes" type="Node2D" parent="."]
 
