@@ -1,0 +1,92 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://ui/CombatUI.gd" type="Script" id=1]
+
+[node name="CombatUI" type="Control" groups=["combat_ui"]]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Padding" type="MarginContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 16
+custom_constants/margin_top = 16
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 16
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Grid" type="GridContainer" parent="Padding"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 1008.0
+margin_bottom = 584.0
+columns = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="P1" type="VBoxContainer" parent="Padding/Grid"]
+margin_right = 328.0
+margin_bottom = 568.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Healthbar" type="ProgressBar" parent="Padding/Grid/P1"]
+margin_right = 328.0
+margin_bottom = 14.0
+
+[node name="Name" type="RichTextLabel" parent="Padding/Grid/P1"]
+margin_top = 18.0
+margin_right = 328.0
+margin_bottom = 33.0
+bbcode_enabled = true
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="RichTextLabel" parent="Padding/Grid"]
+margin_left = 332.0
+margin_right = 660.0
+margin_bottom = 568.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+bbcode_enabled = true
+bbcode_text = "[center]99[/center]"
+text = "99"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="P2" type="VBoxContainer" parent="Padding/Grid"]
+margin_left = 664.0
+margin_right = 992.0
+margin_bottom = 568.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Healthbar" type="ProgressBar" parent="Padding/Grid/P2"]
+margin_right = 328.0
+margin_bottom = 14.0
+
+[node name="Name" type="RichTextLabel" parent="Padding/Grid/P2"]
+margin_top = 18.0
+margin_right = 328.0
+margin_bottom = 33.0
+bbcode_enabled = true
+bbcode_text = "[right]Fighter[/right]"
+text = "Fighter"
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

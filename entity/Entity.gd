@@ -21,6 +21,8 @@ export var combo_being_performed = false	# If a combo is currently being perform
 onready var animation_tree = $AnimationTree
 
 ## Character Stats ##
+var player_number = 1					# Which number the player is (1 or 2)
+export var full_name = "Fighter"		# The full name of the character (as displayed in the UI)
 export var max_health = 100				# The maximum health of the character
 var current_health
 export var move_speed = 100				# The speed of movement (in pixels/sec)
@@ -28,6 +30,10 @@ var velocity = Vector2(0,0)
 
 func _ready():
 	current_health = max_health + 0		# Duplicate but not
+	
+	# Update UI to reflect character
+	get_tree().call_group("combat_ui", "update_name", player_number, full_name)
+	get_tree().call_group("combat_ui", "update_health", player_number, 100)
 
 func _physics_process(delta):
 	var momentum = Vector2()
