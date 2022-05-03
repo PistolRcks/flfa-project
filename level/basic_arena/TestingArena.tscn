@@ -34,9 +34,9 @@ position = Vector2( 256, -128 )
 shape = SubResource( 3 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
-offset = Vector2( 0, -56 )
+offset = Vector2( 0, -32 )
 current = true
-zoom = Vector2( 0.2, 0.2 )
+zoom = Vector2( 0.15, 0.15 )
 
 [node name="PunchyGuy" parent="." instance=ExtResource( 1 )]
 position = Vector2( -66, -50 )
