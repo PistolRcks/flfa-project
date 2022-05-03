@@ -49,7 +49,8 @@ func _physics_process(delta):
 """
 func register_combos():
 	for combo in combo_list:
-		combo_controller.register_combo(combo)
+		# The combo controller doesn't need the third part of the combo tuple
+		combo_controller.register_combo([combo[0], combo[1]])
 
 """ Creates a new Hitbox.
 
@@ -91,12 +92,29 @@ func create_hitbox(global_coord : Vector2, size : Vector2, team : int,
 		`NodePath` area_nodepath - The nodepath to an Area2D.
 			(Can't use actual NodePath because it's local to the Player when I
 			call it from the animation)
-		`int` team - The team the Hitbox is on.
 		`Dictionary` metadata - The metadata of the Hitbox.
 """
-func create_hitbox_with_nodepath(area_nodepath : NodePath, team : int, metadata : Dictionary):
+func create_hitbox_with_nodepath(area_nodepath : NodePath, metadata : Dictionary):
 	var area = get_node(area_nodepath)
-	create_hitbox(area.global_position, area.scale, team, metadata)
+	create_hitbox(area.global_position, area.scale, player_number, metadata)
+
+""" Creates a hitbox with a specific `Area2D`'s global position and size. Metadata is filled based
+	on which combo is currently being performed, and which hitbox to produce in that animation.
+	
+	NB: The metadata should already exist for that specific combo, or else an IndexError is thrown.
+	
+	Parameters:
+		`NodePath` area_nodepath - The nodepath to an Area2D.
+			(Can't use actual NodePath because it's local to the Player when I
+			call it from the animation)
+		`int` combo_idx - The index of the combo (from `combo_list`) which is currently
+			being performed.
+		`int` meta_idx - The index of the metadata for this hitbox (the third portion of the 
+			combo tuple). This should be the number of the hitbox being produced by this animation
+			(i.e. 1 for the first hitbox, 2 for the second, etc.)
+"""
+func create_hitbox_via_combo(area_nodepath: NodePath, combo_idx: int, meta_idx: int):
+	create_hitbox_with_nodepath(area_nodepath, combo_list[combo_idx][3][meta_idx])
 
 """ Removes all hitboxes produced by this entity. """
 func remove_all_hitboxes():
