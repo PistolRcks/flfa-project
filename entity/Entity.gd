@@ -34,6 +34,9 @@ func _ready():
 	# Update UI to reflect character
 	get_tree().call_group("combat_ui", "update_name", player_number, full_name)
 	get_tree().call_group("combat_ui", "update_health", player_number, 100)
+	
+	# Let the ComboController know which player we are
+	combo_controller.update_assigned_player(player_number)
 
 func _physics_process(delta):
 	var momentum = Vector2()

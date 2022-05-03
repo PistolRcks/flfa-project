@@ -6,6 +6,8 @@ signal combo_performed(combo, player)
 
 var combo_list = [] 
 
+var assigned_player = 1		# Player assigned to this ComboController
+
 var recent_inputs = " "
 var inputs_updated = false
 var combo_performed = ""
@@ -18,6 +20,15 @@ var neutral_wait_timer = 0
 const NEUTRAL_WAIT_TIME = 0.016 # The amount of time to wait after inputting to register a neutral
 
 var _testing = false
+
+# Translate inputs to the player's counterpart
+onready var nat_up = "p" + str(assigned_player) + "_up"
+onready var nat_down = "p" + str(assigned_player) + "_down"
+onready var nat_left = "p" + str(assigned_player) + "_left"
+onready var nat_right = "p" + str(assigned_player) + "_right"
+onready var nat_attack_a = "p" + str(assigned_player) + "_attack_a"
+onready var nat_attack_b = "p" + str(assigned_player) + "_attack_b"
+
 
 func _ready():
 	# Set this if we're in the ComboTester
@@ -37,11 +48,11 @@ func _ready():
 		]
 
 func _process(delta):
-	# Read inputs, convert into numpad notation (maybe this should be done player-side? will fix later)
-	var up = Input.is_action_pressed("up")
-	var down = Input.is_action_pressed("down")
-	var left = Input.is_action_pressed("left")
-	var right = Input.is_action_pressed("right")
+	# Read inputs, convert into numpad notation
+	var up = Input.is_action_pressed(nat_up)
+	var down = Input.is_action_pressed(nat_down)
+	var left = Input.is_action_pressed(nat_left)
+	var right = Input.is_action_pressed(nat_right)
 	var numpad # assume input is neutral
 	var input_to_process = ""
 	
@@ -70,11 +81,11 @@ func _process(delta):
 	
 	input_to_process += str(numpad) if numpad else ""
 	
-	if Input.is_action_pressed("attack_a") and Input.is_action_pressed("attack_b"):
+	if Input.is_action_pressed(nat_attack_a) and Input.is_action_pressed(nat_attack_b):
 		input_to_process += "G"
-	elif Input.is_action_pressed("attack_a"):
+	elif Input.is_action_pressed(nat_attack_a):
 		input_to_process += "A"
-	elif Input.is_action_pressed("attack_b"):
+	elif Input.is_action_pressed(nat_attack_b):
 		input_to_process += "B"
 	
 	# don't repeat inputs
@@ -111,7 +122,18 @@ func _process(delta):
 		
 		get_node("../MarginContainer/VSplitContainer/Combos").bbcode_text = combo_performed
 
-# Convert input text to input images
+""" Update the currently assigned player (and natural inputs) to `new_player`. """
+func update_assigned_player(new_player : int):
+	assigned_player = new_player
+	
+	nat_up = "p" + str(assigned_player) + "_up"
+	nat_down = "p" + str(assigned_player) + "_down"
+	nat_left = "p" + str(assigned_player) + "_left"
+	nat_right = "p" + str(assigned_player) + "_right"
+	nat_attack_a = "p" + str(assigned_player) + "_attack_a"
+	nat_attack_b = "p" + str(assigned_player) + "_attack_b"
+
+""" Convert input text to input images """
 func input_text_to_images(text : String) -> String:
 	var new_string = ""
 	for c in text:
@@ -122,7 +144,7 @@ func input_text_to_images(text : String) -> String:
 			new_string += c
 	return new_string
 
-# Adds combos to the combo list
+""" Adds combos to the combo list """
 func register_combo(combo : Combo):
 	combo_list.append(combo)
 

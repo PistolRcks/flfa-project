@@ -56,6 +56,5 @@ func pause_timer():
 func resume_timer():
 	timer.paused = false
 
-
 func _on_Timer_timeout():
 	emit_signal("round_over")

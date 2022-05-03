@@ -7,8 +7,8 @@ export var jump_strength = 1600			# The initial velocity of the jump
 func _physics_process(delta):
 	# Process movement, but only when a combo is not being performed
 	var momentum = Vector2(0,0)
-	var left = Input.is_action_pressed("left")
-	var right = Input.is_action_pressed("right")
+	var left = Input.is_action_pressed("p" + str(player_number) + "_left")
+	var right = Input.is_action_pressed("p" + str(player_number) + "_right")
 	
 	# Process input
 	if not combo_being_performed:
@@ -21,7 +21,7 @@ func _physics_process(delta):
 			momentum += Vector2(move_speed, 0)
 	
 		# Jump
-		if is_on_floor() and Input.is_action_pressed("up"):
+		if is_on_floor() and Input.is_action_pressed("p" + str(player_number) + "_up"):
 			momentum += Vector2(0, -jump_strength)
 	
 	# Stop when we're not inputting

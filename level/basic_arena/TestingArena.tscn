@@ -45,3 +45,7 @@ zoom = Vector2( 0.15, 0.15 )
 
 [node name="PunchyGuy" parent="." instance=ExtResource( 1 )]
 position = Vector2( -66, -50 )
+
+[node name="PunchingBag" parent="." instance=ExtResource( 1 )]
+position = Vector2( 33, -36 )
+player_number = 2
