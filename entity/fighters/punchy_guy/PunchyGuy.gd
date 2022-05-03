@@ -10,13 +10,13 @@ func _ready():
 	# Attacks are A and B (G stands for both A and B). Notation is numpad notation
 	# Input combos higher to have more priority
 	combo_list = [
-		["236.?A$", "Fireball"],		# Quartercircle Forward + A (additional char for ease of input)
-		["65?23.?A$", "Dragon Punch"],	# Z motion forward (optional neutral) + A (additional char for ease of input)
-		["G$", "Forward Grab"],
-		["5A$", "Jab"],					# Just A (technically neutral A)
-		["6A$", "lmao 6P reference"],	# Forward + A
-		["2A$", "Dickpunch (yes that's really what it's called in Tekken)"],	# Down + A (yes that is actually what it is called)
-		["5656$", "Forward Dash"],		# Doubletap Forward
+		Combo.new("236.?A$", "Fireball", []),		# Quartercircle Forward + A (additional char for ease of input)
+		Combo.new("65?23.?A$", "Dragon Punch", []),	# Z motion forward (optional neutral) + A (additional char for ease of input)
+		Combo.new("G$", "Forward Grab", []),
+		Combo.new("5A$", "Jab", []),				# Just A (technically neutral A)
+		Combo.new("6A$", "lmao 6P reference", []),	# Forward + A
+		Combo.new("2A$", "Dickpunch (yes that's really what it's called in Tekken)", []),	# Down + A (yes that is actually what it is called)
+		Combo.new("5656$", "Forward Dash", []),		# Doubletap Forward
 	]
 	
 	register_combos()

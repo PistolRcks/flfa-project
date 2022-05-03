@@ -49,8 +49,7 @@ func _physics_process(delta):
 """
 func register_combos():
 	for combo in combo_list:
-		# The combo controller doesn't need the third part of the combo tuple
-		combo_controller.register_combo([combo[0], combo[1]])
+		combo_controller.register_combo(combo)
 
 """ Creates a new Hitbox.
 
@@ -114,7 +113,7 @@ func create_hitbox_with_nodepath(area_nodepath : NodePath, metadata : Dictionary
 			(i.e. 1 for the first hitbox, 2 for the second, etc.)
 """
 func create_hitbox_via_combo(area_nodepath: NodePath, combo_idx: int, meta_idx: int):
-	create_hitbox_with_nodepath(area_nodepath, combo_list[combo_idx][3][meta_idx])
+	create_hitbox_with_nodepath(area_nodepath, combo_list[combo_idx].metas[meta_idx])
 
 """ Removes all hitboxes produced by this entity. """
 func remove_all_hitboxes():

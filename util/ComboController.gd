@@ -86,16 +86,14 @@ func _process(delta):
 	# Check if we finished a combo
 	if not input_being_held:
 		for combo in combo_list:
-			var regex = RegEx.new()
-			regex.compile(combo[0])
-			var result = regex.search(recent_inputs)
+			var result = combo.regex.search(recent_inputs)
 			if result:
-				combo_performed = combo[1]
+				combo_performed = combo.name
 				input_holder.start(INPUT_HOLD_TIME)
 				# Make text green where the combo landed
 				recent_inputs = recent_inputs.left(result.get_start()) + ">" + \
-					recent_inputs.substr(result.get_start(), combo[0].length()) + "<"
-				emit_signal("combo_performed", combo[1], 1)
+					recent_inputs.substr(result.get_start(), combo.inputs.length()) + "<"
+				emit_signal("combo_performed", combo.name, 1)
 				
 				# Only hold input if we're testing
 				if _testing:
@@ -124,7 +122,7 @@ func input_text_to_images(text : String) -> String:
 	return new_string
 
 # Adds combos to the combo list
-func register_combo(combo : Array):
+func register_combo(combo : Combo):
 	combo_list.append(combo)
 
 func _on_InputHolder_timeout():
