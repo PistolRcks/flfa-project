@@ -58,7 +58,7 @@ nodes/OneShot/position = Vector2( 180, 80 )
 nodes/Transition/node = SubResource( 23 )
 nodes/Transition/position = Vector2( 20, 140 )
 nodes/output/position = Vector2( 380, 140 )
-node_connections = [ "output", 0, "OneShot", "Transition", 0, "Animation", "OneShot", 0, "Animation 2", "OneShot", 1, "Transition" ]
+node_connections = [ "output", 0, "OneShot", "OneShot", 0, "Animation 2", "OneShot", 1, "Transition", "Transition", 0, "Animation" ]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=6]
 

@@ -29,8 +29,6 @@ onready var nat_down = "p" + str(assigned_player) + "_down"
 onready var nat_left = "p" + str(assigned_player) + "_left"
 onready var nat_right = "p" + str(assigned_player) + "_right"
 onready var nat_attack_a = "p" + str(assigned_player) + "_attack_a"
-onready var nat_attack_b = "p" + str(assigned_player) + "_attack_b"
-
 
 func _ready():
 	# Set this if we're in the ComboTester
@@ -42,10 +40,8 @@ func _ready():
 		combo_list = [
 			Combo.new("236.?A$", "Fireball", []),		# Quartercircle Forward + A (additional char for ease of input)
 			Combo.new("65?23.?A$", "Dragon Punch", []),	# Z motion forward (optional neutral) + A (additional char for ease of input)
-			Combo.new("G$", "Forward Grab", []),
 			Combo.new("5A$", "Jab", []),				# Just A (technically neutral A)
-			Combo.new("6A$", "lmao 6P reference", []),	# Forward + A
-			Combo.new("2A$", "Dickpunch (yes that's really what it's called in Tekken)", []),	# Down + A (yes that is actually what it is called)
+			Combo.new("[123]A$", "Sweep", []),			# Any Down + A (while crouching)
 			Combo.new("5656$", "Forward Dash", []),		# Doubletap Forward
 		]
 
@@ -90,12 +86,8 @@ func _process(delta):
 	
 	input_to_process += str(numpad) if numpad else ""
 	
-	if Input.is_action_pressed(nat_attack_a) and Input.is_action_pressed(nat_attack_b):
-		input_to_process += "G"
-	elif Input.is_action_pressed(nat_attack_a):
+	if Input.is_action_pressed(nat_attack_a):
 		input_to_process += "A"
-	elif Input.is_action_pressed(nat_attack_b):
-		input_to_process += "B"
 	
 	# don't repeat inputs
 	if input_to_process != recent_inputs.right(recent_inputs.length()-input_to_process.length()) \
@@ -143,7 +135,6 @@ func update_assigned_player(new_player : int):
 	nat_left = "p" + str(assigned_player) + "_left"
 	nat_right = "p" + str(assigned_player) + "_right"
 	nat_attack_a = "p" + str(assigned_player) + "_attack_a"
-	nat_attack_b = "p" + str(assigned_player) + "_attack_b"
 
 """ Convert input text to input images """
 func input_text_to_images(text : String) -> String:

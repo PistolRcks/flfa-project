@@ -12,7 +12,6 @@ func _ready():
 	combo_list = [
 		Combo.new("236.?A$", "Fireball", []),		# Quartercircle Forward + A (additional char for ease of input)
 		Combo.new("65?23.?A$", "Dragon Punch", []),	# Z motion forward (optional neutral) + A (additional char for ease of input)
-		Combo.new("G$", "Forward Grab", []),
 		Combo.new("5A$", "Jab", [					# Just A (technically neutral A)
 			{
 				"damage" 	: 6,		# Damage to deal on hit
@@ -23,8 +22,7 @@ func _ready():
 				"location" 	: "MID"		# The location which the hitbox targets (HIGH, MID, LOW, or UNBLOCK (unblockable))
 			}
 		]),
-		Combo.new("6A$", "lmao 6P reference", []),	# Forward + A
-		Combo.new("2A$", "Dickpunch (yes that's really what it's called in Tekken)", []),	# Down + A (yes that is actually what it is called)
+		Combo.new("[123]A$", "Sweep", []),			# Any Down + A (while crouching)
 		Combo.new("5656$", "Forward Dash", []),		# Doubletap Forward
 	]
 	
