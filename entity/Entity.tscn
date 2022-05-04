@@ -22,8 +22,8 @@ shape = SubResource( 1 )
 [node name="Hurtbox1" parent="Hurtboxes" instance=ExtResource( 2 )]
 position = Vector2( 0, -20 )
 scale = Vector2( 1, 2 )
-collision_layer = 2
-collision_mask = 2
+collision_layer = 1
+collision_mask = 1
 type = "HURT"
 team = "0"
 debugColor = Color( 0, 0, 1, 1 )
@@ -40,6 +40,8 @@ anim_player = NodePath("../AnimationPlayer")
 parameters/playback = SubResource( 3 )
 parameters/air/Transition/current = 0
 parameters/crouch/Transition/current = 0
+parameters/stand/OneShot/active = false
 parameters/stand/Transition/current = 0
 
+[connection signal="hitbox_entered" from="Hurtboxes/Hurtbox1" to="." method="_on_hit"]
 [connection signal="combo_performed" from="ComboController" to="." method="_on_ComboController_combo_performed"]

@@ -16,6 +16,10 @@ var hitboxes = []
 ## Character States ##
 var facing_right = true						# Direction we're facing (normally right)
 export var combo_being_performed = false	# If a combo is currently being performed
+var blocking = false						# Whether or not the player is able to block 
+											# (i.e., holding back; not in blockstun)
+var inactionable = false					# Whether or not the entity can perform any actions 
+											# (usually while in hit/blockstun)
 
 ## Animation ##
 onready var animation_tree = $AnimationTree
@@ -27,6 +31,7 @@ export var max_health = 100				# The maximum health of the character
 var current_health
 export var move_speed = 100				# The speed of movement (in pixels/sec)
 var velocity = Vector2(0,0)
+var stun_timer := 0.0					# How long the character is inactionable after being hit
 
 func _ready():
 	current_health = max_health + 0		# Duplicate but not
@@ -37,12 +42,22 @@ func _ready():
 	
 	# Let the ComboController know which player we are
 	combo_controller.update_assigned_player(player_number)
+	
+	# Make sure the hurtboxes are on the correct team
+	for hurtbox in $Hurtboxes.get_children():
+		hurtbox.team = player_number
 
 func _physics_process(delta):
 	var momentum = Vector2()
 	# Apply gravity while not on floor (and we're not moving faster than gravity)
 	if not is_on_floor() and velocity.y < GRAVITY:
 		momentum += Vector2(0, GRAVITY)
+	
+	if stun_timer > 0:
+		stun_timer -= delta
+		inactionable = true
+	else:
+		inactionable = false
 	
 	velocity += momentum
 	# Apply momentum
@@ -53,6 +68,9 @@ func _physics_process(delta):
 func register_combos():
 	for combo in combo_list:
 		combo_controller.register_combo(combo)
+
+func apply_knockback(amount):
+	pass # STUB!
 
 """ Creates a new Hitbox.
 
@@ -88,7 +106,7 @@ func create_hitbox(global_coord : Vector2, size : Vector2, team : int,
 	new_instance.scale = size
 	new_instance.global_position = global_coord
 	
-	print("Produced hitbox with metadata {meta}".format({"meta": new_instance.metadata}))
+	print("Produced hitbox for team {team} with metadata {meta}".format({"team": new_instance.team, "meta": new_instance.metadata}))
 
 """ Creates a hitbox with a specific `Area2D`'s global position and size.
 	
@@ -150,3 +168,17 @@ func _on_ComboController_combo_performed(combo, player):
 		# Fire the animation
 		animation_tree["parameters/" + state + "/OneShot/active"] = true
 		combo_being_performed = true
+
+# Perform whenever we are hit
+func _on_hit(area, type, team, metadata):
+	# Make sure this is an enemy hitbox
+	if team != player_number and type == "HIT":
+		if blocking:	# Recieve chip damage and blockstun on-block, but not knockback
+			stun_timer = metadata["blockstun"]
+			# You cannot be killed by chip damage
+			current_health = max(current_health - metadata["chip"], 0.1)
+		else:			# Receive full damage and hitstun on-hit *and* knockback
+			stun_timer = metadata["hitstun"]
+			current_health -= metadata["damage"]
+			apply_knockback(metadata["knockback"])
+			print("Received damage!")
