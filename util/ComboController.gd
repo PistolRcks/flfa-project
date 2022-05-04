@@ -21,6 +21,10 @@ const INPUT_HOLD_TIME = 0.33	# The amount of time to pause after making a combo
 var neutral_wait_timer = 0
 const NEUTRAL_WAIT_TIME = 0.016 # The amount of time to wait after inputting to register a neutral
 
+var combo_timeout_timer = 0
+const COMBO_TIMEOUT_TIME = 0.33	# The amount of time to clear the `recent_inputs` after not inputting
+								# (not including neutrals)
+
 var _testing = false
 
 # Translate inputs to the player's counterpart
@@ -65,6 +69,15 @@ func _process(delta):
 	if neutral_wait_timer >= 0:
 		neutral_wait_timer -= delta
 	
+	# Update combo timeout timer
+	if combo_timeout_timer > 0:
+		combo_timeout_timer -= delta
+		
+		# If lowering the time caused us to go to zero, update stuff
+		if combo_timeout_timer <= 0:
+			recent_inputs = " "
+			inputs_updated = true
+	
 	# Turn inputs into numpad notation (really awful form, don't care)
 	# check for more complex inputs before less complex inputs so we don't need to make things 
 	# longer than they have to be
@@ -77,9 +90,10 @@ func _process(delta):
 	elif right: numpad = 6
 	elif down: numpad = 2
 	
-	# keep the neutral wait timer at max if we haven't pressed a key
+	# keep the neutral wait timer and combo timeout timer at max if we haven't pressed a key
 	if left or right or up or down:
 		neutral_wait_timer = NEUTRAL_WAIT_TIME
+		combo_timeout_timer = COMBO_TIMEOUT_TIME
 	# otherwise input a neutral if the timer is at zero
 	elif neutral_wait_timer <= 0:
 		numpad = 5
