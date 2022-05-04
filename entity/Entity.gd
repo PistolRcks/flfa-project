@@ -194,7 +194,14 @@ func _on_ComboController_combo_performed(combo, player):
 func _on_hit(area, type, team, metadata):
 	# Make sure this is an enemy hitbox (also you can't receive damage if you're dead)
 	if team != player_number and type == "HIT" and not dead:
-		if blocking:	# Recieve chip damage and blockstun on-block, but not knockback
+		var loc = metadata["location"] # Easier this way
+
+		# Blocking while standing defends against mid and high attacks
+		# Crouching (which is an implicit low-block) defends against mids and lows
+		# Nothing can block unblockables
+		if (blocking and (loc == "MID" or loc == "HIGH")) \
+				or (crouching and (loc == "MID" or loc == "LOW")):
+			# Recieve chip damage and blockstun on-block, but not knockback
 			stun_timer = metadata["blockstun"]
 			# You cannot be killed by chip damage
 			current_health = max(current_health - metadata["chip"], 0.1)

@@ -20,6 +20,13 @@ func _physics_process(delta):
 		elif right and velocity.x < move_speed:
 			momentum += Vector2(move_speed, 0)
 	
+		# Blocking (facing away)
+		if ((left and facing_right) or (right and not facing_right)) \
+				and not in_air:
+			blocking = true
+		else:
+			blocking = false
+	
 		# Jump
 		if is_on_floor() and Input.is_action_pressed("p" + str(player_number) + "_up"):
 			momentum += Vector2(0, -jump_strength)
