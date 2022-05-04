@@ -20,6 +20,9 @@ var blocking = false						# Whether or not the player is able to block
 											# (i.e., holding back; not in blockstun)
 var inactionable = false					# Whether or not the entity can perform any actions 
 											# (usually while in hit/blockstun)
+var crouching = false						# Whether or not the entity is crouching
+var in_air = false							# Whether or not the entity is in the air
+var dead = false							# Whether the character is dead or not
 
 ## Animation ##
 onready var animation_tree = $AnimationTree
@@ -52,12 +55,30 @@ func _physics_process(delta):
 	# Apply gravity while not on floor (and we're not moving faster than gravity)
 	if not is_on_floor() and velocity.y < GRAVITY:
 		momentum += Vector2(0, GRAVITY)
+		in_air = true
+	else:
+		in_air = false
 	
+	# Run stun timer down
 	if stun_timer > 0:
 		stun_timer -= delta
 		inactionable = true
 	else:
+		# Move to the state we should be in again
+		var playback = animation_tree["parameters/playback"]
+		if playback.get_current_node() in ["hitstun", "blockstun"]:
+			if in_air:
+				playback.travel("air")
+			elif crouching:
+				playback.travel("crouch")
+			else:	# Standing is neither in-air or crouching
+				playback.travel("stand")
 		inactionable = false
+	
+	# Die if you have no health
+	if current_health <= 0:
+		dead = true
+		inactionable = true
 	
 	velocity += momentum
 	# Apply momentum
@@ -156,8 +177,8 @@ func return_to_neutral():
 
 # Perform animations if combos are performed
 func _on_ComboController_combo_performed(combo, player):
-	# Only perform combos if one isn't already being performed
-	if not combo_being_performed:
+	# Only perform combos if one isn't already being performed (also if we can do stuff)
+	if not combo_being_performed and not inactionable:
 		# Get current state
 		var state = animation_tree["parameters/playback"].get_current_node()	
 		
@@ -171,14 +192,21 @@ func _on_ComboController_combo_performed(combo, player):
 
 # Perform whenever we are hit
 func _on_hit(area, type, team, metadata):
-	# Make sure this is an enemy hitbox
-	if team != player_number and type == "HIT":
+	# Make sure this is an enemy hitbox (also you can't receive damage if you're dead)
+	if team != player_number and type == "HIT" and not dead:
 		if blocking:	# Recieve chip damage and blockstun on-block, but not knockback
 			stun_timer = metadata["blockstun"]
 			# You cannot be killed by chip damage
 			current_health = max(current_health - metadata["chip"], 0.1)
+			# Move to blockstun node
+			animation_tree["parameters/playback"].travel("blockstun")
 		else:			# Receive full damage and hitstun on-hit *and* knockback
 			stun_timer = metadata["hitstun"]
 			current_health -= metadata["damage"]
 			apply_knockback(metadata["knockback"])
+			# Move to hitstun node
+			animation_tree["parameters/playback"].travel("hitstun")
 			print("Received damage!")
+		
+		# Reflect changes in the UI
+		get_tree().call_group("combat_ui", "update_health", player_number, current_health)

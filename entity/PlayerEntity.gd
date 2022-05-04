@@ -10,8 +10,8 @@ func _physics_process(delta):
 	var left = Input.is_action_pressed("p" + str(player_number) + "_left")
 	var right = Input.is_action_pressed("p" + str(player_number) + "_right")
 	
-	# Process input
-	if not combo_being_performed:
+	# Process input (but only while actionable)
+	if not combo_being_performed and not inactionable:
 		# X Movement
 		if left and right:
 			velocity.x = 0
