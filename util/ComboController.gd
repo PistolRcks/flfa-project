@@ -123,8 +123,6 @@ func _process(delta):
 					recent_inputs.substr(result.get_start(), combo.inputs.length()) + "<"
 				emit_signal("combo_performed", i, assigned_player)
 				
-				print("Performed " + combo.name)
-				
 				# Hold input to stop overinputting
 				input_being_held = true
 				break
@@ -136,7 +134,6 @@ func _process(delta):
 			get_node("../MarginContainer/VSplitContainer/Inputs").bbcode_text = input_text_to_images(recent_inputs)
 			get_node("../MarginContainer/VSplitContainer/Combos").bbcode_text = combo_performed
 		else: # Update combat UI
-			print("Updating combat ui")
 			get_tree().call_group("combat_ui", "update_inputs", assigned_player, input_text_to_images(recent_inputs))
 			get_tree().call_group("combat_ui", "update_combo", assigned_player, combo_performed)
 		inputs_updated = false

@@ -64,6 +64,18 @@ func setSize(w : float, h : float):
 func setRadius(r : float):
 	scale = Vector2(r/10, r/10)
 
+""" Set the visiblity of the Hitbox.
+	This is mainly for use with `call_group`
+
+	Parameters:
+		`bool` visiblity - Whether or not the Hitbox should be visible (true for visible, false for 
+			invisible)
+		`String` type - The type of the Hitbox to change ("HIT" or "HURT").
+"""
+func setVisibility(visibility : bool, type : String):
+	if type == self.type:
+		debugShape.visible = visibility
+
 # Wrapper function to fire the area entered to give hitbox stats
 func _on_Hitbox_area_entered(area):
 	# If it's actually a hitbox, it'll have a type
