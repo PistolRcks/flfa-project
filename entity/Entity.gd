@@ -197,11 +197,8 @@ func _on_ComboController_combo_performed(combo_idx, player):
 		# Get current state
 		var state = animation_tree["parameters/playback"].get_current_node()	
 		
-		# Combo name should be the same name as the animation to be played (or
-		# rather the state of the Transition node to be switched to)
+		# Combo index should be the same index the state of the Transition node to be switched to
 		animation_tree["parameters/" + state + "/Transition/current"] = combo_idx
-		
-		print(animation_tree["parameters/" + state + "/Transition/current"])
 		
 		# Fire the animation
 		animation_tree["parameters/" + state + "/OneShot/active"] = true
@@ -230,7 +227,6 @@ func _on_hit(area, type, team, metadata):
 			apply_knockback(metadata["knockback"])
 			# Move to hitstun node
 			animation_tree["parameters/playback"].travel("hitstun")
-			print("Received damage!")
 		
 		# Reflect changes in the UI
 		get_tree().call_group("combat_ui", "update_health", player_number, current_health)
