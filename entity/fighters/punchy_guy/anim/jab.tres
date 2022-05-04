@@ -14,7 +14,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.233333 ),
 "transitions": PoolRealArray( 1, 1, 1 ),
 "update": 1,
-"values": [ 3, 1, 2 ]
+"values": [ 3, 4, 5 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath(".:combo_being_performed")

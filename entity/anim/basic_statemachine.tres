@@ -1,4 +1,4 @@
-[gd_resource type="AnimationNodeStateMachine" load_steps=26 format=2]
+[gd_resource type="AnimationNodeStateMachine" load_steps=28 format=2]
 
 [sub_resource type="AnimationNodeTransition" id=21]
 
@@ -8,7 +8,14 @@ nodes/Transition/node = SubResource( 21 )
 nodes/Transition/position = Vector2( 120, 160 )
 node_connections = [ "output", 0, "Transition" ]
 
+[sub_resource type="AnimationNodeAnimation" id=27]
+animation = "blockstun"
+
 [sub_resource type="AnimationNodeBlendTree" id=2]
+graph_offset = Vector2( -236, 2 )
+nodes/Animation/node = SubResource( 27 )
+nodes/Animation/position = Vector2( 100, 140 )
+node_connections = [ "output", 0, "Animation" ]
 
 [sub_resource type="AnimationNodeTransition" id=22]
 
@@ -18,7 +25,14 @@ nodes/Transition/node = SubResource( 22 )
 nodes/Transition/position = Vector2( 120, 140 )
 node_connections = [ "output", 0, "Transition" ]
 
+[sub_resource type="AnimationNodeAnimation" id=28]
+animation = "hitstun"
+
 [sub_resource type="AnimationNodeBlendTree" id=4]
+graph_offset = Vector2( -369, -20 )
+nodes/Animation/node = SubResource( 28 )
+nodes/Animation/position = Vector2( 100, 140 )
+node_connections = [ "output", 0, "Animation" ]
 
 [sub_resource type="AnimationNodeAnimation" id=24]
 animation = "neutral"

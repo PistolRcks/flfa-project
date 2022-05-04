@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://entity/fighters/punchy_guy/PunchyGuy.gd" type="Script" id=1]
 [ext_resource path="res://util/hitbox/Hitbox.tscn" type="PackedScene" id=2]
@@ -10,6 +10,10 @@
 [ext_resource path="res://entity/fighters/punchy_guy/res/jab_s.png" type="Texture" id=8]
 [ext_resource path="res://entity/fighters/punchy_guy/anim/jab.tres" type="Animation" id=9]
 [ext_resource path="res://entity/fighters/punchy_guy/anim/neutral.tres" type="Animation" id=10]
+[ext_resource path="res://entity/fighters/punchy_guy/res/blockstun.png" type="Texture" id=11]
+[ext_resource path="res://entity/fighters/punchy_guy/res/hitstun.png" type="Texture" id=12]
+[ext_resource path="res://entity/fighters/punchy_guy/anim/hitstun.tres" type="Animation" id=13]
+[ext_resource path="res://entity/fighters/punchy_guy/anim/blockstun.tres" type="Animation" id=14]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 20 )
@@ -42,12 +46,36 @@ tracks/1/keys = {
 "update": 0,
 "values": [ Vector2( 1, 0.32 ) ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("AnimatedSprite:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( 0, -25 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("AnimatedSprite:rotation_degrees")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 0.0 ]
+}
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=22]
 
 [sub_resource type="SpriteFrames" id=23]
 animations = [ {
-"frames": [ ExtResource( 6 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 8 ) ],
+"frames": [ ExtResource( 6 ), ExtResource( 12 ), ExtResource( 11 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 7 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
@@ -83,6 +111,8 @@ shape = SubResource( 25 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/RESET = SubResource( 26 )
+anims/blockstun = ExtResource( 14 )
+anims/hitstun = ExtResource( 13 )
 anims/jab = ExtResource( 9 )
 anims/neutral = ExtResource( 10 )
 
