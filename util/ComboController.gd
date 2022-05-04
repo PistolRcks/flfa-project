@@ -1,6 +1,6 @@
 extends Node
 
-signal combo_performed(combo, player)
+signal combo_performed(combo_idx, player)
 
 # FIXME: Fix accidental reinputting of direction input (line 56)
 
@@ -111,8 +111,9 @@ func _process(delta):
 	
 	# Check if we finished a combo
 	if not input_being_held:
-		for combo in combo_list:
+		for i in range(len(combo_list)):
 			# Check if the current combo we're looking at is what we performed
+			var combo = combo_list[i]
 			var result = combo.regex.search(recent_inputs)
 			if result:
 				combo_performed = combo.name
@@ -120,7 +121,7 @@ func _process(delta):
 				# Make text green where the combo landed
 				recent_inputs = recent_inputs.left(result.get_start()) + ">" + \
 					recent_inputs.substr(result.get_start(), combo.inputs.length()) + "<"
-				emit_signal("combo_performed", combo.name, 1)
+				emit_signal("combo_performed", i, assigned_player)
 				
 				print("Performed " + combo.name)
 				

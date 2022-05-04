@@ -1,4 +1,4 @@
-[gd_resource type="AnimationNodeStateMachine" load_steps=28 format=2]
+[gd_resource type="AnimationNodeStateMachine" load_steps=29 format=2]
 
 [sub_resource type="AnimationNodeTransition" id=21]
 
@@ -37,28 +37,41 @@ node_connections = [ "output", 0, "Animation" ]
 [sub_resource type="AnimationNodeAnimation" id=24]
 animation = "neutral"
 
+[sub_resource type="AnimationNodeAnimation" id=29]
+animation = "fireball"
+
 [sub_resource type="AnimationNodeAnimation" id=25]
 animation = "jab"
 
 [sub_resource type="AnimationNodeOneShot" id=26]
 
 [sub_resource type="AnimationNodeTransition" id=23]
-input_count = 1
-input_0/name = "Jab"
+input_count = 5
+input_0/name = "Fireball"
 input_0/auto_advance = false
+input_1/name = "Dragon Punch"
+input_1/auto_advance = false
+input_2/name = "Jab"
+input_2/auto_advance = false
+input_3/name = "Sweep"
+input_3/auto_advance = false
+input_4/name = "Forward Dash"
+input_4/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=5]
-graph_offset = Vector2( -509.98, -20.9045 )
+graph_offset = Vector2( -465.731, -46.9356 )
 nodes/Animation/node = SubResource( 25 )
-nodes/Animation/position = Vector2( -160, 180 )
+nodes/Animation/position = Vector2( -300, 340 )
 "nodes/Animation 2/node" = SubResource( 24 )
-"nodes/Animation 2/position" = Vector2( -160, 40 )
+"nodes/Animation 2/position" = Vector2( -40, 40 )
+"nodes/Animation 3/node" = SubResource( 29 )
+"nodes/Animation 3/position" = Vector2( -320, 220 )
 nodes/OneShot/node = SubResource( 26 )
 nodes/OneShot/position = Vector2( 180, 80 )
 nodes/Transition/node = SubResource( 23 )
-nodes/Transition/position = Vector2( 20, 140 )
-nodes/output/position = Vector2( 380, 140 )
-node_connections = [ "output", 0, "OneShot", "OneShot", 0, "Animation 2", "OneShot", 1, "Transition", "Transition", 0, "Animation" ]
+nodes/Transition/position = Vector2( -40, 180 )
+nodes/output/position = Vector2( 400, 80 )
+node_connections = [ "output", 0, "OneShot", "OneShot", 0, "Animation 2", "OneShot", 1, "Transition", "Transition", 0, "Animation 3", "Transition", 2, "Animation" ]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=6]
 

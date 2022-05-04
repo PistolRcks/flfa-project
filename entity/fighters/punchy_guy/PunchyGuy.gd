@@ -10,7 +10,16 @@ func _ready():
 	# Attacks are A and B (G stands for both A and B). Notation is numpad notation (as described above)
 	# Input combos higher to have more priority
 	combo_list = [
-		Combo.new("236.?A$", "Fireball", []),		# Quartercircle Forward + A (additional char for ease of input)
+		Combo.new("236.?A$", "Fireball", [
+			{
+				"damage" 	: 35,	
+				"chip"		: 10,	
+				"hitstun" 	: 1,
+				"blockstun" : 0.5,
+				"knockback" : 1,
+				"location" 	: "MID"
+			}
+		]),		# Quartercircle Forward + A (additional char for ease of input)
 		Combo.new("65?23.?A$", "Dragon Punch", []),	# Z motion forward (optional neutral) + A (additional char for ease of input)
 		Combo.new("5A$", "Jab", [					# Just A (technically neutral A)
 			{
@@ -34,6 +43,7 @@ func _ready():
 
 # Return to neutral when an animation is finished (technically this should be attached to Entity but whatever)
 func _on_AnimationPlayer_animation_finished(anim_name):
+	
 	if anim_name != "neutral":
 		print("RETURN TO NEUTRAL")
 		return_to_neutral()

@@ -191,7 +191,7 @@ func update_facing(new_facing: bool):
 	facing_right = new_facing
 
 # Perform animations if combos are performed
-func _on_ComboController_combo_performed(combo, player):
+func _on_ComboController_combo_performed(combo_idx, player):
 	# Only perform combos if one isn't already being performed (also if we can do stuff)
 	if not combo_being_performed and not inactionable:
 		# Get current state
@@ -199,7 +199,9 @@ func _on_ComboController_combo_performed(combo, player):
 		
 		# Combo name should be the same name as the animation to be played (or
 		# rather the state of the Transition node to be switched to)
-		animation_tree["parameters/" + state + "/Transition/current"] = combo
+		animation_tree["parameters/" + state + "/Transition/current"] = combo_idx
+		
+		print(animation_tree["parameters/" + state + "/Transition/current"])
 		
 		# Fire the animation
 		animation_tree["parameters/" + state + "/OneShot/active"] = true
