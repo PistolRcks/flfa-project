@@ -5,7 +5,7 @@ class_name Entity
 
 ## Combos ##
 var combo_list = []
-onready var combo_controller = $ComboController
+onready var combo_controller = $MovementHelper/ComboController
 
 const GRAVITY = 200		# Speed of gravity (in pixels/sec); always at max
 
@@ -25,7 +25,7 @@ var in_air = false							# Whether or not the entity is in the air
 var dead = false							# Whether the character is dead or not
 
 ## Animation ##
-onready var animation_tree = $AnimationTree
+onready var animation_tree = $MovementHelper/AnimationTree
 
 ## Character Stats ##
 export var player_number = 1			# Which number the player is (1 or 2)
@@ -47,7 +47,7 @@ func _ready():
 	combo_controller.update_assigned_player(player_number)
 	
 	# Make sure the hurtboxes are on the correct team
-	for hurtbox in $Hurtboxes.get_children():
+	for hurtbox in $MovementHelper/Hurtboxes.get_children():
 		hurtbox.team = player_number
 
 func _physics_process(delta):
@@ -115,7 +115,7 @@ func create_hitbox(global_coord : Vector2, size : Vector2, team : int,
 	# the player then, and then you wouldn't have to deal with global coords
 	# Probably shouldn't even be instanced where the Weapon is, since the 
 	# position will be moved with the parent
-	add_child_below_node($Hitboxes, new_instance)
+	add_child_below_node($MovementHelper/Hitboxes, new_instance)
 	
 	# Set exports
 	new_instance.debugColor = Color(1.0, 0.0, 0.0, 0.5)

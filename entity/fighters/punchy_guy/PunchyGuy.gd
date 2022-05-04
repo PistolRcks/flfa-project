@@ -10,7 +10,7 @@ func _ready():
 	# Attacks are A and B (G stands for both A and B). Notation is numpad notation (as described above)
 	# Input combos higher to have more priority
 	combo_list = [
-		Combo.new("236.?A$", "Fireball", [
+		Combo.new("236.?A$", "Fireball", [		# Quartercircle Forward + A (additional char for ease of input)
 			{
 				"damage" 	: 35,	
 				"chip"		: 10,	
@@ -19,8 +19,17 @@ func _ready():
 				"knockback" : 1,
 				"location" 	: "MID"
 			}
-		]),		# Quartercircle Forward + A (additional char for ease of input)
-		Combo.new("65?23.?A$", "Dragon Punch", []),	# Z motion forward (optional neutral) + A (additional char for ease of input)
+		]),
+		Combo.new("65?23.?A$", "Dragon Punch", [	# Z motion forward (optional neutral) + A (additional char for ease of input)
+			{
+				"damage" 	: 15,	
+				"chip"		: 2,	
+				"hitstun" 	: 0.25,
+				"blockstun" : 0.125,
+				"knockback" : 1,
+				"location" 	: "HIGH"
+			}
+		]),
 		Combo.new("5A$", "Jab", [					# Just A (technically neutral A)
 			{
 				"damage" 	: 6,		# Damage to deal on hit

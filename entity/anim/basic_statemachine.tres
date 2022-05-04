@@ -1,4 +1,4 @@
-[gd_resource type="AnimationNodeStateMachine" load_steps=29 format=2]
+[gd_resource type="AnimationNodeStateMachine" load_steps=30 format=2]
 
 [sub_resource type="AnimationNodeTransition" id=21]
 
@@ -40,6 +40,9 @@ animation = "neutral"
 [sub_resource type="AnimationNodeAnimation" id=29]
 animation = "fireball"
 
+[sub_resource type="AnimationNodeAnimation" id=30]
+animation = "dp"
+
 [sub_resource type="AnimationNodeAnimation" id=25]
 animation = "jab"
 
@@ -59,19 +62,21 @@ input_4/name = "Forward Dash"
 input_4/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=5]
-graph_offset = Vector2( -465.731, -46.9356 )
+graph_offset = Vector2( -946.28, 191.966 )
 nodes/Animation/node = SubResource( 25 )
-nodes/Animation/position = Vector2( -300, 340 )
+nodes/Animation/position = Vector2( -420, 360 )
 "nodes/Animation 2/node" = SubResource( 24 )
 "nodes/Animation 2/position" = Vector2( -40, 40 )
 "nodes/Animation 3/node" = SubResource( 29 )
-"nodes/Animation 3/position" = Vector2( -320, 220 )
+"nodes/Animation 3/position" = Vector2( -420, 120 )
+"nodes/Animation 4/node" = SubResource( 30 )
+"nodes/Animation 4/position" = Vector2( -420, 240 )
 nodes/OneShot/node = SubResource( 26 )
 nodes/OneShot/position = Vector2( 180, 80 )
 nodes/Transition/node = SubResource( 23 )
 nodes/Transition/position = Vector2( -40, 180 )
 nodes/output/position = Vector2( 400, 80 )
-node_connections = [ "output", 0, "OneShot", "Transition", 0, "Animation 3", "Transition", 2, "Animation", "OneShot", 0, "Animation 2", "OneShot", 1, "Transition" ]
+node_connections = [ "output", 0, "OneShot", "Transition", 0, "Animation 3", "Transition", 1, "Animation 4", "Transition", 2, "Animation", "OneShot", 0, "Animation 2", "OneShot", 1, "Transition" ]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=6]
 

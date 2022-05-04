@@ -5,7 +5,7 @@ resource_name = "jab"
 length = 0.3
 step = 0.0333333
 tracks/0/type = "value"
-tracks/0/path = NodePath("AnimatedSprite:frame")
+tracks/0/path = NodePath("MovementHelper/AnimatedSprite:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -38,7 +38,7 @@ tracks/2/keys = {
 "times": PoolRealArray( 0.1, 0.233333 ),
 "transitions": PoolRealArray( 1, 1 ),
 "values": [ {
-"args": [ NodePath("Hitboxes/Helper"), 2, 0 ],
+"args": [ NodePath("MovementHelper/Hitboxes/Helper"), 2, 0 ],
 "method": "create_hitbox_via_combo"
 }, {
 "args": [  ],
@@ -46,7 +46,7 @@ tracks/2/keys = {
 } ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("Hitboxes/Helper:position")
+tracks/3/path = NodePath("MovementHelper/Hitboxes/Helper:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false
@@ -58,7 +58,7 @@ tracks/3/keys = {
 "values": [ Vector2( 13, -33 ) ]
 }
 tracks/4/type = "value"
-tracks/4/path = NodePath("Hitboxes/Helper:scale")
+tracks/4/path = NodePath("MovementHelper/Hitboxes/Helper:scale")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/imported = false
