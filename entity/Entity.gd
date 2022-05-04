@@ -26,6 +26,7 @@ var dead = false							# Whether the character is dead or not
 
 ## Animation ##
 onready var animation_tree = $MovementHelper/AnimationTree
+onready var playback = animation_tree["parameters/playback"]	# Root playback node of animation tree
 
 ## Character Stats ##
 export var player_number = 1			# Which number the player is (1 or 2)
@@ -191,14 +192,20 @@ func update_facing(new_facing: bool):
 	facing_right = new_facing
 
 # Perform animations if combos are performed
-func _on_ComboController_combo_performed(combo_idx, req_state, player):
+func _on_ComboController_combo_performed(combo_idx, combo):
 	# Only perform combos if one isn't already being performed (also if we can do stuff)
 	if not combo_being_performed and not inactionable:
 		# Get current state
-		var state = animation_tree["parameters/playback"].get_current_node()	
+		var state = playback.get_current_node()	
+		
+		# "Cheat" which state we're in based on combo lenience (see Combo.gd)
+		if (combo.lenience == "GROUND" and state in ["crouch", "stand", "crouch_trans"]) \
+				or combo.lenience == "ANY":
+			state = combo.state.to_lower()
+			playback.start(combo.state.to_lower())
 		
 		# Only perform the combo if we're in the correct state for the combo
-		if state.to_upper() == req_state:
+		if state.to_upper() == combo.state:
 			# Combo index should be the same index the state of the Transition node to be switched to
 			animation_tree["parameters/" + state + "/Transition/current"] = combo_idx
 			

@@ -1,4 +1,4 @@
-[gd_resource type="AnimationNodeStateMachine" load_steps=30 format=2]
+[gd_resource type="AnimationNodeStateMachine" load_steps=40 format=2]
 
 [sub_resource type="AnimationNodeTransition" id=21]
 
@@ -17,13 +17,40 @@ nodes/Animation/node = SubResource( 27 )
 nodes/Animation/position = Vector2( 100, 140 )
 node_connections = [ "output", 0, "Animation" ]
 
+[sub_resource type="AnimationNodeAnimation" id=42]
+
+[sub_resource type="AnimationNodeAnimation" id=40]
+animation = "crouch"
+
+[sub_resource type="AnimationNodeOneShot" id=41]
+
 [sub_resource type="AnimationNodeTransition" id=22]
+input_count = 5
+input_0/name = "Unused"
+input_0/auto_advance = false
+input_1/name = "Unused"
+input_1/auto_advance = false
+input_2/name = "Unused"
+input_2/auto_advance = false
+input_3/name = "Sweep"
+input_3/auto_advance = false
+input_4/name = "Unused"
+input_4/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=3]
-graph_offset = Vector2( -155, -10 )
+graph_offset = Vector2( -630.517, -55.6217 )
+nodes/Animation/node = SubResource( 40 )
+nodes/Animation/position = Vector2( -140, 80 )
+"nodes/Animation 2/node" = SubResource( 42 )
+"nodes/Animation 2/position" = Vector2( -380, 340 )
+nodes/OneShot/node = SubResource( 41 )
+nodes/OneShot/position = Vector2( 100, 120 )
 nodes/Transition/node = SubResource( 22 )
-nodes/Transition/position = Vector2( 120, 140 )
-node_connections = [ "output", 0, "Transition" ]
+nodes/Transition/position = Vector2( -140, 220 )
+node_connections = [ "output", 0, "OneShot", "Transition", 3, "Animation 2", "OneShot", 0, "Animation", "OneShot", 1, "Transition" ]
+
+[sub_resource type="AnimationNodeAnimation" id=31]
+animation = "crouch_trans"
 
 [sub_resource type="AnimationNodeAnimation" id=28]
 animation = "hitstun"
@@ -62,7 +89,7 @@ input_4/name = "Forward Dash"
 input_4/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=5]
-graph_offset = Vector2( -946.28, 191.966 )
+graph_offset = Vector2( -711.28, 13.966 )
 nodes/Animation/node = SubResource( 25 )
 nodes/Animation/position = Vector2( -420, 360 )
 "nodes/Animation 2/node" = SubResource( 24 )
@@ -92,10 +119,6 @@ node_connections = [ "output", 0, "OneShot", "Transition", 0, "Animation 3", "Tr
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=12]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=13]
-
-[sub_resource type="AnimationNodeStateMachineTransition" id=14]
-
 [sub_resource type="AnimationNodeStateMachineTransition" id=15]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=16]
@@ -106,17 +129,37 @@ node_connections = [ "output", 0, "OneShot", "Transition", 0, "Animation 3", "Tr
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=19]
 
+[sub_resource type="AnimationNodeStateMachineTransition" id=32]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=33]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=34]
+switch_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=35]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=36]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=37]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=38]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=39]
+
 [resource]
 states/air/node = SubResource( 20 )
 states/air/position = Vector2( 668, 64 )
 states/blockstun/node = SubResource( 2 )
 states/blockstun/position = Vector2( 876, 171 )
 states/crouch/node = SubResource( 3 )
-states/crouch/position = Vector2( 668, 274 )
+states/crouch/position = Vector2( 668, 376 )
+states/crouch_trans/node = SubResource( 31 )
+states/crouch_trans/position = Vector2( 668, 274 )
 states/hitstun/node = SubResource( 4 )
 states/hitstun/position = Vector2( 464, 171 )
 states/stand/node = SubResource( 5 )
 states/stand/position = Vector2( 668, 171 )
-transitions = [ "stand", "air", SubResource( 6 ), "air", "stand", SubResource( 7 ), "air", "hitstun", SubResource( 8 ), "stand", "blockstun", SubResource( 9 ), "crouch", "blockstun", SubResource( 10 ), "blockstun", "stand", SubResource( 11 ), "blockstun", "crouch", SubResource( 12 ), "stand", "crouch", SubResource( 13 ), "crouch", "stand", SubResource( 14 ), "stand", "hitstun", SubResource( 15 ), "crouch", "hitstun", SubResource( 16 ), "hitstun", "air", SubResource( 17 ), "hitstun", "stand", SubResource( 18 ), "hitstun", "crouch", SubResource( 19 ) ]
+transitions = [ "stand", "air", SubResource( 6 ), "air", "stand", SubResource( 7 ), "air", "hitstun", SubResource( 8 ), "stand", "blockstun", SubResource( 9 ), "crouch", "blockstun", SubResource( 10 ), "blockstun", "stand", SubResource( 11 ), "blockstun", "crouch", SubResource( 12 ), "stand", "hitstun", SubResource( 15 ), "crouch", "hitstun", SubResource( 16 ), "hitstun", "air", SubResource( 17 ), "hitstun", "stand", SubResource( 18 ), "hitstun", "crouch", SubResource( 19 ), "stand", "crouch_trans", SubResource( 32 ), "crouch_trans", "stand", SubResource( 33 ), "crouch_trans", "crouch", SubResource( 34 ), "crouch", "crouch_trans", SubResource( 35 ), "crouch_trans", "hitstun", SubResource( 36 ), "hitstun", "crouch_trans", SubResource( 37 ), "crouch_trans", "blockstun", SubResource( 38 ), "blockstun", "crouch_trans", SubResource( 39 ) ]
 start_node = "stand"
-graph_offset = Vector2( 10, 37 )
+graph_offset = Vector2( 3, 152 )

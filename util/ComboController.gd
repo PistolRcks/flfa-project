@@ -1,6 +1,6 @@
 extends Node
 
-signal combo_performed(combo_idx, req_state, player)
+signal combo_performed(combo_idx, combo)
 
 # FIXME: Fix accidental reinputting of direction input (line 56)
 
@@ -42,11 +42,11 @@ func _ready():
 	# otherwise, combo_list should be filled by a player's combos
 	if _testing:
 		combo_list = [
-			Combo.new("236.?A$", "Fireball", "STAND", []),
-			Combo.new("65?23.?A$", "Dragon Punch", "STAND", []),
-			Combo.new("5A$", "Jab", "STAND", []),
-			Combo.new("[123]A$", "Sweep", "CROUCH", []),
-			Combo.new("5656$", "Forward Dash", "STAND", [])
+			Combo.new("236.?A$", "Fireball", "STAND", "ANY", []),
+			Combo.new("65?23.?A$", "Dragon Punch", "STAND", "ANY", []),
+			Combo.new("5A$", "Jab", "STAND", "ANY", []),
+			Combo.new("[123]A$", "Sweep", "CROUCH", "ANY", []),
+			Combo.new("5656$", "Forward Dash", "STAND", "ANY", [])
 		]
 
 func _process(delta):
@@ -123,7 +123,7 @@ func _process(delta):
 					recent_inputs.substr(result.get_start(), combo.inputs.length()) + "<"
 				
 				# Emit the signal to make sure the player can process the combo
-				emit_signal("combo_performed", i, combo.state, assigned_player)
+				emit_signal("combo_performed", i, combo)
 				
 				# Hold input to stop overinputting
 				input_being_held = true

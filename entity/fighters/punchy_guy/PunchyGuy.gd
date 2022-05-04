@@ -7,10 +7,10 @@ func _ready():
 	# 4 5 6 L  N R
 	# 1 2 3 DL D DR
 
-	# Attacks are A and B (G stands for both A and B). Notation is numpad notation (as described above)
-	# Input combos higher to have more priority
+	# There is only one attack (A). Notation is numpad notation (as described above)
+	# Place combos higher to have more priority when determining which combo to perform
 	combo_list = [
-		Combo.new("236.?A$", "Fireball", "STAND", [
+		Combo.new("236.?A$", "Fireball", "STAND", "GROUND", [
 			{ # Quartercircle Forward + A (additional char for ease of input)
 				"damage" 	: 35,	
 				"chip"		: 10,	
@@ -20,7 +20,7 @@ func _ready():
 				"location" 	: "MID"
 			}
 		]),
-		Combo.new("65?23.?A$", "Dragon Punch", "STAND", [
+		Combo.new("65?23.?A$", "Dragon Punch", "STAND", "GROUND", [
 			{	# Z motion forward (optional neutral) + A (additional char for ease of input)
 				"damage" 	: 15,	
 				"chip"		: 2,	
@@ -30,7 +30,7 @@ func _ready():
 				"location" 	: "HIGH"
 			}
 		]),
-		Combo.new("5A$", "Jab", "STAND", [
+		Combo.new("5A$", "Jab", "STAND", "STRICT", [
 			{	# Just A (technically neutral A)
 				"damage" 	: 6,		# Damage to deal on hit
 				"chip"		: 1,		# Damage to deal on block
@@ -40,12 +40,12 @@ func _ready():
 				"location" 	: "MID"		# The location which the hitbox targets (HIGH, MID, LOW, or UNBLOCK (unblockable))
 			}
 		]),
-		Combo.new("[123]A$", "Sweep", "CROUCH", [
+		Combo.new("[123]A$", "Sweep", "CROUCH", "STRICT", [
 			{	# Any Down + A (while crouching)
 				
 			}
 		]),
-		Combo.new("5656$", "Forward Dash", "STAND", []),		# Doubletap Forward
+		Combo.new("5656$", "Forward Dash", "STAND", "STRICT", []),		# Doubletap Forward
 	]
 	
 	register_combos()

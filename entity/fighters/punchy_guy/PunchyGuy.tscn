@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://entity/fighters/punchy_guy/PunchyGuy.gd" type="Script" id=1]
 [ext_resource path="res://util/hitbox/Hitbox.tscn" type="PackedScene" id=2]
@@ -28,6 +28,10 @@
 [ext_resource path="res://entity/fighters/punchy_guy/res/dp_r1.png" type="Texture" id=26]
 [ext_resource path="res://entity/fighters/punchy_guy/res/dp_s1.png" type="Texture" id=27]
 [ext_resource path="res://entity/fighters/punchy_guy/anim/dp.tres" type="Animation" id=28]
+[ext_resource path="res://entity/fighters/punchy_guy/res/crouch_blockstun.png" type="Texture" id=29]
+[ext_resource path="res://entity/fighters/punchy_guy/res/crouch.png" type="Texture" id=30]
+[ext_resource path="res://entity/fighters/punchy_guy/res/crouch_trans.png" type="Texture" id=31]
+[ext_resource path="res://entity/fighters/punchy_guy/anim/crouch.tres" type="Animation" id=32]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 20 )
@@ -109,11 +113,28 @@ tracks/5/keys = {
 "values": [ Vector2( 0, 0 ) ]
 }
 
+[sub_resource type="Animation" id=27]
+resource_name = "crouch_trans"
+length = 0.0333333
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/path = NodePath("MovementHelper/AnimatedSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 20 ]
+}
+
 [sub_resource type="AnimationNodeStateMachinePlayback" id=22]
 
 [sub_resource type="SpriteFrames" id=23]
 animations = [ {
-"frames": [ ExtResource( 6 ), ExtResource( 12 ), ExtResource( 11 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 20 ), ExtResource( 19 ), ExtResource( 16 ), ExtResource( 15 ), ExtResource( 18 ), ExtResource( 17 ), ExtResource( 27 ), ExtResource( 23 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 24 ), ExtResource( 22 ) ],
+"frames": [ ExtResource( 6 ), ExtResource( 12 ), ExtResource( 11 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 20 ), ExtResource( 19 ), ExtResource( 16 ), ExtResource( 15 ), ExtResource( 18 ), ExtResource( 17 ), ExtResource( 27 ), ExtResource( 23 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 24 ), ExtResource( 22 ), ExtResource( 30 ), ExtResource( 29 ), ExtResource( 31 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
@@ -153,6 +174,8 @@ shape = SubResource( 25 )
 root_node = NodePath("../..")
 anims/RESET = SubResource( 26 )
 anims/blockstun = ExtResource( 14 )
+anims/crouch = ExtResource( 32 )
+anims/crouch_trans = SubResource( 27 )
 anims/dp = ExtResource( 28 )
 anims/fireball = ExtResource( 21 )
 anims/hitstun = ExtResource( 13 )
@@ -165,6 +188,7 @@ anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/playback = SubResource( 22 )
 parameters/air/Transition/current = 0
+parameters/crouch/OneShot/active = false
 parameters/crouch/Transition/current = 0
 parameters/stand/OneShot/active = false
 parameters/stand/Transition/current = 0
