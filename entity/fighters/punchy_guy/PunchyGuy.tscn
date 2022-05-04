@@ -81,7 +81,7 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[node name="PunchyGuy" type="KinematicBody2D"]
+[node name="PunchyGuy" type="KinematicBody2D" groups=["fighters"]]
 script = ExtResource( 1 )
 full_name = "Punchy Guy"
 

@@ -16,7 +16,7 @@ func _ready():
 		Combo.new("5A$", "Jab", [					# Just A (technically neutral A)
 			{
 				"damage" 	: 6,		# Damage to deal on hit
-				"chip"		: 0,		# Damage to deal on block
+				"chip"		: 1,		# Damage to deal on block
 				"hitstun" 	: 0.067,	# Amount of time to force inactivity on hit (in sec)
 				"blockstun" : 0.016,	# Amount of time to force inactivity on block (in sec)
 				"knockback" : 1,		# Force of knockback to deal on hit

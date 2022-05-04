@@ -2,9 +2,13 @@ extends Control
 
 onready var p1_health := $Padding/Grid/P1/Healthbar
 onready var p1_name := $Padding/Grid/P1/Name
+onready var p1_inputs := $Padding/Grid/P1/Inputs
+onready var p1_combo := $Padding/Grid/P1/Combo
 
 onready var p2_health := $Padding/Grid/P2/Healthbar
 onready var p2_name := $Padding/Grid/P2/Name
+onready var p2_inputs := $Padding/Grid/P2/Inputs
+onready var p2_combo := $Padding/Grid/P2/Combo
 
 onready var timer := $Timer
 onready var timer_text := $Padding/Grid/Timer
@@ -18,6 +22,26 @@ func _ready():
 func _process(delta):
 	if not timer.paused:
 		timer_text.bbcode_text = "[center]%d[/center]" % timer.time_left
+
+""" Update inputs pressed, reflected in the UI.
+		`int` player - The player whose inputs to update (1 or 2, default 2)
+		`String` new_text - The new text to change the input box to (BBCode accepted).
+"""
+func update_inputs(player: int, new_text: String):
+	if player == 1:
+		p1_inputs.bbcode_text = new_text
+	else:
+		p2_inputs.bbcode_text = new_text
+
+""" Update combo reported, reflected in the UI.
+		`int` player - The player whose inputs to update (1 or 2, default 2)
+		`String` new_text - The new text to change the combo box to (BBCode accepted).
+"""
+func update_combo(player: int, new_text: String):
+	if player == 1:
+		p1_combo.bbcode_text = new_text
+	else:
+		p2_combo.bbcode_text = new_text
 
 """ Update the name of the player as represented in the UI.
 	Parameters:

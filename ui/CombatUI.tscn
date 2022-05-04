@@ -46,10 +46,29 @@ margin_top = 18.0
 margin_right = 328.0
 margin_bottom = 33.0
 bbcode_enabled = true
+bbcode_text = "Fighter"
+text = "Fighter"
 fit_content_height = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Inputs" type="RichTextLabel" parent="Padding/Grid/P1"]
+margin_top = 37.0
+margin_right = 328.0
+margin_bottom = 52.0
+bbcode_enabled = true
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Combo" type="RichTextLabel" parent="Padding/Grid/P1"]
+margin_top = 56.0
+margin_right = 328.0
+margin_bottom = 71.0
+bbcode_enabled = true
+fit_content_height = true
 
 [node name="Timer" type="RichTextLabel" parent="Padding/Grid"]
 margin_left = 332.0
@@ -82,6 +101,26 @@ margin_bottom = 33.0
 bbcode_enabled = true
 bbcode_text = "[right]Fighter[/right]"
 text = "Fighter"
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Inputs" type="RichTextLabel" parent="Padding/Grid/P2"]
+margin_top = 37.0
+margin_right = 328.0
+margin_bottom = 52.0
+bbcode_enabled = true
+fit_content_height = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Combo" type="RichTextLabel" parent="Padding/Grid/P2"]
+margin_top = 56.0
+margin_right = 328.0
+margin_bottom = 71.0
+bbcode_enabled = true
 fit_content_height = true
 __meta__ = {
 "_edit_use_anchors_": false

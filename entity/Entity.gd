@@ -175,6 +175,21 @@ func return_to_neutral():
 	var state = animation_tree["parameters/playback"].get_current_node()	
 	animation_tree["parameters/" + state + "/OneShot/active"] = false
 
+""" Updates assets to reflect facing.
+	Call this instead of updating `facing_right`.
+
+	Parameters:
+		`bool` new_facing - Whether or not the player is facing right 
+			(i.e. true = facing right; false = facing left).
+"""
+func update_facing(new_facing: bool):
+	if new_facing != facing_right:
+		# Flip asset
+		scale.x *= -1
+		combo_controller.inputs_flipped = not combo_controller.inputs_flipped
+	
+	facing_right = new_facing
+
 # Perform animations if combos are performed
 func _on_ComboController_combo_performed(combo, player):
 	# Only perform combos if one isn't already being performed (also if we can do stuff)

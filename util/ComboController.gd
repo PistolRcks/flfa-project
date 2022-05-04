@@ -11,10 +11,12 @@ var assigned_player = 1		# Player assigned to this ComboController
 var recent_inputs = " "
 var inputs_updated = false
 var combo_performed = ""
+var inputs_flipped = false		# Whether or not the inputs have been flipped (i.e. the player is
+								# not facing right)
 
 onready var input_holder = $InputHolder
 var input_being_held = false
-const INPUT_HOLD_TIME = 0.5	# The amount of time to pause after making a combo (currently only for testing purposes)
+const INPUT_HOLD_TIME = 0.33	# The amount of time to pause after making a combo
 
 var neutral_wait_timer = 0
 const NEUTRAL_WAIT_TIME = 0.016 # The amount of time to wait after inputting to register a neutral
@@ -55,6 +57,13 @@ func _process(delta):
 	var right = Input.is_action_pressed(nat_right)
 	var numpad # assume input is neutral
 	var input_to_process = ""
+	
+	# Flip inputs, if needed
+	if inputs_flipped:
+		var old_left = left
+		var old_right = right
+		left = old_right
+		right = old_left
 	
 	# Update neutral wait timer (Timer node doesn't update in a fine enough manner)
 	if neutral_wait_timer >= 0:
@@ -107,20 +116,23 @@ func _process(delta):
 					recent_inputs.substr(result.get_start(), combo.inputs.length()) + "<"
 				emit_signal("combo_performed", combo.name, 1)
 				
-				# Only hold input if we're testing
-				if _testing:
-					input_being_held = true
+				print("Performed " + combo.name)
+				
+				# Hold input to stop overinputting
+				input_being_held = true
 				break
 	
 	# Send data to richtextlabels (temp)
 	# Only update when we need to
-	if get_node_or_null("../MarginContainer/VSplitContainer"):
-		if inputs_updated:
+	if inputs_updated:
+		if _testing: # Update baked-in UI
 			get_node("../MarginContainer/VSplitContainer/Inputs").bbcode_text = input_text_to_images(recent_inputs)
-
-			inputs_updated = false
-		
-		get_node("../MarginContainer/VSplitContainer/Combos").bbcode_text = combo_performed
+			get_node("../MarginContainer/VSplitContainer/Combos").bbcode_text = combo_performed
+		else: # Update combat UI
+			print("Updating combat ui")
+			get_tree().call_group("combat_ui", "update_inputs", assigned_player, input_text_to_images(recent_inputs))
+			get_tree().call_group("combat_ui", "update_combo", assigned_player, combo_performed)
+		inputs_updated = false
 
 """ Update the currently assigned player (and natural inputs) to `new_player`. """
 func update_assigned_player(new_player : int):
