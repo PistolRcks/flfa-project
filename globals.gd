@@ -4,10 +4,10 @@ extends Node
 
 # Debug variables
 """ Whether or not to show hitboxes (the boxes created by combos which deal damage). """
-var SHOW_HITBOXES = true
+var SHOW_HITBOXES = false
 
 """ Whether or not to show hurtboxes (the boxes attached to entities which recieve damage). """
-var SHOW_HURTBOXES = true
+var SHOW_HURTBOXES = false
 
 """ How long (in seconds) for rounds to last before issuing a draw on timeout. """
 var ROUND_LENGTH = 99
