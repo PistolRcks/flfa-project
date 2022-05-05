@@ -40,7 +40,7 @@ position = Vector2( 256, -128 )
 [node name="RightWallCollision" type="CollisionShape2D" parent="Collision/RightWallArea"]
 shape = SubResource( 3 )
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera" type="Camera2D" parent="."]
 offset = Vector2( 0, -32 )
 current = true
 zoom = Vector2( 0.15, 0.15 )
