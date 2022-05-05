@@ -44,7 +44,7 @@ func _physics_process(delta):
 			blocking = false
 	
 		# Jump
-		if not in_air and up:
+		if is_on_floor() and up:
 			momentum += Vector2(0, -jump_strength)
 	
 	# Stop when we're not inputting

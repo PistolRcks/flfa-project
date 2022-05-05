@@ -78,6 +78,7 @@ func _physics_process(delta):
 	if current_health <= 0:
 		dead = true
 		inactionable = true
+		visible = false
 	
 	velocity += momentum
 	# Apply momentum
