@@ -37,6 +37,9 @@ export var move_speed = 100				# The speed of movement (in pixels/sec)
 var velocity = Vector2(0,0)
 var stun_timer := 0.0					# How long the character is inactionable after being hit
 
+## Signals ##
+signal on_death(player)		# Fired when a player dies. Tells which player died.
+
 func _ready():
 	current_health = max_health + 0		# Duplicate but not
 	
@@ -76,9 +79,13 @@ func _physics_process(delta):
 	
 	# Die if you have no health
 	if current_health <= 0:
+		# Fire signal when we die (dead variable hasn't been set yet if it's the first time)
+		if not dead:
+			emit_signal("on_death", player_number)
+		
 		dead = true
 		inactionable = true
-		visible = false
+		visible = false		# If I work on this in the future, a proper death anim would be good
 	
 	velocity += momentum
 	# Apply momentum
@@ -180,6 +187,14 @@ func update_facing(new_facing: bool):
 		combo_controller.inputs_flipped = not combo_controller.inputs_flipped
 	
 	facing_right = new_facing
+
+""" Stops all `*_process` functions for the Entity and its ComboController. 
+	Called when the Entity dies. 
+"""
+func stop_all_processes():
+	combo_controller.set_process(false)
+	set_process(false)
+	set_physics_process(false)
 
 # Perform animations if combos are performed
 func _on_ComboController_combo_performed(combo_idx, combo):

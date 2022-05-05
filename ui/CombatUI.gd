@@ -66,6 +66,14 @@ func update_health(player: int, new_health: float):
 	else:
 		p2_health.value = new_health
 
+""" Sets the gameover text. Also, sets it to be visible.
+	Parameters:
+		`String` new_text - The text to set the gameover text to be.
+"""
+func set_gameover_text(new_text: String):
+	$GameOverText.visible = true
+	$GameOverText.bbcode_text = "[center]" + new_text + "[/center]"
+
 """ Initially starts the timer (usually at the beginning of the round). 
 	Round length is controlled by the ROUND_LENGTH global.
 """

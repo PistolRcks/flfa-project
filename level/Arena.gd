@@ -7,11 +7,17 @@ onready var p2 = $Player2
 const MIN_ZOOM = 0.15
 const MAX_ZOOM = 0.5
 
-var current_zoom = 0.15
-
 # Distances required for zooming in/out
 const MIN_ZOOM_DISTANCE = 100
 const MAX_ZOOM_DISTANCE = 500
+
+# Round end variables
+var round_over = false
+
+func _ready():
+	# Listen to when a fighter dies
+	for fighter in get_tree().get_nodes_in_group("fighters"):
+		fighter.connect("on_death", self, "_on_player_death")
 
 func _process(delta):
 	# Resolve facing
@@ -40,3 +46,21 @@ func _process(delta):
 	var b = MIN_ZOOM - m * MIN_ZOOM_DISTANCE
 	var zoom_mod = dist_clamped * m + b
 	$Camera.zoom = Vector2(1, 1) * zoom_mod
+
+func _on_player_death(player):
+	# Find winner
+	var winner = 0
+	if player == 1:
+		winner = 2
+	else: 
+		winner = 1
+		
+	# Update UI
+	get_tree().call_group("combat_ui", "set_gameover_text", "Player " + str(winner) + " won!")
+	
+	# Stop players from doing anything (i.e. stop them from processing)
+	get_tree().call_group("fighters", "stop_all_processes")
+
+func _on_round_draw():
+	get_tree().call_group("combat_ui", "set_gameover_text", "Draw by timeout!")
+	get_tree().call_group("fighters", "stop_all_processes")

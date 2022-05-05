@@ -54,16 +54,3 @@ func _ready():
 	]
 	
 	register_combos()
-
-func print_end():
-	print("End of anim")
-
-func print_start():
-	print("Start of anim")
-
-"""
-func _process(delta):
-	if player_number == 1:
-		print("State: " + playback.get_current_node())
-		print("Oneshot: " + str(animation_tree["parameters/crouch/OneShot/active"]))
-"""
