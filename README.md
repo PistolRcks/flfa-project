@@ -14,6 +14,13 @@ Utility:
 * `F1` - Show hitboxes
 * `F2` - Show hurtboxes
 
+### The Movelist for the Singular Character
+*"A" refers to the attack button. "Forward" means right when the player is facing rightward, and left when the player is facing leftward.*
+* (while standing) A - Jab
+* (while crouching) \[Any "down" input\] + A - Sweep
+* Quartercircle Forward (Down, Down/Forward, Forward) + A - Fireball
+* Z-Motion Forward (Forward, Down, Down/Forward) + A - Dragon Punch
+
 
 ## What is This?
 ### Introduction
