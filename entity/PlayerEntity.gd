@@ -22,9 +22,6 @@ func _physics_process(delta):
 		elif right and velocity.x < move_speed:
 			momentum += Vector2(move_speed, 0)
 		
-		var playback = animation_tree["parameters/playback"]
-		
-		
 		# Crouching
 		if not in_air and down:
 			crouching = true

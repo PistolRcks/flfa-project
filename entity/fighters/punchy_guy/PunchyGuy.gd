@@ -45,7 +45,7 @@ func _ready():
 				
 			}
 		]),
-		Combo.new("5656$", "Forward Dash", "STAND", "STRICT", []),		# Doubletap Forward
+		#Combo.new("5656$", "Forward Dash", "STAND", "STRICT", []),		# Doubletap Forward
 	]
 	
 	register_combos()

@@ -66,7 +66,6 @@ func _physics_process(delta):
 		inactionable = true
 	else:
 		# Move to the state we should be in again
-		var playback = animation_tree["parameters/playback"]
 		if playback.get_current_node() in ["hitstun", "blockstun"]:
 			if in_air:
 				playback.travel("air")
@@ -173,7 +172,7 @@ func remove_all_hitboxes():
 	(used only so we can call this from an animation) 
 """
 func return_to_neutral():
-	var state = animation_tree["parameters/playback"].get_current_node()	
+	var state = playback.get_current_node()	
 	animation_tree["parameters/" + state + "/OneShot/active"] = false
 
 """ Updates assets to reflect facing.
@@ -229,13 +228,13 @@ func _on_hit(area, type, team, metadata):
 			# You cannot be killed by chip damage
 			current_health = max(current_health - metadata["chip"], 0.1)
 			# Move to blockstun node
-			animation_tree["parameters/playback"].travel("blockstun")
+			playback.travel("blockstun")
 		else:			# Receive full damage and hitstun on-hit *and* knockback
 			stun_timer = metadata["hitstun"]
 			current_health -= metadata["damage"]
 			apply_knockback(metadata["knockback"])
 			# Move to hitstun node
-			animation_tree["parameters/playback"].travel("hitstun")
+			playback.travel("hitstun")
 		
 		# Reflect changes in the UI
 		get_tree().call_group("combat_ui", "update_health", player_number, current_health)
