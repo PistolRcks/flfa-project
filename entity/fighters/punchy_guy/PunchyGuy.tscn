@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=43 format=2]
 
 [ext_resource path="res://entity/fighters/punchy_guy/PunchyGuy.gd" type="Script" id=1]
 [ext_resource path="res://util/hitbox/Hitbox.tscn" type="PackedScene" id=2]
@@ -32,6 +32,10 @@
 [ext_resource path="res://entity/fighters/punchy_guy/res/crouch.png" type="Texture" id=30]
 [ext_resource path="res://entity/fighters/punchy_guy/res/crouch_trans.png" type="Texture" id=31]
 [ext_resource path="res://entity/fighters/punchy_guy/anim/crouch.tres" type="Animation" id=32]
+[ext_resource path="res://entity/fighters/punchy_guy/res/sweep_s.png" type="Texture" id=33]
+[ext_resource path="res://entity/fighters/punchy_guy/res/sweep_r.png" type="Texture" id=34]
+[ext_resource path="res://entity/fighters/punchy_guy/res/sweep_a.png" type="Texture" id=35]
+[ext_resource path="res://entity/fighters/punchy_guy/anim/sweep.tres" type="Animation" id=36]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 20 )
@@ -134,7 +138,7 @@ tracks/0/keys = {
 
 [sub_resource type="SpriteFrames" id=23]
 animations = [ {
-"frames": [ ExtResource( 6 ), ExtResource( 12 ), ExtResource( 11 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 20 ), ExtResource( 19 ), ExtResource( 16 ), ExtResource( 15 ), ExtResource( 18 ), ExtResource( 17 ), ExtResource( 27 ), ExtResource( 23 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 24 ), ExtResource( 22 ), ExtResource( 30 ), ExtResource( 29 ), ExtResource( 31 ) ],
+"frames": [ ExtResource( 6 ), ExtResource( 12 ), ExtResource( 11 ), ExtResource( 8 ), ExtResource( 5 ), ExtResource( 7 ), ExtResource( 20 ), ExtResource( 19 ), ExtResource( 16 ), ExtResource( 15 ), ExtResource( 18 ), ExtResource( 17 ), ExtResource( 27 ), ExtResource( 23 ), ExtResource( 25 ), ExtResource( 26 ), ExtResource( 24 ), ExtResource( 22 ), ExtResource( 30 ), ExtResource( 29 ), ExtResource( 31 ), ExtResource( 33 ), ExtResource( 35 ), ExtResource( 34 ) ],
 "loop": true,
 "name": "default",
 "speed": 5.0
@@ -181,6 +185,7 @@ anims/fireball = ExtResource( 21 )
 anims/hitstun = ExtResource( 13 )
 anims/jab = ExtResource( 9 )
 anims/neutral = ExtResource( 10 )
+anims/sweep = ExtResource( 36 )
 
 [node name="AnimationTree" type="AnimationTree" parent="MovementHelper"]
 tree_root = ExtResource( 4 )
@@ -200,4 +205,3 @@ frames = SubResource( 23 )
 
 [connection signal="hitbox_entered" from="MovementHelper/Hurtboxes/Hurtbox1" to="." method="_on_hit"]
 [connection signal="combo_performed" from="MovementHelper/ComboController" to="." method="_on_ComboController_combo_performed"]
-[connection signal="animation_finished" from="MovementHelper/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

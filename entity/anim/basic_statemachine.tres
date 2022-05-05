@@ -18,6 +18,7 @@ nodes/Animation/position = Vector2( 100, 140 )
 node_connections = [ "output", 0, "Animation" ]
 
 [sub_resource type="AnimationNodeAnimation" id=42]
+animation = "sweep"
 
 [sub_resource type="AnimationNodeAnimation" id=40]
 animation = "crouch"
@@ -38,11 +39,11 @@ input_4/name = "Unused"
 input_4/auto_advance = false
 
 [sub_resource type="AnimationNodeBlendTree" id=3]
-graph_offset = Vector2( -630.517, -55.6217 )
+graph_offset = Vector2( -774.906, 119.488 )
 nodes/Animation/node = SubResource( 40 )
 nodes/Animation/position = Vector2( -140, 80 )
 "nodes/Animation 2/node" = SubResource( 42 )
-"nodes/Animation 2/position" = Vector2( -380, 340 )
+"nodes/Animation 2/position" = Vector2( -360, 360 )
 nodes/OneShot/node = SubResource( 41 )
 nodes/OneShot/position = Vector2( 100, 120 )
 nodes/Transition/node = SubResource( 22 )
@@ -162,4 +163,4 @@ states/stand/node = SubResource( 5 )
 states/stand/position = Vector2( 668, 171 )
 transitions = [ "stand", "air", SubResource( 6 ), "air", "stand", SubResource( 7 ), "air", "hitstun", SubResource( 8 ), "stand", "blockstun", SubResource( 9 ), "crouch", "blockstun", SubResource( 10 ), "blockstun", "stand", SubResource( 11 ), "blockstun", "crouch", SubResource( 12 ), "stand", "hitstun", SubResource( 15 ), "crouch", "hitstun", SubResource( 16 ), "hitstun", "air", SubResource( 17 ), "hitstun", "stand", SubResource( 18 ), "hitstun", "crouch", SubResource( 19 ), "stand", "crouch_trans", SubResource( 32 ), "crouch_trans", "stand", SubResource( 33 ), "crouch_trans", "crouch", SubResource( 34 ), "crouch", "crouch_trans", SubResource( 35 ), "crouch_trans", "hitstun", SubResource( 36 ), "hitstun", "crouch_trans", SubResource( 37 ), "crouch_trans", "blockstun", SubResource( 38 ), "blockstun", "crouch_trans", SubResource( 39 ) ]
 start_node = "stand"
-graph_offset = Vector2( 3, 152 )
+graph_offset = Vector2( 34, 194 )

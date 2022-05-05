@@ -3,9 +3,6 @@ extends Node2D
 onready var p1 = $Player1
 onready var p2 = $Player2
 
-func _ready():
-	pass # Replace with function body.
-
 func _process(delta):
 	# Resolve facing
 	# If player 1 is to the left of player 2

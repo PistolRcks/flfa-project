@@ -56,9 +56,8 @@ func _physics_process(delta):
 	# Apply gravity while not on floor (and we're not moving faster than gravity)
 	if not is_on_floor() and velocity.y < GRAVITY:
 		momentum += Vector2(0, GRAVITY)
-		in_air = true
-	else:
-		in_air = false
+	
+	in_air = not is_on_floor()
 	
 	# Run stun timer down
 	if stun_timer > 0:
@@ -126,8 +125,6 @@ func create_hitbox(global_coord : Vector2, size : Vector2, team : int,
 	
 	new_instance.scale = size
 	new_instance.global_position = global_coord
-	
-	print("Produced hitbox for team {team} with metadata {meta}".format({"team": new_instance.team, "meta": new_instance.metadata}))
 
 """ Creates a hitbox with a specific `Area2D`'s global position and size.
 	
@@ -168,13 +165,6 @@ func remove_all_hitboxes():
 	# Empty the array
 	hitboxes.clear()
 
-""" Returns the animation state to neutral, i.e. stop the OneShot
-	(used only so we can call this from an animation) 
-"""
-func return_to_neutral():
-	var state = playback.get_current_node()	
-	animation_tree["parameters/" + state + "/OneShot/active"] = false
-
 """ Updates assets to reflect facing.
 	Call this instead of updating `facing_right`.
 
@@ -210,6 +200,7 @@ func _on_ComboController_combo_performed(combo_idx, combo):
 			
 			# Fire the animation
 			animation_tree["parameters/" + state + "/OneShot/active"] = true
+			
 			combo_being_performed = true
 
 # Perform whenever we are hit

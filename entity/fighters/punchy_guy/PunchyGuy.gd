@@ -12,8 +12,8 @@ func _ready():
 	combo_list = [
 		Combo.new("236.?A$", "Fireball", "STAND", "GROUND", [
 			{ # Quartercircle Forward + A (additional char for ease of input)
-				"damage" 	: 35,	
-				"chip"		: 10,	
+				"damage" 	: 35,
+				"chip"		: 10,
 				"hitstun" 	: 1,
 				"blockstun" : 0.5,
 				"knockback" : 1,
@@ -22,10 +22,10 @@ func _ready():
 		]),
 		Combo.new("65?23.?A$", "Dragon Punch", "STAND", "GROUND", [
 			{	# Z motion forward (optional neutral) + A (additional char for ease of input)
-				"damage" 	: 15,	
-				"chip"		: 2,	
-				"hitstun" 	: 0.25,
-				"blockstun" : 0.125,
+				"damage" 	: 15,
+				"chip"		: 2,
+				"hitstun" 	: 0.166,
+				"blockstun" : 0.083,
 				"knockback" : 1,
 				"location" 	: "HIGH"
 			}
@@ -42,7 +42,12 @@ func _ready():
 		]),
 		Combo.new("[123]A$", "Sweep", "CROUCH", "STRICT", [
 			{	# Any Down + A (while crouching)
-				
+				"damage" 	: 25,
+				"chip"		: 5,
+				"hitstun" 	: 0.25,
+				"blockstun" : 0.125,
+				"knockback" : 1,
+				"location" 	: "LOW"
 			}
 		]),
 		#Combo.new("5656$", "Forward Dash", "STAND", "STRICT", []),		# Doubletap Forward
@@ -50,8 +55,15 @@ func _ready():
 	
 	register_combos()
 
-# Return to neutral when an animation is finished (technically this should be attached to Entity but whatever)
-func _on_AnimationPlayer_animation_finished(anim_name):
-	if anim_name != "neutral":
-		print("RETURN TO NEUTRAL")
-		return_to_neutral()
+func print_end():
+	print("End of anim")
+
+func print_start():
+	print("Start of anim")
+
+"""
+func _process(delta):
+	if player_number == 1:
+		print("State: " + playback.get_current_node())
+		print("Oneshot: " + str(animation_tree["parameters/crouch/OneShot/active"]))
+"""
