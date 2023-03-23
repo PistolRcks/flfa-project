@@ -70,9 +70,9 @@ size_flags_vertical = 3
 
 [node name="VBoxContainer" type="VBoxContainer" parent="UsernamePopup/MarginContainer/PanelContainer/CenterContainer"]
 margin_left = 77.0
-margin_top = 71.0
+margin_top = 55.0
 margin_right = 333.0
-margin_bottom = 114.0
+margin_bottom = 130.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
@@ -88,13 +88,39 @@ text = "Please enter a username:"
 fit_content_height = true
 scroll_active = false
 
-[node name="UsernameInput" type="LineEdit" parent="UsernamePopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="UsernamePopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer"]
 margin_top = 19.0
 margin_right = 256.0
-margin_bottom = 43.0
+margin_bottom = 23.0
+
+[node name="UsernameInput" type="LineEdit" parent="UsernamePopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer"]
+unique_name_in_owner = true
+margin_top = 27.0
+margin_right = 256.0
+margin_bottom = 51.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 placeholder_text = "Press enter afterwards..."
 
+[node name="HBoxContainer" type="HBoxContainer" parent="UsernamePopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer"]
+margin_top = 55.0
+margin_right = 256.0
+margin_bottom = 75.0
+
+[node name="SubmitButton" type="Button" parent="UsernamePopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+margin_right = 126.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Submit"
+
+[node name="MainMenuButton" type="Button" parent="UsernamePopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/HBoxContainer"]
+margin_left = 130.0
+margin_right = 256.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "Main Menu"
+
 [connection signal="text_entered" from="MarginContainer/VBoxContainer/TextInput" to="." method="_on_TextInput_text_entered"]
 [connection signal="text_entered" from="UsernamePopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/UsernameInput" to="." method="_on_UsernameInput_text_entered"]
+[connection signal="pressed" from="UsernamePopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/HBoxContainer/SubmitButton" to="." method="_on_SubmitButton_pressed"]
+[connection signal="pressed" from="UsernamePopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/HBoxContainer/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]

@@ -31,8 +31,17 @@ func _on_TextInput_text_entered(new_text : String):
 	$"%TextInput".clear()
 	update_text_box()
 
-func _on_UsernameInput_text_entered(new_text : String):
+func _handle_username_input(new_username : String):
 	# Should check that usernames are one character or greater, but I honestly don't really care
-	username = new_text
+	username = new_username
 	$"%UsernamePopup".hide()
 	$"%TextInput".grab_focus()
+
+func _on_UsernameInput_text_entered(new_text : String):
+	_handle_username_input(new_text)
+
+func _on_SubmitButton_pressed():
+	_handle_username_input($"%UsernameInput".text)
+
+func _on_MainMenuButton_pressed():
+	get_tree().change_scene("res://ui/MainMenu.tscn")
