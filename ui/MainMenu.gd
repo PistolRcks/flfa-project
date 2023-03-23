@@ -8,9 +8,9 @@ func _ready():
 func _on_LocalButton_pressed():
 	get_tree().change_scene("res://level/basic_arena/TestingArena.tscn")
 
-
 func _on_OnlineButton_pressed():
-	pass # TODO: Eventually will prompt the user for an IP address
+	# This will be changed in the future.
+	get_tree().change_scene("res://ui/MultiplayerUI.tscn")
 
 """ Prompts the user if they want to quit the game. """
 func _on_ExitButton_pressed():
