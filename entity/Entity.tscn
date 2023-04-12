@@ -39,6 +39,7 @@ tree_root = ExtResource( 4 )
 anim_player = NodePath("../AnimationPlayer")
 parameters/playback = SubResource( 3 )
 parameters/air/Transition/current = 0
+parameters/crouch/OneShot/active = false
 parameters/crouch/Transition/current = 0
 parameters/stand/OneShot/active = false
 parameters/stand/Transition/current = 0

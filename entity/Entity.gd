@@ -29,13 +29,15 @@ onready var animation_tree = $MovementHelper/AnimationTree
 onready var playback = animation_tree["parameters/playback"]	# Root playback node of animation tree
 
 ## Character Stats ##
-export var player_number = 1			# Which number the player is (1 or 2)
-export var full_name = "Fighter"		# The full name of the character (as displayed in the UI)
-export var max_health = 100				# The maximum health of the character
+export var player_number = 1		# Which number the player is (1 or 2)
+# Whether the entity is controlled by a player, the server, or by AI.
+export(int, "Player", "Server", "AI") var control_type = 0
+export var full_name = "Fighter"	# The full name of the character (as displayed in the UI)
+export var max_health = 100			# The maximum health of the character
 var current_health
-export var move_speed = 100				# The speed of movement (in pixels/sec)
+export var move_speed = 100			# The speed of movement (in pixels/sec)
 var velocity = Vector2(0,0)
-var stun_timer := 0.0					# How long the character is inactionable after being hit
+var stun_timer := 0.0				# How long the character is inactionable after being hit
 
 ## Signals ##
 signal on_death(player)		# Fired when a player dies. Tells which player died.
