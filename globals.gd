@@ -9,8 +9,10 @@ var SHOW_HITBOXES = false
 """ Whether or not to show hurtboxes (the boxes attached to entities which recieve damage). """
 var SHOW_HURTBOXES = false
 
-""" How long (in seconds) for rounds to last before issuing a draw on timeout. """
-var ROUND_LENGTH = 99
+""" How long (in seconds) for rounds to last before issuing a draw on timeout. 
+	Set as `-1` for infinite round lengths.
+"""
+var ROUND_LENGTH = -1
 
 # Some all-purpose functions
 func _process(delta):

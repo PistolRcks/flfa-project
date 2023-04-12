@@ -47,6 +47,15 @@ func _process(delta):
 	var zoom_mod = dist_clamped * m + b
 	$Camera.zoom = Vector2(1, 1) * zoom_mod
 
+# Handles a game end state
+func _handle_endgame(gameover_text: String): 
+	# Update UI
+	get_tree().call_group("combat_ui", "pause_timer")
+	get_tree().call_group("combat_ui", "set_gameover_text", gameover_text)
+	
+	# Stop players from doing anything (i.e. stop them from processing)
+	get_tree().call_group("fighters", "stop_all_processes")
+
 func _on_player_death(player):
 	# Find winner
 	var winner = 0
@@ -54,13 +63,8 @@ func _on_player_death(player):
 		winner = 2
 	else: 
 		winner = 1
-		
-	# Update UI
-	get_tree().call_group("combat_ui", "set_gameover_text", "Player " + str(winner) + " won!")
 	
-	# Stop players from doing anything (i.e. stop them from processing)
-	get_tree().call_group("fighters", "stop_all_processes")
+	_handle_endgame("Player " + str(winner) + " won!")
 
 func _on_round_draw():
-	get_tree().call_group("combat_ui", "set_gameover_text", "Draw by timeout!")
-	get_tree().call_group("fighters", "stop_all_processes")
+	_handle_endgame("Draw by timeout!")

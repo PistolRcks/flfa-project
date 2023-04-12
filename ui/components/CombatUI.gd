@@ -12,16 +12,21 @@ onready var p2_combo := $Padding/Grid/P2/Combo
 
 onready var timer := $Timer
 onready var timer_text := $Padding/Grid/Timer
+onready var is_infinite_time : bool = ($"/root/Globals".ROUND_LENGTH == -1)
 
 signal round_over()		# Emits when the round is over (i.e. when Timer runs out)
 
-# For testing purposes...
 func _ready():
-	begin_timer()
+	# Should be infinite time if ROUND_LENGTH is set to -1, so don't set the timer
+	if not is_infinite_time:
+		begin_timer()
 
 func _process(delta):
-	if not timer.paused:
-		timer_text.bbcode_text = "[center]%d[/center]" % timer.time_left
+	if is_infinite_time:
+		timer_text.bbcode_text = "[center]Infinite[/center]"
+	else:
+		if not timer.paused:
+			timer_text.bbcode_text = "[center]%d[/center]" % timer.time_left
 
 """ Update inputs pressed, reflected in the UI.
 		`int` player - The player whose inputs to update (1 or 2, default 2)
