@@ -44,6 +44,7 @@ unique_name_in_owner = true
 margin_right = 87.0
 margin_bottom = 24.0
 disabled = true
+toggle_mode = true
 text = "Start Game!"
 
 [node name="TextInput" type="LineEdit" parent="TextInputContainer/VBoxContainer/HBoxContainer"]
@@ -242,6 +243,10 @@ margin_bottom = 103.0
 size_flags_horizontal = 3
 text = "Main Menu"
 
+[node name="BeginTimer" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="toggled" from="TextInputContainer/VBoxContainer/HBoxContainer/StartGameButton" to="." method="_on_StartGameButton_toggled"]
 [connection signal="text_entered" from="TextInputContainer/VBoxContainer/HBoxContainer/TextInput" to="." method="_on_TextInput_text_entered"]
 [connection signal="text_entered" from="UsernamePopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/UsernameInput" to="." method="_on_UsernameInput_text_entered"]
 [connection signal="pressed" from="UsernamePopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/HBoxContainer/SubmitButton" to="." method="_on_SubmitButton_pressed"]
@@ -252,3 +257,4 @@ text = "Main Menu"
 [connection signal="text_entered" from="HostPopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/ClientHBox/ClientPortInput" to="." method="_on_ClientPortInput_text_entered"]
 [connection signal="pressed" from="HostPopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/ClientHBox/ClientSubmit" to="." method="_on_ClientSubmit_pressed"]
 [connection signal="pressed" from="HostPopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]
+[connection signal="timeout" from="BeginTimer" to="." method="_on_BeginTimer_timeout"]

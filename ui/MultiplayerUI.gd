@@ -21,6 +21,10 @@ class Message:
 var message_history : Array = []
 var username = "User"
 var port : int = 3000
+var self_id = 0		# the unique id of the multiplayer client
+
+# Dictionary of int keys and bool values staating which players are ready
+var readied_players : Dictionary = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -31,6 +35,15 @@ func _ready():
 	get_tree().connect("connection_failed", self, "_on_client_connected_fail")
 	get_tree().connect("server_disconnected", self, "_on_server_disconnected")
 
+func _process(delta):
+	# Set button text to reflect game start timer
+	if not $"BeginTimer".is_stopped():
+		$"%StartGameButton".text = "Starting in %d..." % ceil($"BeginTimer".time_left)
+	elif readied_players.get(self_id):
+		$"%StartGameButton".text = "Waiting..."
+	else:
+		$"%StartGameButton".text = "Start Game!"
+
 ## Chatting ##
 # Sends a message to the chat client.
 remotesync func send_message(message : String, is_me_style : bool = false, 
@@ -38,7 +51,6 @@ remotesync func send_message(message : String, is_me_style : bool = false,
 	
 	message_history.append(Message.new(is_me_style, user, message))
 	update_text_box()
-
 
 # Updates the textbox with new info.
 func update_text_box():
@@ -54,6 +66,9 @@ func join_as_host():
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_server(port, 2)
 	get_tree().network_peer = peer
+	
+	self_id = get_tree().get_network_unique_id()
+	readied_players[self_id] = false
 
 # Joins a multiplayer server at the given address `addr` as a client
 func join_as_client(addr : String):
@@ -61,6 +76,9 @@ func join_as_client(addr : String):
 	var peer = NetworkedMultiplayerENet.new()
 	peer.create_client(addr, port)
 	get_tree().network_peer = peer
+	
+	self_id = get_tree().get_network_unique_id()
+	readied_players[self_id] = false
 
 # Disconnects from the network.
 func _handle_disconnect():
@@ -96,9 +114,20 @@ func _handle_port_input(is_host : bool, new_port : String):
 ## Multiplayer ##
 func _on_player_connected(id):
 	print("Player with ID " + String(id) + " connected!")
+	
+	# Add new player
+	readied_players[id] = false
+	
+	# Undisable join button
+	$"%StartGameButton".disabled = false
 
 func _on_player_disconnected(id):
 	print("Player with ID " + String(id) + " disconnected!")
+	
+	readied_players.erase(id)
+	
+	# Redisable join button
+	$"%StartGameButton".disabled = true
 
 func _on_client_connected_ok():
 	print("Connected to server successfully!")
@@ -150,3 +179,36 @@ func _on_HostPortInput_text_entered(new_port : String):
 # Connects to when the user presses the "Host" button after inputting a port
 func _on_HostSubmit_pressed():
 	_handle_port_input(true, $"%HostPortInput".text)
+
+## Game Start ##
+func _on_StartGameButton_toggled(button_pressed):
+	rpc("set_readied", self_id, button_pressed)
+	
+	# Send a "ready up" message
+	if button_pressed:
+		rpc("send_message", "is readied up!", true, username)
+	else:
+		rpc("send_message", "is wussying out...", true, username)
+
+# Sets if a player with the RPC id `id` is ready
+remotesync func set_readied(id : int, is_ready : bool):
+	readied_players[id] = is_ready
+	
+	var all_players_ready = true
+	print(readied_players)
+	for player_ready in readied_players.values():
+		if not player_ready:
+			all_players_ready = false
+			break
+	
+	if all_players_ready:
+		# Start launch countdown
+		$"BeginTimer".start(3)
+	else:
+		# Cancel launch countdown
+		$"BeginTimer".stop()
+
+# Starts the game once the timer is over
+func _on_BeginTimer_timeout():
+	print("We are finished!")
+	pass # Replace with function body.
