@@ -6,10 +6,20 @@ export var jump_strength = 1600			# The initial velocity of the jump
 
 func _physics_process(delta):
 	var momentum = Vector2(0,0)
-	var left = Input.is_action_pressed("p" + str(player_number) + "_left")
-	var right = Input.is_action_pressed("p" + str(player_number) + "_right")
-	var down = Input.is_action_pressed("p" + str(player_number) + "_down")
-	var up = Input.is_action_pressed("p" + str(player_number) + "_up")
+	
+	var left 
+	var right 
+	var down 
+	var up
+	
+	# Inputs should be based on the controller, not the player number
+	# These will be the same in a local scenario, but not necessarily in an
+	# online scenario
+	if (controller <= 1):
+		left = Input.is_action_pressed("p" + str(controller + 1) + "_left")
+		right = Input.is_action_pressed("p" + str(controller + 1) + "_right")
+		down = Input.is_action_pressed("p" + str(controller + 1) + "_down")
+		up = Input.is_action_pressed("p" + str(controller + 1) + "_up")
 	
 	
 	# Process input (but only while actionable, and alive)

@@ -34,11 +34,24 @@ margin_right = 953.0
 margin_bottom = 501.0
 scroll_following = true
 
-[node name="TextInput" type="LineEdit" parent="TextInputContainer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="HBoxContainer" type="HBoxContainer" parent="TextInputContainer/VBoxContainer"]
 margin_top = 512.0
 margin_right = 960.0
 margin_bottom = 536.0
+
+[node name="StartGameButton" type="Button" parent="TextInputContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+margin_right = 87.0
+margin_bottom = 24.0
+disabled = true
+text = "Start Game!"
+
+[node name="TextInput" type="LineEdit" parent="TextInputContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+margin_left = 91.0
+margin_right = 960.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
 placeholder_text = "Enter in text here..."
 
 [node name="UsernamePopup" type="PopupDialog" parent="."]
@@ -229,7 +242,7 @@ margin_bottom = 103.0
 size_flags_horizontal = 3
 text = "Main Menu"
 
-[connection signal="text_entered" from="TextInputContainer/VBoxContainer/TextInput" to="." method="_on_TextInput_text_entered"]
+[connection signal="text_entered" from="TextInputContainer/VBoxContainer/HBoxContainer/TextInput" to="." method="_on_TextInput_text_entered"]
 [connection signal="text_entered" from="UsernamePopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/UsernameInput" to="." method="_on_UsernameInput_text_entered"]
 [connection signal="pressed" from="UsernamePopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/HBoxContainer/SubmitButton" to="." method="_on_SubmitButton_pressed"]
 [connection signal="pressed" from="UsernamePopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/HBoxContainer/MainMenuButton" to="." method="_on_MainMenuButton_pressed"]

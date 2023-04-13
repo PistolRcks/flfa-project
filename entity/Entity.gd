@@ -31,7 +31,7 @@ onready var playback = animation_tree["parameters/playback"]	# Root playback nod
 ## Character Stats ##
 export var player_number = 1		# Which number the player is (1 or 2)
 # Whether the entity is controlled by a player, the server, or by AI.
-export(int, "Player", "Server", "AI") var control_type = 0
+export(int, "P1", "P2", "Server", "AI") var controller = 0
 export var full_name = "Fighter"	# The full name of the character (as displayed in the UI)
 export var max_health = 100			# The maximum health of the character
 var current_health
@@ -50,7 +50,11 @@ func _ready():
 	get_tree().call_group("combat_ui", "update_health", player_number, 100)
 	
 	# Let the ComboController know which player we are
-	combo_controller.update_assigned_player(player_number)
+	if controller <= 1:
+		combo_controller.update_assigned_player(controller + 1)
+	else:
+		# The computer should handle this
+		combo_controller.update_assigned_player(-1)
 	
 	# Make sure the hurtboxes are on the correct team
 	for hurtbox in $MovementHelper/Hurtboxes.get_children():

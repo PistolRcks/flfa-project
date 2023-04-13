@@ -33,15 +33,12 @@ func _ready():
 
 ## Chatting ##
 # Sends a message to the chat client.
-remote func send_message(message : String, is_me_style : bool = false, 
-		being_synced : bool = false, user : String = username):
+remotesync func send_message(message : String, is_me_style : bool = false, 
+		user : String = username):
 	
 	message_history.append(Message.new(is_me_style, user, message))
 	update_text_box()
-	
-	# Sync message with everyone else if we're sending it
-	if not being_synced:
-		rpc("send_message", message, is_me_style, true, username)
+
 
 # Updates the textbox with new info.
 func update_text_box():
@@ -67,8 +64,8 @@ func join_as_client(addr : String):
 
 # Disconnects from the network.
 func _handle_disconnect():
+	rpc("send_message", "disconnected from the server.", true, username)
 	get_tree().network_peer = null
-	send_message("disconnected from the server.", true)
 
 ## Handlers ##
 # Handle pressing enter or the submit button in the UsernamePopup
@@ -76,7 +73,7 @@ func _handle_username_input(new_username : String):
 	# Should check that usernames are one character or greater, but I honestly don't really care
 	username = new_username
 	$"%UsernamePopup".hide()
-	send_message("just joined the server!", true)
+	rpc("send_message", "just joined the server!", true, username)
 	$"%TextInput".grab_focus()
 
 func _handle_port_input(is_host : bool, new_port : String):
@@ -110,12 +107,12 @@ func _on_client_connected_fail():
 	print("Failed to connect to server!")
 
 func _on_server_disconnected():
-	send_message("disconnected.", true, true, "Server")
+	send_message("disconnected.", true, "Server")
 
 ## Chat Windows ##
 # Connect to when the user presses enter when typing into the chat window
 func _on_TextInput_text_entered(new_text : String):
-	send_message(new_text)
+	rpc("send_message", new_text, false, username)
 	$"%TextInput".clear()
 
 ## Username Popup ##
