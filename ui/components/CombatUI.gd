@@ -99,11 +99,12 @@ func begin_timer():
 
 """ Pauses the timer. """
 func pause_timer():
-	timer.paused = true
+	# Technically bad practice, but technically I don't care
+	timer._running = false
 
 """ Resumes the timer. """
 func resume_timer():
-	timer.paused = false
+	timer.paused = true
 
 func _on_Timer_timeout():
 	emit_signal("round_over")
