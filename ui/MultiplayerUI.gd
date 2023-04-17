@@ -18,13 +18,20 @@ class Message:
 			return sender + " " + message
 		return "[" + sender + "]: " + message
 
+# Vars
 var message_history : Array = []
 var username = "User"
 var port : int = 3000
 var self_id = 0		# the unique id of the multiplayer client
+var game_beginning = false	# required to be set while beginning game due to weird doubleshot 
 
 # Dictionary of int keys and bool values staating which players are ready
 var readied_players : Dictionary = {}
+var loaded_players : Dictionary = {}
+
+# Scenes
+const game_scene = preload("res://level/basic_arena/TestingArena.tscn")
+var game_node : Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -37,8 +44,8 @@ func _ready():
 
 func _process(delta):
 	# Set button text to reflect game start timer
-	if not $"BeginTimer".is_stopped():
-		$"%StartGameButton".text = "Starting in %d..." % ceil($"BeginTimer".time_left)
+	if not $"%BeginTimer".is_stopped():
+		$"%StartGameButton".text = "Starting in %d..." % ceil($"%BeginTimer".time_left)
 	elif readied_players.get(self_id):
 		$"%StartGameButton".text = "Waiting..."
 	else:
@@ -117,6 +124,8 @@ func _on_player_connected(id):
 	
 	# Add new player
 	readied_players[id] = false
+	loaded_players[id] = false
+	SyncManager.add_peer(id)
 	
 	# Undisable join button
 	$"%StartGameButton".disabled = false
@@ -125,6 +134,8 @@ func _on_player_disconnected(id):
 	print("Player with ID " + String(id) + " disconnected!")
 	
 	readied_players.erase(id)
+	loaded_players.erase(id)
+	SyncManager.remove_peer(id)
 	
 	# Redisable join button
 	$"%StartGameButton".disabled = true
@@ -203,12 +214,46 @@ remotesync func set_readied(id : int, is_ready : bool):
 	
 	if all_players_ready:
 		# Start launch countdown
-		$"BeginTimer".start(3)
+		$"%BeginTimer".start(3)
 	else:
 		# Cancel launch countdown
-		$"BeginTimer".stop()
+		$"%BeginTimer".stop()
 
 # Starts the game once the timer is over
 func _on_BeginTimer_timeout():
-	print("We are finished!")
-	pass # Replace with function body.
+	print("We are finished! Beginning game...")
+	if not game_beginning:
+		rpc("begin_game")
+
+# Sets if a player with the RPC id `id` is ready
+remotesync func set_loaded(id : int, is_loaded : bool):
+	loaded_players[id] = is_loaded
+
+remotesync func begin_game():
+	# Pause until we're all finished
+	game_beginning = true
+	get_tree().set_pause(true)
+	
+	# Instance scene, set as child
+	game_node = game_scene.instance()
+	add_child(game_node)
+	
+	# Setup SyncManager
+	# Only the server should start sync
+	if self_id == 1:
+		SyncManager.start()
+
+	rpc("set_loaded", self_id, true)
+	
+	# Busy wait until we're all loaded
+	var all_players_loaded = false
+	while not all_players_loaded:
+		all_players_loaded = true
+		for loaded in readied_players.values():
+			if not loaded:
+				all_players_loaded = false
+				break
+	
+	# Now we can start
+	get_tree().set_pause(false)
+	

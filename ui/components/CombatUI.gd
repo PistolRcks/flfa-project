@@ -1,3 +1,4 @@
+class_name CombatUI
 extends Control
 
 onready var p1_health := $Padding/Grid/P1/Healthbar
@@ -27,6 +28,9 @@ func _process(delta):
 	else:
 		if not timer.paused:
 			timer_text.bbcode_text = "[center]%d[/center]" % timer.time_left
+	
+	if Input.is_action_just_pressed("show_debug_text"):
+		$DebugPanel.visible = !$DebugPanel.visible
 
 """ Update inputs pressed, reflected in the UI.
 		`int` player - The player whose inputs to update (1 or 2, default 2)
@@ -78,6 +82,12 @@ func update_health(player: int, new_health: float):
 func set_gameover_text(new_text: String):
 	$GameOverText.visible = true
 	$GameOverText.bbcode_text = "[center]" + new_text + "[/center]"
+
+func set_debug_text(new_text: String):
+	$"%DebugText".text = new_text
+
+func get_debug_text(new_text: String):
+	return $"%DebugText".text
 
 """ Initially starts the timer (usually at the beginning of the round). 
 	Round length is controlled by the ROUND_LENGTH global.

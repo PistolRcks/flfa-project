@@ -198,6 +198,7 @@ margin_right = 158.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+text = "1234"
 placeholder_text = "Port"
 
 [node name="HostSubmit" type="Button" parent="HostPopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/HostHBox"]
@@ -218,6 +219,7 @@ margin_right = 104.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+text = "127.0.0.1"
 placeholder_text = "Address"
 
 [node name="ClientPortInput" type="LineEdit" parent="HostPopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/ClientHBox"]
@@ -227,6 +229,7 @@ margin_right = 212.0
 margin_bottom = 24.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+text = "1234"
 placeholder_text = "Port"
 
 [node name="ClientSubmit" type="Button" parent="HostPopup/MarginContainer/PanelContainer/CenterContainer/VBoxContainer/ClientHBox"]
@@ -244,6 +247,7 @@ size_flags_horizontal = 3
 text = "Main Menu"
 
 [node name="BeginTimer" type="Timer" parent="."]
+unique_name_in_owner = true
 one_shot = true
 
 [connection signal="toggled" from="TextInputContainer/VBoxContainer/HBoxContainer/StartGameButton" to="." method="_on_StartGameButton_toggled"]

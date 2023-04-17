@@ -6,9 +6,6 @@
 anchor_right = 1.0
 anchor_bottom = 1.0
 script = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="Padding" type="MarginContainer" parent="."]
 anchor_right = 1.0
@@ -143,5 +140,19 @@ __meta__ = {
 
 [node name="Timer" type="Timer" parent="."]
 one_shot = true
+
+[node name="DebugPanel" type="PanelContainer" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -107.0
+
+[node name="DebugText" type="RichTextLabel" parent="DebugPanel"]
+unique_name_in_owner = true
+margin_left = 7.0
+margin_top = 7.0
+margin_right = 1017.0
+margin_bottom = 100.0
+fit_content_height = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

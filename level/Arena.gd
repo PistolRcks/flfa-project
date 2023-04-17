@@ -34,6 +34,13 @@ func _process(delta):
 		p1.update_facing(false)
 		p2.update_facing(true)
 	
+	$UI/CombatUI.set_debug_text(
+		"p1_x: " + str(p1_x)
+		+ "\np1_vel: " + str(p1.velocity)
+		+ "\np2_x: " + str(p2_x)
+		+ "\np2_vel: " + str(p2.velocity)
+	)
+	
 	# Place the camera in the middle, also adjust camera zoom
 	$Camera.position.x = (p1_x + p2_x) / 2
 	
@@ -46,6 +53,13 @@ func _process(delta):
 	var b = MIN_ZOOM - m * MIN_ZOOM_DISTANCE
 	var zoom_mod = dist_clamped * m + b
 	$Camera.zoom = Vector2(1, 1) * zoom_mod
+
+func get_player(num: int) -> PlayerEntity:
+	if num == 1: return p1
+	else: return p2
+
+func get_combat_ui() -> CombatUI:
+	return ($UI/CombatUI as CombatUI)
 
 # Handles a game end state
 func _handle_endgame(gameover_text: String): 

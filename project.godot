@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Control",
+"class": "CombatUI",
+"language": "GDScript",
+"path": "res://ui/components/CombatUI.gd"
+}, {
 "base": "Object",
 "class": "Combo",
 "language": "GDScript",
@@ -50,6 +55,7 @@ _global_script_classes=[ {
 "path": "res://entity/PlayerEntity.gd"
 } ]
 _global_script_class_icons={
+"CombatUI": "",
 "Combo": "",
 "Entity": "",
 "Hitbox": "",
@@ -69,6 +75,12 @@ config/icon="res://icon.png"
 [autoload]
 
 Globals="*res://globals.gd"
+SyncManager="*res://addons/godot-rollback-netcode/SyncManager.gd"
+SyncDebugger="*res://addons/godot-rollback-netcode/SyncDebugger.gd"
+
+[editor_plugins]
+
+enabled=PoolStringArray( "res://addons/godot-rollback-netcode/plugin.cfg" )
 
 [input]
 
@@ -192,6 +204,16 @@ show_hitboxes={
 show_hurtboxes={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777245,"unicode":0,"echo":false,"script":null)
+ ]
+}
+sync_debug={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777254,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+show_debug_text={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":0,"physical_scancode":16777246,"unicode":0,"echo":false,"script":null)
  ]
 }
 

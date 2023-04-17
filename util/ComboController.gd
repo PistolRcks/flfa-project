@@ -51,10 +51,17 @@ func _ready():
 
 func _process(delta):
 	# Read inputs, convert into numpad notation
-	var up = Input.is_action_pressed(nat_up)
-	var down = Input.is_action_pressed(nat_down)
-	var left = Input.is_action_pressed(nat_left)
-	var right = Input.is_action_pressed(nat_right)
+	var up
+	var down
+	var left
+	var right
+	
+	if assigned_player != -1:
+		up = Input.is_action_pressed(nat_up)
+		down = Input.is_action_pressed(nat_down)
+		left = Input.is_action_pressed(nat_left)
+		right = Input.is_action_pressed(nat_right)
+		
 	var numpad # assume input is neutral
 	var input_to_process = ""
 	
@@ -100,7 +107,7 @@ func _process(delta):
 	
 	input_to_process += str(numpad) if numpad else ""
 	
-	if Input.is_action_pressed(nat_attack_a):
+	if assigned_player != -1 and Input.is_action_pressed(nat_attack_a):
 		input_to_process += "A"
 	
 	# don't repeat inputs
