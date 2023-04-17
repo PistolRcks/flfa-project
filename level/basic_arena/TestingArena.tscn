@@ -64,12 +64,11 @@ zoom = Vector2( 0.15, 0.15 )
 
 [node name="Player1" parent="." instance=ExtResource( 1 )]
 position = Vector2( -54, -52 )
-controller = 2
 
 [node name="Player2" parent="." instance=ExtResource( 1 )]
 position = Vector2( 46, -54 )
 player_number = 2
-controller = 2
+controller = 1
 full_name = "Punching Bag"
 
 [node name="Floor" type="TileMap" parent="."]

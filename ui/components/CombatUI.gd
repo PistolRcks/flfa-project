@@ -11,9 +11,11 @@ onready var p2_name := $Padding/Grid/P2/Name
 onready var p2_inputs := $Padding/Grid/P2/Inputs
 onready var p2_combo := $Padding/Grid/P2/Combo
 
-onready var timer := $Timer
+onready var timer := $NetworkTimer
 onready var timer_text := $Padding/Grid/Timer
 onready var is_infinite_time : bool = ($"/root/Globals".ROUND_LENGTH == -1)
+
+var physics_fps = ProjectSettings.get_setting("physics/common/physics_fps")
 
 signal round_over()		# Emits when the round is over (i.e. when Timer runs out)
 
@@ -26,8 +28,8 @@ func _process(delta):
 	if is_infinite_time:
 		timer_text.bbcode_text = "[center]Infinite[/center]"
 	else:
-		if not timer.paused:
-			timer_text.bbcode_text = "[center]%d[/center]" % timer.time_left
+		if not timer.is_stopped():
+			timer_text.bbcode_text = "[center]%d[/center]" % ceil(timer.ticks_left / physics_fps)
 	
 	if Input.is_action_just_pressed("show_debug_text"):
 		$DebugPanel.visible = !$DebugPanel.visible

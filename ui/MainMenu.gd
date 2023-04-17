@@ -1,11 +1,16 @@
 extends Control
 
+const DummyNetworkAdaptor = preload("res://addons/godot-rollback-netcode/DummyNetworkAdaptor.gd")
+
 func _ready():
 	$"%QuitModal".set_title("Quit Game")
 	$"%QuitModal".set_info("Are you sure you want to quit the game?")
 
 """ Changes the scene to the TestingArena. """
 func _on_LocalButton_pressed():
+	# Start the SyncManager just for the timer
+	SyncManager.network_adaptor = DummyNetworkAdaptor.new()
+	SyncManager.start()
 	get_tree().change_scene("res://level/basic_arena/TestingArena.tscn")
 
 func _on_OnlineButton_pressed():

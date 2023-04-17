@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://ui/components/CombatUI.gd" type="Script" id=1]
+[ext_resource path="res://addons/godot-rollback-netcode/NetworkTimer.gd" type="Script" id=2]
 
 [node name="CombatUI" type="Control" groups=["combat_ui"]]
 anchor_right = 1.0
@@ -138,7 +139,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Timer" type="Timer" parent="."]
+[node name="NetworkTimer" type="Node" parent="."]
+script = ExtResource( 2 )
 one_shot = true
 
 [node name="DebugPanel" type="PanelContainer" parent="."]
@@ -155,4 +157,4 @@ margin_right = 1017.0
 margin_bottom = 100.0
 fit_content_height = true
 
-[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="NetworkTimer" to="." method="_on_Timer_timeout"]

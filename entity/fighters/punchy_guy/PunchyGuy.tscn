@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://entity/fighters/punchy_guy/PunchyGuy.gd" type="Script" id=1]
 [ext_resource path="res://util/hitbox/Hitbox.tscn" type="PackedScene" id=2]
@@ -36,6 +36,7 @@
 [ext_resource path="res://entity/fighters/punchy_guy/res/sweep_r.png" type="Texture" id=34]
 [ext_resource path="res://entity/fighters/punchy_guy/res/sweep_a.png" type="Texture" id=35]
 [ext_resource path="res://entity/fighters/punchy_guy/anim/sweep.tres" type="Animation" id=36]
+[ext_resource path="res://addons/godot-rollback-netcode/NetworkAnimationPlayer.gd" type="Script" id=37]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 10, 20 )
@@ -186,6 +187,7 @@ anims/hitstun = ExtResource( 13 )
 anims/jab = ExtResource( 9 )
 anims/neutral = ExtResource( 10 )
 anims/sweep = ExtResource( 36 )
+script = ExtResource( 37 )
 
 [node name="AnimationTree" type="AnimationTree" parent="MovementHelper"]
 tree_root = ExtResource( 4 )
