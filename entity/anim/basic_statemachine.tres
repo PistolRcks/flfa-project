@@ -48,7 +48,7 @@ nodes/OneShot/node = SubResource( 41 )
 nodes/OneShot/position = Vector2( 100, 120 )
 nodes/Transition/node = SubResource( 22 )
 nodes/Transition/position = Vector2( -140, 220 )
-node_connections = [ "output", 0, "OneShot", "Transition", 3, "Animation 2", "OneShot", 0, "Animation", "OneShot", 1, "Transition" ]
+node_connections = [ "output", 0, "OneShot", "OneShot", 0, "Animation", "OneShot", 1, "Transition", "Transition", 3, "Animation 2" ]
 
 [sub_resource type="AnimationNodeAnimation" id=31]
 animation = "crouch_trans"
@@ -104,7 +104,7 @@ nodes/OneShot/position = Vector2( 180, 80 )
 nodes/Transition/node = SubResource( 23 )
 nodes/Transition/position = Vector2( -40, 180 )
 nodes/output/position = Vector2( 400, 80 )
-node_connections = [ "output", 0, "OneShot", "Transition", 0, "Animation 3", "Transition", 1, "Animation 4", "Transition", 2, "Animation", "OneShot", 0, "Animation 2", "OneShot", 1, "Transition" ]
+node_connections = [ "output", 0, "OneShot", "OneShot", 0, "Animation 2", "OneShot", 1, "Transition", "Transition", 0, "Animation 3", "Transition", 1, "Animation 4", "Transition", 2, "Animation" ]
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=6]
 

@@ -50,11 +50,7 @@ func _ready():
 	get_tree().call_group("combat_ui", "update_health", player_number, 100)
 	
 	# Let the ComboController know which player we are
-	if controller <= 1:
-		combo_controller.update_assigned_player(controller + 1)
-	else:
-		# The computer should handle this
-		combo_controller.update_assigned_player(-1)
+	update_combo_controller(controller if controller <= 1 else -1)
 	
 	# Make sure the hurtboxes are on the correct team
 	for hurtbox in $MovementHelper/Hurtboxes.get_children():
@@ -96,6 +92,14 @@ func _physics_process(delta):
 	velocity += momentum
 	# Apply momentum
 	move_and_slide(velocity, Vector2(0, -1))
+
+# Lets the ComboController know who is controlling it
+func update_combo_controller(new_controller : int):
+	if new_controller <= 1:
+		combo_controller.update_assigned_player(new_controller + 1)
+	else:
+		# The computer should handle this
+		combo_controller.update_assigned_player(-1)
 
 """ Registers all combos from `combo_list` into the ComboController.
 """
@@ -201,6 +205,11 @@ func stop_all_processes():
 	combo_controller.set_process(false)
 	set_process(false)
 	set_physics_process(false)
+
+func resume_all_processes():
+	combo_controller.set_process(true)
+	set_process(true)
+	set_physics_process(true)
 
 # Perform animations if combos are performed
 func _on_ComboController_combo_performed(combo_idx, combo):

@@ -56,7 +56,7 @@ func _process(delta):
 	var left
 	var right
 	
-	if assigned_player != -1:
+	if assigned_player > 0:
 		up = Input.is_action_pressed(nat_up)
 		down = Input.is_action_pressed(nat_down)
 		left = Input.is_action_pressed(nat_left)
@@ -107,7 +107,7 @@ func _process(delta):
 	
 	input_to_process += str(numpad) if numpad else ""
 	
-	if assigned_player != -1 and Input.is_action_pressed(nat_attack_a):
+	if assigned_player > 0 and Input.is_action_pressed(nat_attack_a):
 		input_to_process += "A"
 	
 	# don't repeat inputs

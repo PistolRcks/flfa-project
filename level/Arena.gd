@@ -15,9 +15,14 @@ const MAX_ZOOM_DISTANCE = 500
 var round_over = false
 
 func _ready():
-	# Listen to when a fighter dies
+	# Listen to when a fighter dies, also don't allow movement until we start
 	for fighter in get_tree().get_nodes_in_group("fighters"):
 		fighter.connect("on_death", self, "_on_player_death")
+		fighter.stop_all_processes()
+	
+	# Start if multiplayer isn't on
+	if !get_tree().network_peer:
+		begin_round()
 
 func _process(delta):
 	# Resolve facing
@@ -53,6 +58,12 @@ func _process(delta):
 	var b = MIN_ZOOM - m * MIN_ZOOM_DISTANCE
 	var zoom_mod = dist_clamped * m + b
 	$Camera.zoom = Vector2(1, 1) * zoom_mod
+
+func begin_round():
+	get_combat_ui().begin_timer()
+	
+	for fighter in get_tree().get_nodes_in_group("fighters"):
+		fighter.resume_all_processes()
 
 func get_player(num: int) -> PlayerEntity:
 	if num == 1: return p1

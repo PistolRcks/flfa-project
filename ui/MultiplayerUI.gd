@@ -18,6 +18,16 @@ class Message:
 			return sender + " " + message
 		return "[" + sender + "]: " + message
 
+class PlayerInfo:
+	var username : String
+	var is_ready : bool
+	var is_loaded : bool
+	
+	func _init(_username : String, _is_ready : bool = false, _is_loaded : bool = false):
+		username = _username
+		is_ready = _is_ready
+		is_loaded = _is_loaded
+
 # Vars
 var message_history : Array = []
 var username = "User"
@@ -25,9 +35,8 @@ var port : int = 3000
 var self_id = 0		# the unique id of the multiplayer client
 var game_beginning = false	# required to be set while beginning game due to weird doubleshot 
 
-# Dictionary of int keys and bool values staating which players are ready
-var readied_players : Dictionary = {}
-var loaded_players : Dictionary = {}
+# Dictionary of int keys (which are the ids) and PlayerInfo values which give info about players
+var player_info = {}
 
 # Scenes
 const game_scene = preload("res://level/basic_arena/TestingArena.tscn")
@@ -43,10 +52,13 @@ func _ready():
 	get_tree().connect("server_disconnected", self, "_on_server_disconnected")
 
 func _process(delta):
+	var self_player_info = player_info.get(self_id)
+	
 	# Set button text to reflect game start timer
 	if not $"%BeginTimer".is_stopped():
 		$"%StartGameButton".text = "Starting in %d..." % ceil($"%BeginTimer".time_left)
-	elif readied_players.get(self_id):
+	# Basically `self_player_info?.is_ready`
+	elif self_player_info.is_ready if self_player_info else false:
 		$"%StartGameButton".text = "Waiting..."
 	else:
 		$"%StartGameButton".text = "Start Game!"
@@ -75,7 +87,6 @@ func join_as_host():
 	get_tree().network_peer = peer
 	
 	self_id = get_tree().get_network_unique_id()
-	readied_players[self_id] = false
 
 # Joins a multiplayer server at the given address `addr` as a client
 func join_as_client(addr : String):
@@ -85,7 +96,23 @@ func join_as_client(addr : String):
 	get_tree().network_peer = peer
 	
 	self_id = get_tree().get_network_unique_id()
-	readied_players[self_id] = false
+	sync_player_info_from_server()
+
+# Appends a new item to the player_info table
+remotesync func append_player_info(id : int, username : String):
+	player_info[id] = PlayerInfo.new(username)
+	print("Adding new player info from id " + String(id))
+
+# The server is assumed to be the source of truth; get info from that
+remote func sync_player_info_from_server():
+	print("Syncing info...")
+	rpc_id(1, "send_player_info_to_client", self_id)
+	print("New info: " + String(player_info))
+
+# Sends player_info to clients.
+remote func send_player_info_to_client(id : int):
+	for player_id in player_info.keys():
+		rpc_id(id, "append_player_info", player_id, player_info[player_id].username)
 
 # Disconnects from the network.
 func _handle_disconnect():
@@ -99,6 +126,11 @@ func _handle_username_input(new_username : String):
 	username = new_username
 	$"%UsernamePopup".hide()
 	rpc("send_message", "just joined the server!", true, username)
+	rpc("append_player_info", self_id, new_username)
+	
+	if self_id != 1:
+		sync_player_info_from_server()
+	
 	$"%TextInput".grab_focus()
 
 func _handle_port_input(is_host : bool, new_port : String):
@@ -121,10 +153,6 @@ func _handle_port_input(is_host : bool, new_port : String):
 ## Multiplayer ##
 func _on_player_connected(id):
 	print("Player with ID " + String(id) + " connected!")
-	
-	# Add new player
-	readied_players[id] = false
-	loaded_players[id] = false
 	SyncManager.add_peer(id)
 	
 	# Undisable join button
@@ -133,8 +161,7 @@ func _on_player_connected(id):
 func _on_player_disconnected(id):
 	print("Player with ID " + String(id) + " disconnected!")
 	
-	readied_players.erase(id)
-	loaded_players.erase(id)
+	player_info.erase(id)
 	SyncManager.remove_peer(id)
 	
 	# Redisable join button
@@ -142,6 +169,7 @@ func _on_player_disconnected(id):
 
 func _on_client_connected_ok():
 	print("Connected to server successfully!")
+	sync_player_info_from_server()
 
 func _on_client_connected_fail():
 	print("Failed to connect to server!")
@@ -203,12 +231,12 @@ func _on_StartGameButton_toggled(button_pressed):
 
 # Sets if a player with the RPC id `id` is ready
 remotesync func set_readied(id : int, is_ready : bool):
-	readied_players[id] = is_ready
+	player_info[id].is_ready = is_ready
 	
 	var all_players_ready = true
-	print(readied_players)
-	for player_ready in readied_players.values():
-		if not player_ready:
+	print(player_info)
+	for player in player_info.values():
+		if not player.is_ready:
 			all_players_ready = false
 			break
 	
@@ -227,33 +255,48 @@ func _on_BeginTimer_timeout():
 
 # Sets if a player with the RPC id `id` is ready
 remotesync func set_loaded(id : int, is_loaded : bool):
-	loaded_players[id] = is_loaded
+	print("Setting that " + String(id) + " is loaded")
+	player_info[id].is_loaded = is_loaded
+	
+	# Find if all players are loaded
+	var all_players_loaded = true
+	for id in player_info.keys():
+		if not player_info[id].is_loaded:
+			all_players_loaded = false
+			break
+	
+	if all_players_loaded:
+		# Setup SyncManager
+		# Only the server should start sync
+		if self_id == 1:
+			SyncManager.start()
+		
+		# Now we can start
+		game_node.begin_round()
 
 remotesync func begin_game():
 	# Pause until we're all finished
 	game_beginning = true
-	get_tree().set_pause(true)
 	
 	# Instance scene, set as child
+	print("Instancing scene...")
 	game_node = game_scene.instance()
 	add_child(game_node)
 	
-	# Setup SyncManager
-	# Only the server should start sync
-	if self_id == 1:
-		SyncManager.start()
+	print("Setting up inputs...")
+	
+	# Setup UI and Inputs
+	for id in player_info.keys():	
+		var player : int
+		if id == 1: 	# Server is always player 1
+			player = 0	# Player 1 is controller 0
+			game_node.get_combat_ui().update_name(1, player_info[id].username)
+		else:			# Client is always player 2
+			player = 1
+			game_node.get_combat_ui().update_name(2, player_info[id].username)
+		
+		# -1 means controlled by the server
+		game_node.get_player(player).update_combo_controller(player if id == self_id else -1)
 
+	# For some reason this isn't being synced?
 	rpc("set_loaded", self_id, true)
-	
-	# Busy wait until we're all loaded
-	var all_players_loaded = false
-	while not all_players_loaded:
-		all_players_loaded = true
-		for loaded in readied_players.values():
-			if not loaded:
-				all_players_loaded = false
-				break
-	
-	# Now we can start
-	get_tree().set_pause(false)
-	

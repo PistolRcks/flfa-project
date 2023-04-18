@@ -20,9 +20,8 @@ var physics_fps = ProjectSettings.get_setting("physics/common/physics_fps")
 signal round_over()		# Emits when the round is over (i.e. when Timer runs out)
 
 func _ready():
-	# Should be infinite time if ROUND_LENGTH is set to -1, so don't set the timer
-	if not is_infinite_time:
-		begin_timer()
+	# begin_timer() should now be called by Arena
+	pass
 
 func _process(delta):
 	if is_infinite_time:
