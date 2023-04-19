@@ -34,6 +34,8 @@ onready var nat_left = "p" + str(assigned_player) + "_left"
 onready var nat_right = "p" + str(assigned_player) + "_right"
 onready var nat_attack_a = "p" + str(assigned_player) + "_attack_a"
 
+var physics_fps = ProjectSettings.get_setting("physics/common/physics_fps")
+
 func _ready():
 	# Set this if we're in the ComboTester
 	_testing = (get_tree().get_current_scene().get_name() == "ComboTester")
@@ -49,18 +51,15 @@ func _ready():
 			Combo.new("5656$", "Forward Dash", "STAND", "ANY", [])
 		]
 
-func _process(delta):
-	# Read inputs, convert into numpad notation
-	var up
-	var down
-	var left
-	var right
+func _process_combos(input : Dictionary):
+	var delta = 1.0 / physics_fps
 	
-	if assigned_player > 0:
-		up = Input.is_action_pressed(nat_up)
-		down = Input.is_action_pressed(nat_down)
-		left = Input.is_action_pressed(nat_left)
-		right = Input.is_action_pressed(nat_right)
+	# Read inputs, convert into numpad notation
+	var up = input.get("up")
+	var down = input.get("down")
+	var left = input.get("left")
+	var right = input.get("right")
+	var a_pressed = input.get("a")
 		
 	var numpad # assume input is neutral
 	var input_to_process = ""
@@ -107,7 +106,7 @@ func _process(delta):
 	
 	input_to_process += str(numpad) if numpad else ""
 	
-	if assigned_player > 0 and Input.is_action_pressed(nat_attack_a):
+	if assigned_player > 0 and a_pressed:
 		input_to_process += "A"
 	
 	# don't repeat inputs

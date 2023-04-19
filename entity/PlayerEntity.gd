@@ -15,6 +15,7 @@ func _get_local_input() -> Dictionary:
 	var right = false
 	var down = false
 	var up = false
+	var a = false
 	
 	# Inputs should be based on the controller, not the player number
 	# These will be the same in a local scenario, but not necessarily in an
@@ -24,12 +25,14 @@ func _get_local_input() -> Dictionary:
 		right = Input.is_action_pressed("p" + str(controller + 1) + "_right")
 		down = Input.is_action_pressed("p" + str(controller + 1) + "_down")
 		up = Input.is_action_pressed("p" + str(controller + 1) + "_up")
+		a = Input.is_action_pressed("p" + str(controller + 1) + "_attack_a")
 	
 	return {
 		left = left, 
 		right = right, 
 		down = down, 
-		up = up
+		up = up,
+		a = a
 	}
 
 """ Processes this node for the current tick. 
@@ -90,3 +93,6 @@ func _network_process(input : Dictionary) -> void:
 		velocity.x = 0
 	
 	velocity += momentum
+	
+	# Now, process combos
+	combo_controller._process_combos(input)
