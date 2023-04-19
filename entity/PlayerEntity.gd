@@ -2,15 +2,19 @@
 extends Entity
 class_name PlayerEntity
 
-export var jump_strength = 1600			# The initial velocity of the jump 
-
-func _physics_process(delta):
-	var momentum = Vector2(0,0)
+""" Returns the local input that this node needs to operate. 
 	
-	var left 
-	var right 
-	var down 
-	var up
+	This will only be called for nodes whose "network master"
+	(set via `Node.set_network_master()`) matches the peer id of the current
+	client. Not all nodes need input, in fact, most do not. This is used most
+	commonly on the node representing a player. This input will be passed into
+	`_network_process()`.
+"""
+func _get_local_input() -> Dictionary:
+	var left = false
+	var right = false
+	var down = false
+	var up = false
 	
 	# Inputs should be based on the controller, not the player number
 	# These will be the same in a local scenario, but not necessarily in an
@@ -21,6 +25,30 @@ func _physics_process(delta):
 		down = Input.is_action_pressed("p" + str(controller + 1) + "_down")
 		up = Input.is_action_pressed("p" + str(controller + 1) + "_up")
 	
+	return {
+		left = left, 
+		right = right, 
+		down = down, 
+		up = up
+	}
+
+""" Processes this node for the current tick. 
+
+	The input will contain data from either `_get_local_input()`
+	(if it's real user input) or `_predict_remote_input()` (if it's predicted).
+	If this node doesn't implement those methods, it'll always be empty.
+"""
+func _network_process(input : Dictionary) -> void:
+	# Call the parent (because parent virtuals don't get automatically called like with builtin virtuals) 
+	._network_process(input)
+	
+	var left = input.get("left")
+	var right = input.get("right")
+	var up = input.get("up")
+	var down = input.get("down")
+	
+	var delta = 1.0 / physics_fps
+	var momentum = Vector2(0,0)
 	
 	# Process input (but only while actionable, and alive)
 	if not combo_being_performed and not inactionable and not dead:
@@ -54,7 +82,7 @@ func _physics_process(delta):
 			blocking = false
 	
 		# Jump
-		if is_on_floor() and up:
+		if not in_air and up:
 			momentum += Vector2(0, -jump_strength)
 	
 	# Stop when we're not inputting

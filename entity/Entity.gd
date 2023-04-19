@@ -21,7 +21,7 @@ var blocking = false						# Whether or not the player is able to block
 var inactionable = false					# Whether or not the entity can perform any actions 
 											# (usually while in hit/blockstun)
 var crouching = false						# Whether or not the entity is crouching
-var in_air = false							# Whether or not the entity is in the air
+var in_air = true							# Whether or not the entity is in the air
 var dead = false							# Whether the character is dead or not
 
 ## Animation ##
@@ -36,8 +36,12 @@ export var full_name = "Fighter"	# The full name of the character (as displayed 
 export var max_health = 100			# The maximum health of the character
 var current_health
 export var move_speed = 100			# The speed of movement (in pixels/sec)
+export var jump_strength = 800		# The initial velocity of the jump 
 var velocity = Vector2(0,0)
 var stun_timer := 0.0				# How long the character is inactionable after being hit
+
+## Other ##
+var physics_fps = ProjectSettings.get_setting("physics/common/physics_fps")
 
 ## Signals ##
 signal on_death(player)		# Fired when a player dies. Tells which player died.
@@ -59,7 +63,56 @@ func _ready():
 	# Add to `network_sync` to apply rollback
 	add_to_group("network_sync")
 
-func _physics_process(delta):
+## Rollback Virtual Methods ##
+""" Returns the current node state.
+	
+	This same state will be passed to `_load_state()` when performing a rollback.
+"""
+func _save_state() -> Dictionary:
+	return {
+		pos_x = position.x,
+		pos_y = position.y,
+		vel_x = velocity.x,
+		vel_y = velocity.y,
+		cur_health = current_health,
+		stun = stun_timer,
+		facing_right = facing_right,
+		combo_being_performed = combo_being_performed,
+		blocking = blocking,
+		inactionable = inactionable,
+		crouching = crouching,
+		in_air = in_air,
+		dead = dead
+	}
+
+""" Called to roll the node back to a previous state, 
+	which originated from this node's `_save_state()` method.
+"""
+func _load_state(state: Dictionary) -> void:
+	position.x = state["pos_x"]
+	position.y = state["pos_y"]
+	velocity.x = state["vel_x"]
+	velocity.y = state["vel_y"]
+	current_health = state["cur_health"]
+	stun_timer = state["stun"]
+	update_facing(state["facing_right"])
+	combo_being_performed = state["combo_being_performed"]
+	blocking = state["blocking"]
+	inactionable = state["inactionable"]
+	crouching = state["crouching"]
+	in_air = state["in_air"]
+	dead = state["dead"]
+
+
+
+""" Processes this node for the current tick. 
+
+	The input will contain data from either `_get_local_input()`
+	(if it's real user input) or `_predict_remote_input()` (if it's predicted).
+	If this node doesn't implement those methods, it'll always be empty.
+"""
+func _network_process(input: Dictionary) -> void:
+	var delta = 1.0 / physics_fps
 	var momentum = Vector2()
 	# Apply gravity while not on floor (and we're not moving faster than gravity)
 	if not is_on_floor() and velocity.y < GRAVITY:
@@ -96,31 +149,6 @@ func _physics_process(delta):
 	# Apply momentum
 	move_and_slide(velocity, Vector2(0, -1))
 
-## Rollback Virtual Methods ##
-""" Returns the current node state.
-	
-	This same state will be passed to `_load_state()` when performing a rollback.
-"""
-func _save_state() -> Dictionary:
-	return {}	# Stub!
-
-""" Called to roll the node back to a previous state, 
-	which originated from this node's `_save_state()` method.
-"""
-func _load_state(state: Dictionary) -> void:
-	pass 		# Stub!
-
-""" Returns the local input that this node needs to operate. 
-	
-	This will only be called for nodes whose "network master"
-	(set via `Node.set_network_master()`) matches the peer id of the current
-	client. Not all nodes need input, in fact, most do not. This is used most
-	commonly on the node representing a player. This input will be passed into
-	`_network_process()`.
-"""
-func _get_local_input() -> Dictionary:
-	return {}	# Stub!
-
 """ Returns predicted remote input based on the input from the previous tick,
 	which may itself be predicted. 
 
@@ -131,17 +159,8 @@ func _get_local_input() -> Dictionary:
 	input. If `ticks_since_real_input` is negative, we haven't received any remote
 	inputs yet, which happens at the very start of the game.
 """
-func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: int) -> Dictionary:
-	return {}	# Stub!
-
-""" Processes this node for the current tick. 
-
-	The input will contain data from either `_get_local_input()`
-	(if it's real user input) or `_predict_remote_input()` (if it's predicted).
-	If this node doesn't implement those methods, it'll always be empty.
-"""
-func _network_process(input: Dictionary) -> void:
-	pass		# Stub!
+#func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: int) -> Dictionary:
+#	return {}	# Stub!
 
 ## Setters ##
 """ Sets a new name for the Entity; also updates the CombatUI to reflect this.
