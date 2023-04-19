@@ -59,6 +59,7 @@ func update_combo(player: int, new_text: String):
 		`String` new_name - The new name to set the player to (BBCode accepted).
 """
 func update_name(player: int, new_name: String):
+	print("Updating name!!!")
 	if player == 1:
 		p1_name.bbcode_text = new_name
 	else:

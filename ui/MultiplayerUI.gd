@@ -286,17 +286,14 @@ remotesync func begin_game():
 	print("Setting up inputs...")
 	
 	# Setup UI and Inputs
-	for id in player_info.keys():	
-		var player : int
-		if id == 1: 	# Server is always player 1
-			player = 0	# Player 1 is controller 0
-			game_node.get_combat_ui().update_name(1, player_info[id].username)
-		else:			# Client is always player 2
-			player = 1
-			game_node.get_combat_ui().update_name(2, player_info[id].username)
+	for id in player_info.keys():
+		# Server (id 1) is always player 1
+		var player = 1 if id == 1 else 2
 		
+		game_node.get_player(player).set_name(player_info[id].username)
+		# Combo controllers start at 0 instead of 1
 		# -1 means controlled by the server
-		game_node.get_player(player).update_combo_controller(player if id == self_id else -1)
+		game_node.get_player(player).update_combo_controller(player - 1 if id == self_id else -1)
 
 	# For some reason this isn't being synced?
 	rpc("set_loaded", self_id, true)

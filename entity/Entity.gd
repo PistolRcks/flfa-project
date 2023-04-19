@@ -95,6 +95,7 @@ func _physics_process(delta):
 
 # Lets the ComboController know who is controlling it
 func update_combo_controller(new_controller : int):
+	print("Updating combo controller!!!")
 	if new_controller <= 1:
 		combo_controller.update_assigned_player(new_controller + 1)
 	else:
@@ -109,6 +110,12 @@ func register_combos():
 
 func apply_knockback(amount):
 	pass # STUB!
+
+""" Sets a new name for the Entity; also updates the CombatUI to reflect this.
+"""
+func set_name(new_name : String):
+	full_name = new_name
+	get_tree().call_group("combat_ui", "update_name", player_number, full_name)
 
 """ Creates a new Hitbox.
 
