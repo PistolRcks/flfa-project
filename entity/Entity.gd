@@ -95,8 +95,8 @@ func _physics_process(delta):
 
 # Lets the ComboController know who is controlling it
 func update_combo_controller(new_controller : int):
-	print("Updating combo controller!!!")
 	if new_controller <= 1:
+		print("Setting combo controller for player " + String(player_number) + " to " + String(new_controller))
 		combo_controller.update_assigned_player(new_controller + 1)
 	else:
 		# The computer should handle this

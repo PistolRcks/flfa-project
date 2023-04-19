@@ -291,9 +291,11 @@ remotesync func begin_game():
 		var player = 1 if id == 1 else 2
 		
 		game_node.get_player(player).set_name(player_info[id].username)
-		# Combo controllers start at 0 instead of 1
-		# -1 means controlled by the server
-		game_node.get_player(player).update_combo_controller(player - 1 if id == self_id else -1)
+		# Set combo controller to be 0 (p1 controls) if we are controlling that unit
+		# Otherwise, set 2 (server controls)
+		var controller = 0 if id == self_id else 2
+		game_node.get_player(player).controller = controller
+		game_node.get_player(player).update_combo_controller(controller)
 
 	# For some reason this isn't being synced?
 	rpc("set_loaded", self_id, true)
