@@ -297,5 +297,4 @@ remotesync func begin_game():
 		game_node.get_player(player).controller = controller
 		game_node.get_player(player).update_combo_controller(controller)
 
-	# For some reason this isn't being synced?
 	rpc("set_loaded", self_id, true)

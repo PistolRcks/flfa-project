@@ -55,6 +55,9 @@ func _ready():
 	# Make sure the hurtboxes are on the correct team
 	for hurtbox in $MovementHelper/Hurtboxes.get_children():
 		hurtbox.team = player_number
+	
+	# Add to `network_sync` to apply rollback
+	add_to_group("network_sync")
 
 func _physics_process(delta):
 	var momentum = Vector2()
@@ -93,6 +96,61 @@ func _physics_process(delta):
 	# Apply momentum
 	move_and_slide(velocity, Vector2(0, -1))
 
+## Rollback Virtual Methods ##
+""" Returns the current node state.
+	
+	This same state will be passed to `_load_state()` when performing a rollback.
+"""
+func _save_state() -> Dictionary:
+	return {}	# Stub!
+
+""" Called to roll the node back to a previous state, 
+	which originated from this node's `_save_state()` method.
+"""
+func _load_state(state: Dictionary) -> void:
+	pass 		# Stub!
+
+""" Returns the local input that this node needs to operate. 
+	
+	This will only be called for nodes whose "network master"
+	(set via `Node.set_network_master()`) matches the peer id of the current
+	client. Not all nodes need input, in fact, most do not. This is used most
+	commonly on the node representing a player. This input will be passed into
+	`_network_process()`.
+"""
+func _get_local_input() -> Dictionary:
+	return {}	# Stub!
+
+""" Returns predicted remote input based on the input from the previous tick,
+	which may itself be predicted. 
+
+	This will only be called for nodes whose
+	"network master" DOES NOT match the peer id of the current client. If this
+	method isn't provided, the same input from the last tick will be used as-is.
+	This input will be passed into `_network_process()` when using predicted
+	input. If `ticks_since_real_input` is negative, we haven't received any remote
+	inputs yet, which happens at the very start of the game.
+"""
+func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: int) -> Dictionary:
+	return {}	# Stub!
+
+""" Processes this node for the current tick. 
+
+	The input will contain data from either `_get_local_input()`
+	(if it's real user input) or `_predict_remote_input()` (if it's predicted).
+	If this node doesn't implement those methods, it'll always be empty.
+"""
+func _network_process(input: Dictionary) -> void:
+	pass		# Stub!
+
+## Setters ##
+""" Sets a new name for the Entity; also updates the CombatUI to reflect this.
+"""
+func set_name(new_name : String):
+	full_name = new_name
+	get_tree().call_group("combat_ui", "update_name", player_number, full_name)
+
+## Combos ##
 # Lets the ComboController know who is controlling it
 func update_combo_controller(new_controller : int):
 	if new_controller <= 1:
@@ -108,15 +166,7 @@ func register_combos():
 	for combo in combo_list:
 		combo_controller.register_combo(combo)
 
-func apply_knockback(amount):
-	pass # STUB!
-
-""" Sets a new name for the Entity; also updates the CombatUI to reflect this.
-"""
-func set_name(new_name : String):
-	full_name = new_name
-	get_tree().call_group("combat_ui", "update_name", player_number, full_name)
-
+## Hitboxes ##
 """ Creates a new Hitbox.
 
 	Ideally, this is performed by an animation. In the previous game this was snatched from,
@@ -190,6 +240,7 @@ func remove_all_hitboxes():
 	# Empty the array
 	hitboxes.clear()
 
+## Other Gameplay ##
 """ Updates assets to reflect facing.
 	Call this instead of updating `facing_right`.
 
@@ -205,6 +256,10 @@ func update_facing(new_facing: bool):
 	
 	facing_right = new_facing
 
+func apply_knockback(amount):
+	pass # STUB!
+
+## Process Handling ##
 """ Stops all `*_process` functions for the Entity and its ComboController. 
 	Called when the Entity dies. 
 """
@@ -218,6 +273,7 @@ func resume_all_processes():
 	set_process(true)
 	set_physics_process(true)
 
+## Signal Handlers ##
 # Perform animations if combos are performed
 func _on_ComboController_combo_performed(combo_idx, combo):
 	# Only perform combos if one isn't already being performed (also if we can do stuff)
