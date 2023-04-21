@@ -159,6 +159,7 @@ animations = [ {
 
 [node name="PunchyGuy" type="KinematicBody2D" groups=["fighters"]]
 script = ExtResource( 1 )
+combo_stop_timer = 0.033
 full_name = "Punchy Guy"
 
 [node name="Collider" type="CollisionShape2D" parent="."]

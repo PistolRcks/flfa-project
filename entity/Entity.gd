@@ -149,7 +149,8 @@ func _network_process(input: Dictionary) -> void:
 	# Apply momentum
 	move_and_slide(velocity, Vector2(0, -1))
 	
-	if combo_being_performed and not playback.is_playing():
+	# If the oneshot is inactive, that means a move is not being performed
+	if not animation_tree.get("parameters/" + playback.get_current_node() + "/OneShot/active"):
 		combo_being_performed = false
 
 """ Returns predicted remote input based on the input from the previous tick,

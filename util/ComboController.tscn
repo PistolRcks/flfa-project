@@ -1,11 +1,13 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://util/ComboController.gd" type="Script" id=1]
+[ext_resource path="res://addons/godot-rollback-netcode/NetworkTimer.gd" type="Script" id=2]
 
 [node name="ComboController" type="Node"]
 script = ExtResource( 1 )
 
-[node name="InputHolder" type="Timer" parent="."]
+[node name="InputHolder" type="Node" parent="."]
+script = ExtResource( 2 )
 one_shot = true
 
 [connection signal="timeout" from="InputHolder" to="." method="_on_InputHolder_timeout"]

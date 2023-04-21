@@ -21,10 +21,10 @@ var inputs_flipped = false		# Whether or not the inputs have been flipped (i.e. 
 
 onready var input_holder = $InputHolder
 var input_being_held = false
-const INPUT_HOLD_TIME = 0.33	# The amount of time to pause after making a combo
+const INPUT_HOLD_TIME = 15		# The amount of time (in frames, out of 60) to pause after making a combo
 
 var neutral_wait_timer = 0
-const NEUTRAL_WAIT_TIME = 0.016 # The amount of time to wait after inputting to register a neutral
+const NEUTRAL_WAIT_TIME = 0.016 # The amount of time (in seconds) to wait after inputting to register a neutral
 
 var combo_timeout_timer = 0
 const COMBO_TIMEOUT_TIME = 0.33	# The amount of time to clear the `recent_inputs` after not inputting

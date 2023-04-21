@@ -39,13 +39,17 @@ func _process(delta):
 		p1.update_facing(false)
 		p2.update_facing(true)
 	
+	var state = p1.playback.get_current_node()
+	
 	$UI/CombatUI.set_debug_text(
 		"p1_x: " + str(p1_x)
-		+ "\np1_vel: " + str(p1.velocity)
+		+ " / p1_vel: " + str(p1.velocity)
 		+ "\np2_x: " + str(p2_x)
-		+ "\np2_vel: " + str(p2.velocity)
-		+ "\nPlaying Animation: " + p1.playback.get_current_node()
-
+		+ " / p2_vel: " + str(p2.velocity)
+		+ "\nAnimation State: " + state
+		+ "\nTransition: " + str(p1.animation_tree.get("parameters/" + state + "/Transition/current"))
+		+ "\ncombo_being_performed: " + str(p1.combo_being_performed)
+		+ "\nComboController ticks left: " + str(p1.get_combo_controller().input_holder.ticks_left)
 	)
 	
 	# Place the camera in the middle, also adjust camera zoom
