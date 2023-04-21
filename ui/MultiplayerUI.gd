@@ -300,5 +300,6 @@ remotesync func begin_game():
 		# Set who is the master for the player nodes
 		print("Setting network master of player " + String(player) + " to " + String(id))
 		game_node.get_player(player).set_network_master(id)
+		game_node.get_player(player).get_combo_controller().set_network_master(id)
 
 	rpc("set_loaded", self_id, true)

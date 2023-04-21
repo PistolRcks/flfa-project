@@ -1,7 +1,7 @@
 extends Node2D
 
-onready var p1 = $Player1
-onready var p2 = $Player2
+onready var p1 : PlayerEntity = $Player1
+onready var p2 : PlayerEntity = $Player2
 
 # Minimum and maximum zoom for the camera
 const MIN_ZOOM = 0.15
@@ -44,6 +44,8 @@ func _process(delta):
 		+ "\np1_vel: " + str(p1.velocity)
 		+ "\np2_x: " + str(p2_x)
 		+ "\np2_vel: " + str(p2.velocity)
+		+ "\nP1's ComboController's assigned player: " + str(p1.get_combo_controller().assigned_player)
+		+ "\nP2's ComboController's assigned player: " + str(p2.get_combo_controller().assigned_player)
 	)
 	
 	# Place the camera in the middle, also adjust camera zoom

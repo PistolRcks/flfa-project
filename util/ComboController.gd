@@ -1,3 +1,4 @@
+class_name ComboController
 extends Node
 
 signal combo_performed(combo_idx, combo)
@@ -6,7 +7,11 @@ signal combo_performed(combo_idx, combo)
 
 var combo_list = [] 
 
+# Locally, `assigned_player` and `controller` will be the same.
+# Online, `assigned_player` and `controller` will be different (`controller` will be -1)
 var assigned_player = 1		# Player assigned to this ComboController
+var controller = 1			# Player processing inputs for this ComboController
+							# This will be -1 for AI or the Server
 
 var recent_inputs = " "
 var inputs_updated = false
@@ -27,12 +32,12 @@ const COMBO_TIMEOUT_TIME = 0.33	# The amount of time to clear the `recent_inputs
 
 var _testing = false
 
-# Translate inputs to the player's counterpart
-onready var nat_up = "p" + str(assigned_player) + "_up"
-onready var nat_down = "p" + str(assigned_player) + "_down"
-onready var nat_left = "p" + str(assigned_player) + "_left"
-onready var nat_right = "p" + str(assigned_player) + "_right"
-onready var nat_attack_a = "p" + str(assigned_player) + "_attack_a"
+# Translate inputs to the controlling player's counterpart
+onready var nat_up = "p" + str(controller) + "_up"
+onready var nat_down = "p" + str(controller) + "_down"
+onready var nat_left = "p" + str(controller) + "_left"
+onready var nat_right = "p" + str(controller) + "_right"
+onready var nat_attack_a = "p" + str(controller) + "_attack_a"
 
 var physics_fps = ProjectSettings.get_setting("physics/common/physics_fps")
 
@@ -106,7 +111,7 @@ func _process_combos(input : Dictionary):
 	
 	input_to_process += str(numpad) if numpad else ""
 	
-	if assigned_player > 0 and a_pressed:
+	if controller > 0 and a_pressed:
 		input_to_process += "A"
 	
 	# don't repeat inputs
@@ -146,15 +151,21 @@ func _process_combos(input : Dictionary):
 			get_tree().call_group("combat_ui", "update_combo", assigned_player, combo_performed)
 		inputs_updated = false
 
-""" Update the currently assigned player (and natural inputs) to `new_player`. """
+""" Update the player to which this ComboController is assigned to `new_player`.
+	This does not change what player controls this ComboController.
+"""
 func update_assigned_player(new_player : int):
 	assigned_player = new_player
+
+""" Update the player controlling this ComboController (and natural inputs) to `new_player`. """
+func update_controlling_player(new_player : int):
+	controller = new_player
 	
-	nat_up = "p" + str(assigned_player) + "_up"
-	nat_down = "p" + str(assigned_player) + "_down"
-	nat_left = "p" + str(assigned_player) + "_left"
-	nat_right = "p" + str(assigned_player) + "_right"
-	nat_attack_a = "p" + str(assigned_player) + "_attack_a"
+	nat_up = "p" + str(controller) + "_up"
+	nat_down = "p" + str(controller) + "_down"
+	nat_left = "p" + str(controller) + "_left"
+	nat_right = "p" + str(controller) + "_right"
+	nat_attack_a = "p" + str(controller) + "_attack_a"
 
 """ Convert input text to input images """
 func input_text_to_images(text : String) -> String:

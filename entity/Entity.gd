@@ -5,7 +5,7 @@ class_name Entity
 
 ## Combos ##
 var combo_list = []
-onready var combo_controller = $MovementHelper/ComboController
+onready var combo_controller : ComboController = $MovementHelper/ComboController
 
 const GRAVITY = 200		# Speed of gravity (in pixels/sec); always at max
 
@@ -54,6 +54,7 @@ func _ready():
 	get_tree().call_group("combat_ui", "update_health", player_number, 100)
 	
 	# Let the ComboController know which player we are
+	combo_controller.update_assigned_player(player_number)
 	update_combo_controller(controller if controller <= 1 else -1)
 	
 	# Make sure the hurtboxes are on the correct team
@@ -102,7 +103,6 @@ func _load_state(state: Dictionary) -> void:
 	crouching = state["crouching"]
 	in_air = state["in_air"]
 	dead = state["dead"]
-
 
 
 """ Processes this node for the current tick. 
@@ -162,6 +162,10 @@ func _network_process(input: Dictionary) -> void:
 #func _predict_remote_input(previous_input: Dictionary, ticks_since_real_input: int) -> Dictionary:
 #	return {}	# Stub!
 
+## Getters ##
+func get_combo_controller() -> ComboController:
+	return (combo_controller as ComboController)
+
 ## Setters ##
 """ Sets a new name for the Entity; also updates the CombatUI to reflect this.
 """
@@ -171,13 +175,14 @@ func set_name(new_name : String):
 
 ## Combos ##
 # Lets the ComboController know who is controlling it
+# The ComboController will always be controlled by `player_number`.
 func update_combo_controller(new_controller : int):
 	if new_controller <= 1:
 		print("Setting combo controller for player " + String(player_number) + " to " + String(new_controller))
-		combo_controller.update_assigned_player(new_controller + 1)
+		combo_controller.update_controlling_player(new_controller + 1)
 	else:
 		# The computer should handle this
-		combo_controller.update_assigned_player(-1)
+		combo_controller.update_controlling_player(-1)
 
 """ Registers all combos from `combo_list` into the ComboController.
 """

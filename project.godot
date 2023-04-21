@@ -19,6 +19,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://util/Combo.gd"
 }, {
+"base": "Node",
+"class": "ComboController",
+"language": "GDScript",
+"path": "res://util/ComboController.gd"
+}, {
 "base": "KinematicBody2D",
 "class": "Entity",
 "language": "GDScript",
@@ -57,6 +62,7 @@ _global_script_classes=[ {
 _global_script_class_icons={
 "CombatUI": "",
 "Combo": "",
+"ComboController": "",
 "Entity": "",
 "Hitbox": "",
 "Modal": "",
