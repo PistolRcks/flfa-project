@@ -112,7 +112,7 @@ func _load_state(state: Dictionary) -> void:
 	If this node doesn't implement those methods, it'll always be empty.
 """
 func _network_process(input: Dictionary) -> void:
-	var delta = 1.0 / physics_fps
+	var delta = SyncManager.tick_time
 	var momentum = Vector2()
 	# Apply gravity while not on floor (and we're not moving faster than gravity)
 	if not is_on_floor() and velocity.y < GRAVITY:
@@ -148,6 +148,9 @@ func _network_process(input: Dictionary) -> void:
 	velocity += momentum
 	# Apply momentum
 	move_and_slide(velocity, Vector2(0, -1))
+	
+	if combo_being_performed and not playback.is_playing():
+		combo_being_performed = false
 
 """ Returns predicted remote input based on the input from the previous tick,
 	which may itself be predicted. 
@@ -179,7 +182,7 @@ func set_name(new_name : String):
 func update_combo_controller(new_controller : int):
 	if new_controller <= 1:
 		print("Setting combo controller for player " + String(player_number) + " to " + String(new_controller))
-		combo_controller.update_controlling_player(new_controller + 1)
+		combo_controller.update_controlling_player(new_controller)
 	else:
 		# The computer should handle this
 		combo_controller.update_controlling_player(-1)

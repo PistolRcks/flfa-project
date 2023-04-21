@@ -44,8 +44,8 @@ func _process(delta):
 		+ "\np1_vel: " + str(p1.velocity)
 		+ "\np2_x: " + str(p2_x)
 		+ "\np2_vel: " + str(p2.velocity)
-		+ "\nP1's ComboController's assigned player: " + str(p1.get_combo_controller().assigned_player)
-		+ "\nP2's ComboController's assigned player: " + str(p2.get_combo_controller().assigned_player)
+		+ "\nPlaying Animation: " + p1.playback.get_current_node()
+
 	)
 	
 	# Place the camera in the middle, also adjust camera zoom

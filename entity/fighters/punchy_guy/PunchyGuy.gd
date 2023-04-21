@@ -54,3 +54,7 @@ func _ready():
 	]
 	
 	register_combos()
+
+func _on_AnimationPlayer_animation_finished(anim_name):
+	print("Finishing combo...")
+	combo_being_performed = false

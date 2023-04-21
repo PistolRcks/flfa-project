@@ -55,9 +55,74 @@ func _ready():
 			Combo.new("[123]A$", "Sweep", "CROUCH", "ANY", []),
 			Combo.new("5656$", "Forward Dash", "STAND", "ANY", [])
 		]
+	
+	# Add to `network_sync` to apply rollback
+	add_to_group("network_sync")
 
-func _process_combos(input : Dictionary):
-	var delta = 1.0 / physics_fps
+""" Returns the local input that this node needs to operate. 
+	
+	This will only be called for nodes whose "network master"
+	(set via `Node.set_network_master()`) matches the peer id of the current
+	client. Not all nodes need input, in fact, most do not. This is used most
+	commonly on the node representing a player. This input will be passed into
+	`_network_process()`.
+"""
+func _get_local_input() -> Dictionary:
+	var left = false
+	var right = false
+	var down = false
+	var up = false
+	var a = false
+	
+	# Inputs should be based on the controller, not the player number
+	# These will be the same in a local scenario, but not necessarily in an
+	# online scenario
+	if (controller >= 0):
+		left = Input.is_action_pressed("p" + str(controller + 1) + "_left")
+		right = Input.is_action_pressed("p" + str(controller + 1) + "_right")
+		down = Input.is_action_pressed("p" + str(controller + 1) + "_down")
+		up = Input.is_action_pressed("p" + str(controller + 1) + "_up")
+		a = Input.is_action_pressed("p" + str(controller + 1) + "_attack_a")
+	
+	return {
+		left = left, 
+		right = right, 
+		down = down, 
+		up = up,
+		a = a
+	}
+
+""" Returns the current node state.
+	
+	This same state will be passed to `_load_state()` when performing a rollback.
+"""
+func _save_state() -> Dictionary:
+	return {
+		recent_inputs = recent_inputs,
+		inputs_updated = inputs_updated,
+		combo_performed = combo_performed,
+		inputs_flipped = inputs_flipped,
+		input_being_held = input_being_held,
+		neutral_wait_timer = neutral_wait_timer,
+		combo_timeout_timer = combo_timeout_timer
+	}
+
+""" Called to roll the node back to a previous state, 
+	which originated from this node's `_save_state()` method.
+"""
+func _load_state(state: Dictionary) -> void:
+	recent_inputs = state["recent_inputs"]
+	inputs_updated = state["inputs_updated"]
+	combo_performed = state["combo_performed"]
+	inputs_flipped = state["inputs_flipped"]
+	input_being_held = state["input_being_held"]
+	neutral_wait_timer = state["neutral_wait_timer"]
+	combo_timeout_timer = state["combo_timeout_timer"]
+
+func _network_process(input : Dictionary):
+	#print("Updating ComboController for player " + str(assigned_player) + ": " + str(input))
+	
+	var delta = SyncManager.tick_time
 	
 	# Read inputs, convert into numpad notation
 	var up = input.get("up")
@@ -111,7 +176,7 @@ func _process_combos(input : Dictionary):
 	
 	input_to_process += str(numpad) if numpad else ""
 	
-	if controller > 0 and a_pressed:
+	if a_pressed:
 		input_to_process += "A"
 	
 	# don't repeat inputs

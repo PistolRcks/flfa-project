@@ -117,6 +117,18 @@ tracks/5/keys = {
 "update": 0,
 "values": [ Vector2( 0, 0 ) ]
 }
+tracks/6/type = "value"
+tracks/6/path = NodePath(".:combo_being_performed")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ false ]
+}
 
 [sub_resource type="Animation" id=27]
 resource_name = "crouch_trans"
@@ -207,3 +219,4 @@ frames = SubResource( 23 )
 
 [connection signal="hitbox_entered" from="MovementHelper/Hurtboxes/Hurtbox1" to="." method="_on_hit"]
 [connection signal="combo_performed" from="MovementHelper/ComboController" to="." method="_on_ComboController_combo_performed"]
+[connection signal="animation_finished" from="MovementHelper/AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]

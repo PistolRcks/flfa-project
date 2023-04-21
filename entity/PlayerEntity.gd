@@ -93,6 +93,3 @@ func _network_process(input : Dictionary) -> void:
 		velocity.x = 0
 	
 	velocity += momentum
-	
-	# Now, process combos
-	combo_controller._process_combos(input)
