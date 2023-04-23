@@ -78,9 +78,7 @@ func _save_state() -> Dictionary:
 		cur_health = current_health,
 		stun = stun_timer,
 		facing_right = facing_right,
-		combo_being_performed = combo_being_performed,
 		blocking = blocking,
-		inactionable = inactionable,
 		crouching = crouching,
 		in_air = in_air,
 		dead = dead
@@ -94,12 +92,13 @@ func _load_state(state: Dictionary) -> void:
 	position.y = state["pos_y"]
 	velocity.x = state["vel_x"]
 	velocity.y = state["vel_y"]
+	
 	current_health = state["cur_health"]
+	get_tree().call_group("combat_ui", "update_health", player_number, current_health)
+	
 	stun_timer = state["stun"]
 	update_facing(state["facing_right"])
-	combo_being_performed = state["combo_being_performed"]
 	blocking = state["blocking"]
-	inactionable = state["inactionable"]
 	crouching = state["crouching"]
 	in_air = state["in_air"]
 	dead = state["dead"]
@@ -210,24 +209,26 @@ func register_combos():
 """
 func create_hitbox(global_coord : Vector2, size : Vector2, team : int, 
 		metadata : Dictionary):
-	var new_instance : Hitbox = hitbox_scene.instance()
+	
+	var meta = metadata.duplicate() # Fuckin GDScript with by-reference assignment (duplicate performs by-value assignment)
+	meta["source"] = get_path()	# Automatically set source
+	
+	var new_instance = SyncManager.spawn(
+		"Hitbox", 
+		$MovementHelper/Hitboxes, 
+		hitbox_scene, 
+		{
+			debugColor = Color(1.0, 0.0, 0.0, 0.5),
+			type = "HIT",
+			team = team,
+			metadata = meta,
+			scale = size,
+			global_position = global_coord
+		}, 
+		true
+	)
 	
 	hitboxes.append(new_instance)
-	# TODO: Maybe this should be a child of any node? Could child it to
-	# the player then, and then you wouldn't have to deal with global coords
-	# Probably shouldn't even be instanced where the Weapon is, since the 
-	# position will be moved with the parent
-	add_child_below_node($MovementHelper/Hitboxes, new_instance)
-	
-	# Set exports
-	new_instance.debugColor = Color(1.0, 0.0, 0.0, 0.5)
-	new_instance.type = "HIT"
-	new_instance.team = team
-	new_instance.metadata = metadata.duplicate() # Fuckin GDScript with by-reference assignment (duplicate performs by-value assignment)
-	new_instance.metadata["source"] = get_path()	# Automatically set source
-	
-	new_instance.scale = size
-	new_instance.global_position = global_coord
 
 """ Creates a hitbox with a specific `Area2D`'s global position and size.
 	
@@ -261,9 +262,9 @@ func create_hitbox_via_combo(area_nodepath: NodePath, combo_idx: int, meta_idx: 
 
 """ Removes all hitboxes produced by this entity. """
 func remove_all_hitboxes():
-	for hitbox in hitboxes:
-		if hitbox: # Make sure the hitbox hasn't been cleared already
-			hitbox.queue_free()
+	for child in $MovementHelper/Hitboxes.get_children():
+		if not child is CollisionShape2D: # Make sure the hitbox hasn't been cleared already
+			SyncManager.despawn(child)
 	
 	# Empty the array
 	hitboxes.clear()
@@ -348,6 +349,8 @@ func _on_hit(area, type, team, metadata):
 			apply_knockback(metadata["knockback"])
 			# Move to hitstun node
 			playback.travel("hitstun")
+		
+		print("Getting hit")
 		
 		# Reflect changes in the UI
 		get_tree().call_group("combat_ui", "update_health", player_number, current_health)

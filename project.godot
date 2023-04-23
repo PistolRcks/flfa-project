@@ -223,11 +223,6 @@ show_debug_text={
  ]
 }
 
-[network]
-
-rollback/debug/rollback_ticks=2
-rollback/debug/random_rollback_ticks=5
-
 [physics]
 
 common/enable_pause_aware_picking=true

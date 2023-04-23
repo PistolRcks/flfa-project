@@ -83,7 +83,20 @@ func _on_Hitbox_area_entered(area):
 		var hb = area as Hitbox
 		emit_signal("hitbox_entered", area, hb.type, hb.team, hb.metadata)
 
+""" Called whenever this is spawned. `data` will contain hitbox variable info.
+"""
+func _network_spawn(data : Dictionary) -> void:
+	print("Being spawned with " + str(data))
+	debugColor = data["debugColor"]
+	type = data["type"]
+	team = data["team"]
+	metadata = data["metadata"]
+	scale = data["scale"]
+	global_position = data["global_position"]
+
 func _ready():
+	add_to_group("network_sync")
+	
 	# TODO: This should probably be able to be set during runtime
 	# Set debug visibility
 	match type:
