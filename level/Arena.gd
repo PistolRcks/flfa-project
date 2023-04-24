@@ -88,6 +88,8 @@ func _handle_endgame(gameover_text: String):
 	get_tree().call_group("fighters", "stop_all_processes")
 
 func _on_player_death(player):
+	print("Being triggered")
+	
 	# Find winner
 	var winner = 0
 	if player == 1:

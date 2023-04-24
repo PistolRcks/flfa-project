@@ -20,6 +20,7 @@ var blocking = false						# Whether or not the player is able to block
 											# (i.e., holding back; not in blockstun)
 var inactionable = false					# Whether or not the entity can perform any actions 
 											# (usually while in hit/blockstun)
+var inputs_blocked = false					# Blocks inputs at the end of the game
 var crouching = false						# Whether or not the entity is crouching
 var in_air = true							# Whether or not the entity is in the air
 var dead = false							# Whether the character is dead or not
@@ -289,18 +290,20 @@ func apply_knockback(amount):
 	pass # STUB!
 
 ## Process Handling ##
-""" Stops all `*_process` functions for the Entity and its ComboController. 
+""" Stops all `*_process` functions for the Entity and its ComboController, and blocks inputs. 
 	Called when the Entity dies. 
 """
 func stop_all_processes():
-	combo_controller.set_process(false)
 	set_process(false)
 	set_physics_process(false)
+	combo_controller.inputs_blocked = true
+	inputs_blocked = true
 
 func resume_all_processes():
-	combo_controller.set_process(true)
 	set_process(true)
 	set_physics_process(true)
+	combo_controller.inputs_blocked = false
+	inputs_blocked = false
 
 ## Signal Handlers ##
 # Perform animations if combos are performed

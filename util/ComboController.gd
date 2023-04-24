@@ -18,6 +18,7 @@ var inputs_updated = false
 var combo_performed = ""
 var inputs_flipped = false		# Whether or not the inputs have been flipped (i.e. the player is
 								# not facing right)
+var inputs_blocked = false		# Blocks inputs at the end of the game
 
 onready var input_holder = $InputHolder
 var input_being_held = false
@@ -77,7 +78,7 @@ func _get_local_input() -> Dictionary:
 	# Inputs should be based on the controller, not the player number
 	# These will be the same in a local scenario, but not necessarily in an
 	# online scenario
-	if (controller >= 0):
+	if (controller >= 0 and not inputs_blocked):
 		left = Input.is_action_pressed("p" + str(controller + 1) + "_left")
 		right = Input.is_action_pressed("p" + str(controller + 1) + "_right")
 		down = Input.is_action_pressed("p" + str(controller + 1) + "_down")
